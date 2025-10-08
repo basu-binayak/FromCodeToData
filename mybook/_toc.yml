@@ -1,0 +1,88 @@
+# Table of Contents for FromCodeToData
+# Defines the order and hierarchy of book sections
+
+format: jb-book
+root: intro
+
+chapters:
+  - file: python-basics/intro
+    title: Python Basics
+    sections:
+      - file: python-basics/setup
+        title: Understanding Python and Setup
+      - file: python-basics/01-Variables
+        title: Variables
+      - file: python-basics/02-DataTypes
+        title: Data Types
+      - file: python-basics/03-Strings
+        title: Strings
+      - file: python-basics/conditionals
+        title: Conditional Statements
+      - file: python-basics/loops
+        title: Loops and Iterations
+      - file: python-basics/functions
+        title: Functions and Scope
+      - file: python-basics/file-handling
+        title: File Handling
+      - file: python-basics/modules
+        title: Modules and Packages
+
+  - file: numpy/intro
+    title: NumPy
+    sections:
+      - file: numpy/arrays
+        title: Arrays and Array Creation
+      - file: numpy/operations
+        title: Array Operations and Broadcasting
+      - file: numpy/indexing
+        title: Indexing, Slicing, and Iterating
+      - file: numpy/statistics
+        title: Basic Statistical Operations
+      - file: numpy/missing-values
+        title: Handling Missing Data with NumPy
+
+  - file: pandas/intro
+    title: Pandas
+    sections:
+      - file: pandas/dataframes
+        title: DataFrames and Series
+      - file: pandas/indexing
+        title: Indexing and Selecting Data
+      - file: pandas/cleaning
+        title: Data Cleaning and Transformation
+      - file: pandas/groupby
+        title: GroupBy and Aggregation
+      - file: pandas/merging
+        title: Merging, Joining, and Concatenation
+      - file: pandas/time-series
+        title: Time Series Analysis with Pandas
+
+  - file: feature-engineering/intro
+    title: Feature Engineering
+    sections:
+      - file: feature-engineering/encoding
+        title: Encoding Categorical Variables
+      - file: feature-engineering/scaling
+        title: Feature Scaling and Normalization
+      - file: feature-engineering/binning
+        title: Binning and Discretization
+      - file: feature-engineering/extraction
+        title: Feature Extraction Techniques
+      - file: feature-engineering/selection
+        title: Feature Selection and Dimensionality Reduction
+
+  - file: eda/intro
+    title: Exploratory Data Analysis (EDA)
+    sections:
+      - file: eda/data-summary
+        title: Data Overview and Descriptive Statistics
+      - file: eda/data-visualization
+        title: Visualizing Data Distributions
+      - file: eda/correlation
+        title: Correlation and Relationships
+      - file: eda/outliers
+        title: Outlier Detection and Handling
+      - file: eda/patterns
+        title: Identifying Patterns and Trends
+      - file: eda/insights
+        title: Deriving Insights and Conclusions

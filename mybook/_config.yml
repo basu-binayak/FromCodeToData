@@ -1,0 +1,44 @@
+# Book settings
+title: "Data Analysis with Python"
+author: "Binayak Basu"
+logo: logo.png
+
+# Launch buttons (optional)
+launch_buttons:
+  notebook_interface: "jupyterlab"
+  binderhub_url: "https://mybinder.org" # optional: enable live code execution
+  colab_url: "https://colab.research.google.com"
+
+# HTML-specific settings
+html:
+  favicon: images/favicon.ico # optional
+  home_page_in_navbar: true
+  use_repository_button: true
+  use_issues_button: true
+  use_edit_page_button: true
+
+# Repository settings (optional, useful for GitHub)
+repository:
+  url: "https://github.com/basu-binayak/FromCodeToData.git"
+  path_to_book: "" # leave blank if root
+  branch: main
+
+# Execution options
+execute:
+  execute_notebooks: auto # options: auto, force, cache, off
+  timeout: 60 # seconds per notebook cell
+
+# Parse settings
+# Sphinx / HTML settings
+sphinx:
+  config:
+    language: en
+    html_theme: sphinx_book_theme
+    html_show_sphinx: true
+    html_show_copyright: true
+    copyright: "© 2025 Binayak Basu. All rights reserved."
+
+# Extra features
+latex:
+  latex_documents:
+    targetname: book.tex

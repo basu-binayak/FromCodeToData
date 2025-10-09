@@ -1,6 +1,6 @@
 # 📘 FromCodeToData
 
-**FromCodeToData** is a comprehensive **Jupyter Book** that takes you on a structured journey from mastering **Python programming basics** to performing **powerful Exploratory Data Analysis (EDA)**.  
+**FromCodeToData** is a comprehensive **Jupyter Book** that takes you on a structured journey from mastering **Python programming basics** to performing **powerful Exploratory Data Analysis (EDA)**.
 It’s designed for beginners and aspiring data professionals who want to learn how to turn raw code into valuable insights.
 
 ---
@@ -9,19 +9,11 @@ It’s designed for beginners and aspiring data professionals who want to learn 
 
 This book covers the full progression of essential data skills:
 
-1. **Python Fundamentals**  
-   Learn the building blocks — syntax, data types, loops, functions, and file handling.
-
-2. **NumPy Essentials**  
-   Master numerical computation with arrays, vectorization, and broadcasting.
-
-3. **Pandas Mastery**  
-   Handle, clean, and transform data efficiently using Pandas DataFrames and Series.
-
-4. **Feature Engineering**  
-   Explore techniques to extract meaningful features from raw data for analysis or machine learning.
-
-5. **Exploratory Data Analysis (EDA)**  
+1. **Python Fundamentals**Learn the building blocks — syntax, data types, loops, functions, and file handling.
+2. **NumPy Essentials**Master numerical computation with arrays, vectorization, and broadcasting.
+3. **Pandas Mastery**Handle, clean, and transform data efficiently using Pandas DataFrames and Series.
+4. **Feature Engineering**Explore techniques to extract meaningful features from raw data for analysis or machine learning.
+5. **Exploratory Data Analysis (EDA)**
    Discover patterns, visualize trends, and derive actionable insights from real-world datasets.
 
 ---
@@ -37,45 +29,14 @@ This book covers the full progression of essential data skills:
 
 ## 🏗️ Repository Structure
 
-```
-
+```text
 FromCodeToData/
-│
 ├── intro.md
 ├── python-basics/
-│ ├── intro.md
-│ ├── variables.md
-│ ├── loops.md
-│ ├── functions.md
-│ └── file-handling.md
-│
 ├── numpy/
-│ ├── intro.md
-│ ├── arrays.md
-│ ├── operations.md
-│ └── broadcasting.md
-│
 ├── pandas/
-│ ├── intro.md
-│ ├── dataframes.md
-│ ├── indexing.md
-│ ├── cleaning.md
-│ └── merging.md
-│
 ├── feature-engineering/
-│ ├── intro.md
-│ ├── encoding.md
-│ ├── scaling.md
-│ ├── binning.md
-│ └── feature-selection.md
-│
 └── eda/
-├── intro.md
-├── data-visualization.md
-├── correlation.md
-├── outliers.md
-└── insights.md
-
 ```
 
 ---
@@ -89,10 +50,13 @@ FromCodeToData/
    ```
 
 2. Build the book locally:
+
    ```bash
    jupyter-book build .
    ```
+
 3. View it in your browser:
+
    ```bash
    open _build/html/index.html
    ```

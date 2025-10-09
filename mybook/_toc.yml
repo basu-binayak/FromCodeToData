@@ -16,12 +16,12 @@ chapters:
         title: Data Types
       - file: python-basics/03-Strings
         title: Strings
-      - file: python-basics/conditionals
-        title: Conditional Statements
-      - file: python-basics/loops
-        title: Loops and Iterations
-      - file: python-basics/functions
-        title: Functions and Scope
+      - file: python-basics/04-Lists
+        title: Lists
+      - file: python-basics/05-Tuples
+        title: Tuples
+      - file: python-basics/06-Dictionaries
+        title: Dictionaries
       - file: python-basics/file-handling
         title: File Handling
       - file: python-basics/modules

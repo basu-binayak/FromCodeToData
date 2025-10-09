@@ -3,8 +3,6 @@
 Welcome to your first step in the **FromCodeToData** journey!
 Before diving into coding, let's understand **what Python is**, **why it’s important**, and **how to set up your environment** so you can start coding right away.
 
----
-
 ## 🐍 What is Python?
 
 **Python** is a high-level, interpreted programming language known for its **simplicity, readability,** and **versatility**.It’s one of the most widely used languages in the world — especially in:

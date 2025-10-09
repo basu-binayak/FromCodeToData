@@ -22,8 +22,8 @@ chapters:
         title: Tuples
       - file: python-basics/06-Dictionaries
         title: Dictionaries
-      - file: python-basics/file-handling
-        title: File Handling
+      - file: python-basics/07-Control_Flow
+        title: Control Flow
       - file: python-basics/modules
         title: Modules and Packages
 

@@ -18,14 +18,32 @@ chapters:
         title: Strings
       - file: python-basics/04-Lists
         title: Lists
-      - file: python-basics/05-Tuples
+      - file: python-basics/05-Objects
+        title: Objects
+      - file: python-basics/06-Tuples
         title: Tuples
-      - file: python-basics/06-Dictionaries
+      - file: python-basics/07-Dictionaries
         title: Dictionaries
-      - file: python-basics/07-Control_Flow
+      - file: python-basics/08-Control_Flow
         title: Control Flow
-      - file: python-basics/08-Exception_Handling
+      - file: python-basics/09-Exception_Handling
         title: Exception Handling
+      - file: python-basics/10-File_Handling
+        title: File Handling
+      - file: python-basics/11-Functions
+        title: Functions
+      - file: python-basics/12-Iterators
+        title: Iterators
+      - file: python-basics/13-Generators
+        title: Generators
+      - file: python-basics/14-Decorators
+        title: Decorators
+      - file: python-basics/15-Sets
+        title: Sets
+      - file: python-basics/16-Comprehensions
+        title: Comprehensions
+      - file: python-basics/17-Modules_Packages
+        title: Modules & Packages
 
   # - file: numpy/intro
   #   title: NumPy

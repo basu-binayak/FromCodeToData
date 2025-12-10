@@ -42,8 +42,8 @@ chapters:
         title: Sets
       - file: python-basics/16-Comprehensions
         title: Comprehensions
-      - file: python-basics/17-Modules_Packages
-        title: Modules & Packages
+      - file: python-basics/17-Frozensets
+        title: Frozensets
 
   - file: numpy/intro
     title: NumPy
@@ -76,37 +76,3 @@ chapters:
         title: Merging, Joining, and Concatenation
       - file: pandas/time-series
         title: Time Series Analysis with Pandas
-
-  - file: feature-engineering/intro
-    title: Feature Engineering
-    sections:
-      - file: feature-engineering/guide
-        title: Practical Guide to Feature Engineering
-      - file: feature-engineering/01-data_cleaning
-        title: Data Cleaning
-      - file: feature-engineering/encoding
-        title: Encoding Categorical Variables
-      - file: feature-engineering/scaling
-        title: Feature Scaling and Normalization
-      - file: feature-engineering/binning
-        title: Binning and Discretization
-      - file: feature-engineering/extraction
-        title: Feature Extraction Techniques
-      - file: feature-engineering/selection
-        title: Feature Selection and Dimensionality Reduction
-
-  - file: eda/intro
-    title: Exploratory Data Analysis (EDA)
-    sections:
-      - file: eda/data-summary
-        title: Data Overview and Descriptive Statistics
-      - file: eda/data-visualization
-        title: Visualizing Data Distributions
-      - file: eda/correlation
-        title: Correlation and Relationships
-      - file: eda/outliers
-        title: Outlier Detection and Handling
-      - file: eda/patterns
-        title: Identifying Patterns and Trends
-      - file: eda/insights
-        title: Deriving Insights and Conclusions

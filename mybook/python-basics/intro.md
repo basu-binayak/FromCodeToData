@@ -15,14 +15,21 @@ Click on any topic to jump directly to its notebook or chapter.
 |  1  | [Understanding Python and Setup](setup.md)        | Introduction to Python, installation, and running your first program |
 |  2  | [Variables](01-Variables.ipynb)                   | Learn how to store, name, and manage data in Python                  |
 |  3  | [Data Types](02-DataTypes.ipynb)                  | Learn about data types in Python                                     |
-|  4  | [Strings](-3-Strings.ipynb)                       | Perform String manipulation in Python                                |
+|  4  | [Strings](03-Strings.ipynb)                       | Perform String manipulation in Python                                |
 |  5  | [Lists](04-Lists.ipynb)                           | Perform List operations in Python                                    |
-|  6  | [Tuples](05-Tuples.ipynb)                         | Perform Tuple operations in Python                                   |
-|  7  | [Dictionaries](06-Dictionaries.ipynb)             | Understand key:value pair in Python                                  |
-|  8  | [Control Flow](07-Control_Flow.ipynb)             | Understand control flow in Python                                    |
-|  9  | [Exception Handling](08-Exception_Handling.ipynb) | Handle Exceptions in Python                                          |
-|  7  | [File Handling](file-handling.md)                 | Read, write, and manage files safely                                 |
-|  8  | [Modules and Packages](modules.md)                | Organize and reuse code using modules and libraries                  |
+|  6  | [Objects](05-Objects.ipynb)                       | Understand the concept of Objects in Python                          |
+|  7  | [Tuples](06-Tuples.ipynb)                         | Perform Tuple operations in Python                                   |
+|  8  | [Dictionaries](07-Dictionaries.ipynb)             | Understand key:value pair in Python                                  |
+|  9  | [Control Flow](08-Control_Flow.ipynb)             | Understand control flow in Python                                    |
+| 10  | [Exception Handling](09-Exception_Handling.ipynb) | Handle Exceptions in Python                                          |
+| 11  | [File Handling](10-File_Handling.ipynb)           | Read, write, and manage files safely                                 |
+| 12  | [Functions](11-Functions.ipynb)                   | Understand Functions and HIgher Order Functions                      |
+| 13  | [Iterators](12-Iterators.ipynb)                   | Understand Iterators in Python                                       |
+| 14  | [Generators](13-Generators.ipynb)                 | Understand Generators in Python                                      |
+| 15  | [Decorators](14-Decorators.ipynb)                 | Understand Decorators in Python                                      |
+| 16  | [Sets](15-Sets.ipynb)                             | Understand Sets in Python                                            |
+| 17  | [Comprehensions](16-Comprehemsions.ipynb)         | Understand Comprehensions in Python                                  |
+| 18  | [Frozensets](17-Frozensets.ipynb)                 | Understand Frozensets in Pytho                                       |
 
 ---
 

@@ -1,4 +1,3 @@
-pip install jupyter-book ghp-import
 name: Deploy Jupyter Book
 
 on:

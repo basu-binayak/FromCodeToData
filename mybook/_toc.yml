@@ -58,7 +58,7 @@ chapters:
         title: Boolean Masking
       - file: numpy/05-reshaping
         title: Reshaping Arrays
-      - file: numpy/06-fancyindexing_sorting
+      - file: numpy/06-fancyIndexing_sorting
         title: Fancy Indexing and Sorting
 
   - file: pandas/intro
@@ -68,11 +68,3 @@ chapters:
         title: DataFrames and Series
       - file: pandas/02-indexing
         title: Indexing and Selecting Data
-      - file: pandas/cleaning
-        title: Data Cleaning and Transformation
-      - file: pandas/groupby
-        title: GroupBy and Aggregation
-      - file: pandas/merging
-        title: Merging, Joining, and Concatenation
-      - file: pandas/time-series
-        title: Time Series Analysis with Pandas

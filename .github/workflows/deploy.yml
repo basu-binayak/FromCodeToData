@@ -16,18 +16,17 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install Jupyter Book + ghp-import
+      - name: Install Jupyter Book (correct package)
         run: |
           python -m pip install --upgrade pip
-          python -m pip install jupyter-book ghp-import
+          python -m pip install jupyterbook==0.15.1 ghp-import
 
-      - name: Build the book (force correct executable)
+      - name: Build the book (force correct CLI)
         run: |
-          python -m jupyter_book build mybook/
+          python -m jupyter_book.cli.main build mybook/
 
-      - name: Verify build folder
+      - name: Verify build
         run: |
-          echo "Listing mybook/_build/html..."
           ls -R mybook/_build/html || true
 
       - name: Deploy to GitHub Pages

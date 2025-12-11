@@ -1,0 +1,2288 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Aggregate Methods &#8212; Data Analysis with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pandas/aggregation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Data Analysis with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Data Analysis with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    👋 Welcome to FromCodeToData
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python-basics/intro.html">Python Basics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/setup.html">Understanding Python and Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/01-Variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/02-DataTypes.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/03-Strings.html">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/04-Lists.html"><strong>Introduction to Lists in Python</strong></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/05-Objects.html">Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/06-Tuples.html">Tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/07-Dictionaries.html">Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/08-Control_Flow.html">Control Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/09-Exception_Handling.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/10-File_Handling.html">File Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/11-Functions.html">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/12-Iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/13-Generators.html">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/14-Decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/15-Sets.html">Introduction to Sets in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/16-Comprehensions.html">Introduction to Comprehensions in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/17-Frozensets.html">Frozensets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../numpy/intro.html">NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/01-arrays.html">Arrays and Array Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/02-operations.html">Array Operations and Broadcasting</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/03-indexing.html">Indexing And Slicing an Array</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/04-boolean_masking.html">Boolean Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/05-reshaping.html">Reshaping, Concatenating and Splitting Arrays</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/06-fancyIndexing_sorting.html">Fancy Indexing and Sorting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="intro.html">Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-series_dataframes.html">Series and Dataframe Objects in Pandas</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="02-indexing.html">Indexing in Pandas</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/basu-binayak/FromCodeToData.git/main?urlpath=lab/tree/pandas/aggregation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/basu-binayak/FromCodeToData.git/blob/main/pandas/aggregation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/edit/main/pandas/aggregation.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/issues/new?title=Issue%20on%20page%20%2Fpandas/aggregation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/pandas/aggregation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Aggregate Methods</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Aggregate Methods</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#a-aggregations-in-series-object">A. Aggregations in Series Object</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agg"><code class="docutils literal notranslate"><span class="pre">agg()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strings-accepted-by-agg-in-pandas-and-their-functionality">📌 Strings accepted by <code class="docutils literal notranslate"><span class="pre">.agg()</span></code> in Pandas (and their functionality)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-series-aggregation-methods-and-properties">Other Series aggregation methods and properties</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-series-aggregation-methods-properties">📌 Pandas Series Aggregation Methods &amp; Properties</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#b-looping-aggregations-on-dataframe-object">B. Looping &amp; Aggregations on DataFrame Object</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-methods-with-axis-importance">📘 DataFrame Methods with Axis Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#axis-summary">🔑 Axis Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#np-select"><code class="docutils literal notranslate"><span class="pre">np.select()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-np-select">🔹 What is <code class="docutils literal notranslate"><span class="pre">np.select</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax">🔹 Syntax</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">🔹 How it works</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">🔑 Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-np-select-vs-np-where-vs-pd-cut-for-the-same-grading-problem">Compare <code class="docutils literal notranslate"><span class="pre">np.select</span></code> vs <code class="docutils literal notranslate"><span class="pre">np.where</span></code> vs <code class="docutils literal notranslate"><span class="pre">pd.cut</span></code> for the same grading problem.</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-syntax">🔹 General Syntax</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-by-parameter-explanation">🔹 Parameter-by-Parameter Explanation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#x">1. <strong><code class="docutils literal notranslate"><span class="pre">x</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bins">2. <strong><code class="docutils literal notranslate"><span class="pre">bins</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#labels">3. <strong><code class="docutils literal notranslate"><span class="pre">labels</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#right">4. <strong><code class="docutils literal notranslate"><span class="pre">right</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#include-lowest">5. <strong><code class="docutils literal notranslate"><span class="pre">include_lowest</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ordered">6. <strong><code class="docutils literal notranslate"><span class="pre">ordered</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#duplicates">7. <strong><code class="docutils literal notranslate"><span class="pre">duplicates</span></code></strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-for-example">🔹 Summary for Example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-apply-returning-series-demo">Pandas <code class="docutils literal notranslate"><span class="pre">.apply()</span></code> Returning Series Demo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-function-to-agg-in-pandas">Custom function to <code class="docutils literal notranslate"><span class="pre">.agg()</span></code> in Pandas</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-looping">C. Looping</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#df-items-was-iteritems-in-older-versions">1. <strong><code class="docutils literal notranslate"><span class="pre">df.items()</span></code></strong> (was <code class="docutils literal notranslate"><span class="pre">iteritems()</span></code> in older versions)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#df-iterrows">2. <strong><code class="docutils literal notranslate"><span class="pre">df.iterrows()</span></code></strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#df-itertuples">3. <strong><code class="docutils literal notranslate"><span class="pre">df.itertuples()</span></code></strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-comparison">⚡ Performance Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommendation">✅ Recommendation</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="aggregate-methods">
+<h1>Aggregate Methods<a class="headerlink" href="#aggregate-methods" title="Link to this heading">#</a></h1>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="a-aggregations-in-series-object">
+<h1>A. Aggregations in Series Object<a class="headerlink" href="#a-aggregations-in-series-object" title="Link to this heading">#</a></h1>
+<section id="agg">
+<h2><code class="docutils literal notranslate"><span class="pre">agg()</span></code><a class="headerlink" href="#agg" title="Link to this heading">#</a></h2>
+<section id="strings-accepted-by-agg-in-pandas-and-their-functionality">
+<h3>📌 Strings accepted by <code class="docutils literal notranslate"><span class="pre">.agg()</span></code> in Pandas (and their functionality)<a class="headerlink" href="#strings-accepted-by-agg-in-pandas-and-their-functionality" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>‘all’</strong></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if every value is truthy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘any’</strong></p></td>
+<td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if any value is truthy.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘autocorr’</strong></p></td>
+<td><p>Pearson correlation of series with a shifted version of itself. Default <code class="docutils literal notranslate"><span class="pre">lag=1</span></code>, but can override.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘corr’</strong></p></td>
+<td><p>Pearson correlation of series with another series. Need to specify <code class="docutils literal notranslate"><span class="pre">other</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘count’</strong></p></td>
+<td><p>Count of non-missing values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘cov’</strong></p></td>
+<td><p>Covariance of series with another series. Need to specify <code class="docutils literal notranslate"><span class="pre">other</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘dtype’ / ‘dtypes’</strong></p></td>
+<td><p>Data type of the series.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘empty’</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the series has no values.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘hasnans’</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if series contains missing values (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘idxmax’</strong></p></td>
+<td><p>Index label of the maximum value.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘idxmin’</strong></p></td>
+<td><p>Index label of the minimum value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘is_monotonic_decreasing’</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if values always decrease.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘is_monotonic_increasing’</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if values always increase.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘kurt’</strong></p></td>
+<td><p>Excess kurtosis (0 for normal distribution; &gt;0 → more outliers).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘max’</strong></p></td>
+<td><p>Maximum value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘mean’</strong></p></td>
+<td><p>Mean value.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘median’</strong></p></td>
+<td><p>Median value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘min’</strong></p></td>
+<td><p>Minimum value.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘nbytes’</strong></p></td>
+<td><p>Number of bytes of the series data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘ndim’</strong></p></td>
+<td><p>Number of dimensions (always <code class="docutils literal notranslate"><span class="pre">1</span></code> for a Series).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘nunique’</strong></p></td>
+<td><p>Number of unique values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘quantile’</strong></p></td>
+<td><p>Quantile value (defaults to median if no <code class="docutils literal notranslate"><span class="pre">q</span></code> specified).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘sem’</strong></p></td>
+<td><p>Standard error of the mean.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘size’</strong></p></td>
+<td><p>Size of the series (number of elements).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘skew’</strong></p></td>
+<td><p>Unbiased skewness (negative = left tail, positive = right tail).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>‘std’</strong></p></td>
+<td><p>Standard deviation.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>‘sum’</strong></p></td>
+<td><p>Sum of values.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span> <span class="c1"># import the libraries </span>
+ <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span> 
+ <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># import the libraries </span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pandas&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+
+<span class="c1"># Single aggregation</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">))</span>   <span class="c1"># 3.0</span>
+
+<span class="c1"># Multiple aggregations</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;nunique&#39;</span><span class="p">]))</span>
+<span class="c1"># sum        15.0</span>
+<span class="c1"># count       5.0</span>
+<span class="c1"># nunique     5.0</span>
+
+<span class="c1"># With parameters (quantile)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s1">&#39;quantile&#39;</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.75</span><span class="p">))</span>   <span class="c1"># 4.0</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.0
+sum        15.0
+count       5.0
+nunique     5.0
+dtype: float64
+4.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample Series</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Series:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Apply all aggregations</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;all:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">))</span>  <span class="c1"># all values truthy?</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;any:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;any&quot;</span><span class="p">))</span>  <span class="c1"># any value truthy?</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;autocorr:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;autocorr&quot;</span><span class="p">,</span> <span class="n">lag</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># autocorrelation with lag=1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;corr:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;corr&quot;</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])))</span>  <span class="c1"># correlation with another series</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;count:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">))</span>  <span class="c1"># count non-missing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cov:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;cov&quot;</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">])))</span>  <span class="c1"># covariance with another series</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dtype:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;dtype&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dtypes:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;dtypes&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;empty:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;empty&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hasnans:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;hasnans&quot;</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idxmax:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;idxmax&quot;</span><span class="p">))</span>  <span class="c1"># index of max value</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;idxmin:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;idxmin&quot;</span><span class="p">))</span>  <span class="c1"># index of min value</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is_monotonic_increasing:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;is_monotonic_increasing&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is_monotonic_decreasing:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;is_monotonic_decreasing&quot;</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;kurt:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;kurt&quot;</span><span class="p">))</span>  <span class="c1"># kurtosis</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;max:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;median:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;median&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;min:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nbytes:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;nbytes&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ndim:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;ndim&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nunique:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;nunique&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;quantile (0.25):&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;quantile&quot;</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.25</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sem:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;sem&quot;</span><span class="p">))</span>  <span class="c1"># standard error</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;size:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;skew:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;skew&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;std:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;std&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sum:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Series:
+0    1.0
+1    2.0
+2    3.0
+3    4.0
+4    5.0
+5    NaN
+dtype: float64
+--------------------------------------------------
+all: True
+any: True
+autocorr: 1.0
+corr: 0.0
+count: 5
+cov: 5.0
+dtype: float64
+dtypes: float64
+empty: False
+hasnans: True
+idxmax: 4
+idxmin: 0
+is_monotonic_increasing: False
+is_monotonic_decreasing: False
+kurt: -1.2000000000000002
+max: 5.0
+mean: 3.0
+median: 3.0
+min: 1.0
+nbytes: 48
+ndim: 1
+nunique: 5
+quantile (0.25): 2.0
+sem: 0.7071067811865476
+size: 6
+skew: 0.0
+std: 1.5811388300841898
+sum: 15.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="other-series-aggregation-methods-and-properties">
+<h2>Other Series aggregation methods and properties<a class="headerlink" href="#other-series-aggregation-methods-and-properties" title="Link to this heading">#</a></h2>
+<p>Let us now list <strong>Series aggregation methods and properties</strong> (the direct method calls like <code class="docutils literal notranslate"><span class="pre">s.mean()</span></code> and properties like <code class="docutils literal notranslate"><span class="pre">s.size</span></code>) — these are the more explicit equivalents of what you were doing earlier with <code class="docutils literal notranslate"><span class="pre">.agg(&quot;mean&quot;)</span></code>.</p>
+<p>Let me turn this into a well-organized reference table and then give you a code demo that uses all of them.</p>
+<section id="pandas-series-aggregation-methods-properties">
+<h3>📌 Pandas Series Aggregation Methods &amp; Properties<a class="headerlink" href="#pandas-series-aggregation-methods-properties" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method / Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.agg(func=None,</span> <span class="pre">axis=0,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code></p></td>
+<td><p>Applies one or multiple aggregation functions. Returns scalar for single func, Series for list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.all(axis=0,</span> <span class="pre">bool_only=None,</span> <span class="pre">skipna=True,</span> <span class="pre">level=None)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if <strong>every value</strong> is truthy.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.any(axis=0,</span> <span class="pre">bool_only=None,</span> <span class="pre">skipna=True,</span> <span class="pre">level=None)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if <strong>at least one value</strong> is truthy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.autocorr(lag=1)</span></code></p></td>
+<td><p>Pearson correlation between <code class="docutils literal notranslate"><span class="pre">s</span></code> and shifted <code class="docutils literal notranslate"><span class="pre">s</span></code> with lag.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.corr(other,</span> <span class="pre">method='pearson')</span></code></p></td>
+<td><p>Correlation with another Series (<code class="docutils literal notranslate"><span class="pre">pearson</span></code>, <code class="docutils literal notranslate"><span class="pre">spearman</span></code>, <code class="docutils literal notranslate"><span class="pre">kendall</span></code>, or callable).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.cov(other,</span> <span class="pre">min_periods=None)</span></code></p></td>
+<td><p>Covariance with another Series.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.max(...)</span></code></p></td>
+<td><p>Maximum value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.min(...)</span></code></p></td>
+<td><p>Minimum value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.mean(...)</span></code></p></td>
+<td><p>Mean value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.median(...)</span></code></p></td>
+<td><p>Median value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.prod(...)</span></code></p></td>
+<td><p>Product of values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.quantile(q=0.5,</span> <span class="pre">interpolation='linear')</span></code></p></td>
+<td><p>Quantile (default = median).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.sem(...)</span></code></p></td>
+<td><p>Standard error of mean.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.std(...)</span></code></p></td>
+<td><p>Standard deviation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.var(...)</span></code></p></td>
+<td><p>Variance.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.skew(...)</span></code></p></td>
+<td><p>Skewness.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.kurtosis(...)</span></code> (alias <code class="docutils literal notranslate"><span class="pre">s.kurt</span></code>)</p></td>
+<td><p>Kurtosis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.nunique(dropna=True)</span></code></p></td>
+<td><p>Count of unique items.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.count(...)</span></code></p></td>
+<td><p>Count of non-missing values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.size</span></code> (property)</p></td>
+<td><p>Number of items (including NaNs).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.is_unique</span></code> (property)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if all values are unique.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s.is_monotonic_increasing</span></code> (property)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if values are strictly non-decreasing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s.is_monotonic_decreasing</span></code> (property)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if values are strictly non-increasing.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample Series</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Series:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Using .agg directly</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;agg (mean):&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;agg ([&#39;min&#39;,&#39;max&#39;]):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Boolean checks</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;all:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;any:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
+
+<span class="c1"># Correlations &amp; covariance</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;autocorr:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">autocorr</span><span class="p">(</span><span class="n">lag</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;corr (with [1,2,3,4,5,6]):&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cov (with [2,4,6,8,10,12]):&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">])))</span>
+
+<span class="c1"># Basic stats</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;max:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;min:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;median:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;prod:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;quantile (0.75):&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sem:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">sem</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;std:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;var:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">var</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;skew:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">skew</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;kurtosis:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">())</span>
+
+<span class="c1"># Counts</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nunique:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">nunique</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;count (non-missing):&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;size (all incl NaN):&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># Properties</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is_unique:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">is_unique</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is_monotonic_increasing:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">is_monotonic_increasing</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;is_monotonic_decreasing:&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">is_monotonic_decreasing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Series:
+0    1.0
+1    2.0
+2    3.0
+3    4.0
+4    5.0
+5    NaN
+dtype: float64
+--------------------------------------------------
+agg (mean): 3.0
+agg ([&#39;min&#39;,&#39;max&#39;]):
+min    1.0
+max    5.0
+dtype: float64
+--------------------------------------------------
+all: True
+any: True
+autocorr: 1.0
+corr (with [1,2,3,4,5,6]): 0.9999999999999999
+cov (with [2,4,6,8,10,12]): 5.0
+max: 5.0
+min: 1.0
+mean: 3.0
+median: 3.0
+prod: 120.0
+quantile (0.75): 4.0
+sem: 0.7071067811865476
+std: 1.5811388300841898
+var: 2.5
+skew: 0.0
+kurtosis: -1.2000000000000002
+nunique: 5
+count (non-missing): 5
+size (all incl NaN): 6
+is_unique: True
+is_monotonic_increasing: False
+is_monotonic_decreasing: False
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="b-looping-aggregations-on-dataframe-object">
+<h1>B. Looping &amp; Aggregations on DataFrame Object<a class="headerlink" href="#b-looping-aggregations-on-dataframe-object" title="Link to this heading">#</a></h1>
+<section id="dataframe-methods-with-axis-importance">
+<h2>📘 DataFrame Methods with Axis Importance<a class="headerlink" href="#dataframe-methods-with-axis-importance" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Axis Importance</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">items()</span></code></strong></p></td>
+<td><p>Iterates over <strong>(column_name, Series)</strong> pairs.</p></td>
+<td><p>No axis (always column-wise).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><code class="docutils literal notranslate"><span class="pre">iterrows()</span></code></strong></p></td>
+<td><p>Iterates over <strong>(index, Series)</strong> pairs (row-wise). Type info not preserved.</p></td>
+<td><p>No axis (always row-wise).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">itertuples(index=True,</span> <span class="pre">name=&quot;Pandas&quot;)</span></code></strong></p></td>
+<td><p>Iterates over rows as <strong>namedtuples</strong>. Faster than <code class="docutils literal notranslate"><span class="pre">iterrows</span></code>.</p></td>
+<td><p>No axis (always row-wise).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><code class="docutils literal notranslate"><span class="pre">sum(axis=0,</span> <span class="pre">skipna=True,</span> <span class="pre">level=None,</span> <span class="pre">numeric_only=None,</span> <span class="pre">min_count=0)</span></code></strong></p></td>
+<td><p>Returns sum.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">axis=0</span></code> → sum <strong>down columns</strong> (per column, across rows). <br> <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> → sum <strong>across rows</strong> (per row, across columns).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">min(axis=0,</span> <span class="pre">…)</span></code></strong></p></td>
+<td><p>Minimum value.</p></td>
+<td><p>Same axis rule: <code class="docutils literal notranslate"><span class="pre">axis=0</span></code> → per column, <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> → per row.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><code class="docutils literal notranslate"><span class="pre">max(axis=0,</span> <span class="pre">…)</span></code></strong></p></td>
+<td><p>Maximum value.</p></td>
+<td><p>Same as above.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">idxmin(axis=0,</span> <span class="pre">…)</span></code></strong></p></td>
+<td><p>Index (row/col label) of the <strong>first minimum</strong>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">axis=0</span></code> → row label of min in each column. <br> <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> → column label of min in each row.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><code class="docutils literal notranslate"><span class="pre">idxmax(axis=0,</span> <span class="pre">…)</span></code></strong></p></td>
+<td><p>Index of the <strong>first maximum</strong>.</p></td>
+<td><p>Same as above.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">agg(func=None,</span> <span class="pre">axis=0,</span> <span class="pre">…)</span></code></strong></p></td>
+<td><p>Aggregate using function(s). Supports string, list, dict.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">axis=0</span></code> → aggregate each column. <br> <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> → aggregate each row.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><code class="docutils literal notranslate"><span class="pre">describe(percentiles=[.25,.5,.75],</span> <span class="pre">…)</span></code></strong></p></td>
+<td><p>Summary statistics of DataFrame.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">axis=0</span></code> (default) → stats per column.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">apply(func=None,</span> <span class="pre">axis=0,</span> <span class="pre">…)</span></code></strong></p></td>
+<td><p>Apply custom function.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">axis=0</span></code> → function applied <strong>column-wise</strong> (each column is a Series). <br> <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> → function applied <strong>row-wise</strong> (each row is a Series).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong><code class="docutils literal notranslate"><span class="pre">np.select(condlist,</span> <span class="pre">choicelist,</span> <span class="pre">default=0)</span></code></strong></p></td>
+<td><p>Simulates an <strong>if-else</strong> chain.</p></td>
+<td><p>Axis doesn’t apply – operates on boolean conditions you pass.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="axis-summary">
+<h2>🔑 Axis Summary<a class="headerlink" href="#axis-summary" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">axis=0</span></code> → operate down columns (each function applied column-wise).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">axis=1</span></code> → operate across rows (each function applied row-wise).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;row1&quot;</span><span class="p">,</span> <span class="s2">&quot;row2&quot;</span><span class="p">,</span> <span class="s2">&quot;row3&quot;</span><span class="p">,</span> <span class="s2">&quot;row4&quot;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 1. Iteration methods</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- Iteration Methods ----&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">col_name</span><span class="p">,</span> <span class="n">col_data</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;items → Column: </span><span class="si">{</span><span class="n">col_name</span><span class="si">}</span><span class="s2">, Values:</span><span class="se">\n</span><span class="si">{</span><span class="n">col_data</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">col_data</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="c1"># Extracting the data of each column as an array</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;iterrows → Index: </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">, Row:</span><span class="se">\n</span><span class="si">{</span><span class="n">row</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
+    <span class="c1"># faster than iterrows()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;itertuples →&quot;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="c1"># Extracting the rows as tuples </span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># 2. Aggregations with axis</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- Sum ----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum over columns (axis=0):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>   <span class="c1"># per column</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum over rows (axis=1):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># per row</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- Min ----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Min over columns (axis=0):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Min over rows (axis=1):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- Max ----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max over columns (axis=0):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max over rows (axis=1):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- idxmin ----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index of min per column:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">idxmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Column of min per row:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">idxmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- idxmax ----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index of max per column:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Column of max per row:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. agg with different functions</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- Aggregate ----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean and Sum per column:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean and Sum per row:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 4. Describe</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- Describe ----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Describe:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">(),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 5. Apply custom function</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- Apply ----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Apply column-wise (mean of each col):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Apply row-wise (sum of each row):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 6. np.select (simulate if-else)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- np.select ----&quot;</span><span class="p">)</span>
+<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3</span>
+<span class="p">]</span>
+<span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Less than 2&quot;</span><span class="p">,</span> <span class="s2">&quot;Greater than 3&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;A_category&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Between 2 and 3&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+       A   B    C
+row1  1  10  100
+row2  2  20  200
+row3  3  30  300
+row4  4  40  400 
+
+---- Iteration Methods ----
+items → Column: A, Values:
+row1    1
+row2    2
+row3    3
+row4    4
+Name: A, dtype: int64
+
+[1 2 3 4]
+items → Column: B, Values:
+row1    10
+row2    20
+row3    30
+row4    40
+Name: B, dtype: int64
+
+[10 20 30 40]
+items → Column: C, Values:
+row1    100
+row2    200
+row3    300
+row4    400
+Name: C, dtype: int64
+
+[100 200 300 400]
+iterrows → Index: row1, Row:
+A      1
+B     10
+C    100
+Name: row1, dtype: int64
+
+iterrows → Index: row2, Row:
+A      2
+B     20
+C    200
+Name: row2, dtype: int64
+
+iterrows → Index: row3, Row:
+A      3
+B     30
+C    300
+Name: row3, dtype: int64
+
+iterrows → Index: row4, Row:
+A      4
+B     40
+C    400
+Name: row4, dtype: int64
+
+itertuples → Pandas(Index=&#39;row1&#39;, A=1, B=10, C=100)
+(1, 10, 100)
+itertuples → Pandas(Index=&#39;row2&#39;, A=2, B=20, C=200)
+(2, 20, 200)
+itertuples → Pandas(Index=&#39;row3&#39;, A=3, B=30, C=300)
+(3, 30, 300)
+itertuples → Pandas(Index=&#39;row4&#39;, A=4, B=40, C=400)
+(4, 40, 400)
+
+---- Sum ----
+Sum over columns (axis=0):
+ A      10
+B     100
+C    1000
+dtype: int64
+Sum over rows (axis=1):
+ row1    111
+row2    222
+row3    333
+row4    444
+dtype: int64 
+
+---- Min ----
+Min over columns (axis=0):
+ A      1
+B     10
+C    100
+dtype: int64
+Min over rows (axis=1):
+ row1    1
+row2    2
+row3    3
+row4    4
+dtype: int64 
+
+---- Max ----
+Max over columns (axis=0):
+ A      4
+B     40
+C    400
+dtype: int64
+Max over rows (axis=1):
+ row1    100
+row2    200
+row3    300
+row4    400
+dtype: int64 
+
+---- idxmin ----
+Index of min per column:
+ A    row1
+B    row1
+C    row1
+dtype: object
+Column of min per row:
+ row1    A
+row2    A
+row3    A
+row4    A
+dtype: object 
+
+---- idxmax ----
+Index of max per column:
+ A    row4
+B    row4
+C    row4
+dtype: object
+Column of max per row:
+ row1    C
+row2    C
+row3    C
+row4    C
+dtype: object 
+
+---- Aggregate ----
+Mean and Sum per column:
+          A      B       C
+mean   2.5   25.0   250.0
+sum   10.0  100.0  1000.0 
+
+Mean and Sum per row:
+        mean    sum
+row1   37.0  111.0
+row2   74.0  222.0
+row3  111.0  333.0
+row4  148.0  444.0 
+
+---- Describe ----
+Describe:
+               A          B           C
+count  4.000000   4.000000    4.000000
+mean   2.500000  25.000000  250.000000
+std    1.290994  12.909944  129.099445
+min    1.000000  10.000000  100.000000
+25%    1.750000  17.500000  175.000000
+50%    2.500000  25.000000  250.000000
+75%    3.250000  32.500000  325.000000
+max    4.000000  40.000000  400.000000 
+
+---- Apply ----
+Apply column-wise (mean of each col):
+ A      2.5
+B     25.0
+C    250.0
+dtype: float64 
+
+Apply row-wise (sum of each row):
+ row1    111
+row2    222
+row3    333
+row4    444
+dtype: int64 
+
+---- np.select ----
+      A   B    C       A_category
+row1  1  10  100      Less than 2
+row2  2  20  200  Between 2 and 3
+row3  3  30  300  Between 2 and 3
+row4  4  40  400   Greater than 3 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="np-select">
+<h2><code class="docutils literal notranslate"><span class="pre">np.select()</span></code><a class="headerlink" href="#np-select" title="Link to this heading">#</a></h2>
+<p>Let us take some more examples to understand how <code class="docutils literal notranslate"><span class="pre">np.select</span></code> behaves!</p>
+<section id="what-is-np-select">
+<h3>🔹 What is <code class="docutils literal notranslate"><span class="pre">np.select</span></code>?<a class="headerlink" href="#what-is-np-select" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">numpy.select</span></code> is a function that lets you <strong>apply multiple conditions</strong> on an array and choose <strong>different outputs</strong> depending on which condition is satisfied.
+Think of it as a <strong>vectorized if-elif-else</strong> for NumPy arrays.</p>
+</section>
+<section id="syntax">
+<h3>🔹 Syntax<a class="headerlink" href="#syntax" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">condlist</span><span class="p">,</span> <span class="n">choicelist</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">condlist</span></code></strong> → list of boolean arrays (conditions).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">choicelist</span></code></strong> → list of results, same length as <code class="docutils literal notranslate"><span class="pre">condlist</span></code>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">default</span></code></strong> → value used when no condition is satisfied (optional, default = 0).</p></li>
+</ul>
+</section>
+<section id="how-it-works">
+<h3>🔹 How it works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>It checks each condition in <code class="docutils literal notranslate"><span class="pre">condlist</span></code> <strong>in order</strong>.</p></li>
+<li><p>When a condition is <code class="docutils literal notranslate"><span class="pre">True</span></code>, it assigns the corresponding value from <code class="docutils literal notranslate"><span class="pre">choicelist</span></code>.</p></li>
+<li><p>If multiple conditions are <code class="docutils literal notranslate"><span class="pre">True</span></code>, it picks the <strong>first match</strong>.</p></li>
+<li><p>If no condition is <code class="docutils literal notranslate"><span class="pre">True</span></code>, it assigns <code class="docutils literal notranslate"><span class="pre">default</span></code>.</p></li>
+</ul>
+</section>
+<section id="key-takeaways">
+<h3>🔑 Key Takeaways<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.select</span></code> = vectorized <strong>if-elif-else</strong> for arrays.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">condlist</span></code> = list of boolean masks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">choicelist</span></code> = values assigned for each condition.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default</span></code> = fallback if no condition matches.</p></li>
+<li><p>Always evaluated <strong>in order</strong> → first <code class="docutils literal notranslate"><span class="pre">True</span></code> wins.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># GRADING SYSTEM</span>
+
+<span class="n">marks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">95</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+
+<span class="c1"># Define conditions</span>
+<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">marks</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">,</span>
+    <span class="n">marks</span> <span class="o">&gt;=</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="n">marks</span> <span class="o">&gt;=</span> <span class="mi">40</span>
+<span class="p">]</span>
+
+<span class="c1"># Define choices</span>
+<span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+
+<span class="n">grades</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">grades</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;A&#39; &#39;B&#39; &#39;C&#39; &#39;B&#39; &#39;F&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="s2">&quot;David&quot;</span><span class="p">,</span> <span class="s2">&quot;Eva&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;Score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DF:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Define conditions on df[&quot;Score&quot;]</span>
+<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">40</span>
+<span class="p">]</span>
+
+<span class="c1"># Define choices</span>
+<span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+
+<span class="c1"># Apply np.select</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Grade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With Grades:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original DF:
+       Name  Score
+0    Alice     95
+1      Bob     67
+2  Charlie     45
+3    David     80
+4      Eva     30 
+
+With Grades:
+       Name  Score Grade
+0    Alice     95     A
+1      Bob     67     B
+2  Charlie     45     C
+3    David     80     B
+4      Eva     30     F
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># MULTIPLE NUMERIC OUTPUTS</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span>   <span class="c1"># even</span>
+    <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span>    <span class="c1"># odd</span>
+<span class="p">]</span>
+
+<span class="n">choices</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>   <span class="c1"># square if even</span>
+    <span class="n">x</span><span class="o">**</span><span class="mi">3</span>    <span class="c1"># cube if odd</span>
+<span class="p">]</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[  1   4  27  16 125]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="compare-np-select-vs-np-where-vs-pd-cut-for-the-same-grading-problem">
+<h2>Compare <code class="docutils literal notranslate"><span class="pre">np.select</span></code> vs <code class="docutils literal notranslate"><span class="pre">np.where</span></code> vs <code class="docutils literal notranslate"><span class="pre">pd.cut</span></code> for the same grading problem.<a class="headerlink" href="#compare-np-select-vs-np-where-vs-pd-cut-for-the-same-grading-problem" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="s2">&quot;David&quot;</span><span class="p">,</span> <span class="s2">&quot;Eva&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;Score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">95</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DF:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original DF:
+       Name  Score
+0    Alice     95
+1      Bob     67
+2  Charlie     45
+3    David     80
+4      Eva     30 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># using np.select </span>
+<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">60</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">40</span>
+<span class="p">]</span>
+<span class="n">choices</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Grade_select&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Name</th>
+      <th>Score</th>
+      <th>Grade_select</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Alice</td>
+      <td>95</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bob</td>
+      <td>67</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Charlie</td>
+      <td>45</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>David</td>
+      <td>80</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Eva</td>
+      <td>30</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ul class="simple">
+<li><p>✅ Pros: Clean, readable for multiple conditions.</p></li>
+<li><p>❌ Cons: Slightly verbose compared to pd.cut.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Grade_where&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> 
+    <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">60</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
+             <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">40</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">)</span>
+             <span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Name</th>
+      <th>Score</th>
+      <th>Grade_select</th>
+      <th>Grade_where</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Alice</td>
+      <td>95</td>
+      <td>A</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bob</td>
+      <td>67</td>
+      <td>B</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Charlie</td>
+      <td>45</td>
+      <td>C</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>David</td>
+      <td>80</td>
+      <td>B</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Eva</td>
+      <td>30</td>
+      <td>F</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ul class="simple">
+<li><p>✅ Pros: Simple if only 2–3 conditions.</p></li>
+<li><p>❌ Cons: Gets messy with many nested conditions (harder to read).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>      <span class="c1"># boundaries</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]</span>    <span class="c1"># labels for bins</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Grade_cut&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Name</th>
+      <th>Score</th>
+      <th>Grade_select</th>
+      <th>Grade_where</th>
+      <th>Grade_cut</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Alice</td>
+      <td>95</td>
+      <td>A</td>
+      <td>A</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bob</td>
+      <td>67</td>
+      <td>B</td>
+      <td>B</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Charlie</td>
+      <td>45</td>
+      <td>C</td>
+      <td>C</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>David</td>
+      <td>80</td>
+      <td>B</td>
+      <td>B</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Eva</td>
+      <td>30</td>
+      <td>F</td>
+      <td>F</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ul class="simple">
+<li><p>✅ Pros: Super clean for continuous ranges.</p></li>
+<li><p>❌ Cons: Less flexible if conditions are not numeric ranges (e.g., mixing categories with numbers).</p></li>
+</ul>
+<p>Let us take this opportunity to understand hor <strong>BINNING</strong> works in <code class="docutils literal notranslate"><span class="pre">pd.cut</span></code></p>
+<p>👍 — let’s break down the <strong>syntax of <code class="docutils literal notranslate"><span class="pre">pd.cut</span></code></strong> using our example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Grade_cut&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="general-syntax">
+<h3>🔹 General Syntax<a class="headerlink" href="#general-syntax" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>             <span class="c1"># the data to bin (Series, array, or list)</span>
+    <span class="n">bins</span><span class="p">,</span>          <span class="c1"># how to split into intervals</span>
+    <span class="n">right</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>    <span class="c1"># whether intervals include the right endpoint</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>   <span class="c1"># assign custom labels instead of interval objects</span>
+    <span class="n">include_lowest</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># whether the first interval should be left-inclusive</span>
+    <span class="n">duplicates</span><span class="o">=</span><span class="s2">&quot;raise&quot;</span><span class="p">,</span>    <span class="c1"># how to handle duplicate bin edges</span>
+    <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span>           <span class="c1"># whether labels are ordered categories</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="parameter-by-parameter-explanation">
+<h3>🔹 Parameter-by-Parameter Explanation<a class="headerlink" href="#parameter-by-parameter-explanation" title="Link to this heading">#</a></h3>
+<section id="x">
+<h4>1. <strong><code class="docutils literal notranslate"><span class="pre">x</span></code></strong><a class="headerlink" href="#x" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>The data you want to <strong>bin</strong>.</p></li>
+<li><p>Here → <code class="docutils literal notranslate"><span class="pre">df[&quot;Score&quot;]</span></code> is the column of numbers (0–100).</p></li>
+</ul>
+</section>
+<section id="bins">
+<h4>2. <strong><code class="docutils literal notranslate"><span class="pre">bins</span></code></strong><a class="headerlink" href="#bins" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Defines the boundaries of the bins (intervals).</p></li>
+<li><p>You can pass:</p>
+<ul>
+<li><p><strong>list of edges</strong> → <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">40,</span> <span class="pre">60,</span> <span class="pre">90,</span> <span class="pre">100]</span></code> → makes intervals:
+<code class="docutils literal notranslate"><span class="pre">[0,40),</span> <span class="pre">[40,60),</span> <span class="pre">[60,90),</span> <span class="pre">[90,100]</span></code></p></li>
+<li><p><strong>integer</strong> → e.g., <code class="docutils literal notranslate"><span class="pre">bins=4</span></code> → pandas automatically splits the range of values into 4 equal-width bins.</p></li>
+</ul>
+</li>
+</ul>
+<p>Here → <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">40,</span> <span class="pre">60,</span> <span class="pre">90,</span> <span class="pre">100]</span></code> defines <strong>custom cut points</strong>.</p>
+</section>
+<section id="labels">
+<h4>3. <strong><code class="docutils literal notranslate"><span class="pre">labels</span></code></strong><a class="headerlink" href="#labels" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Labels assigned to each bin instead of showing interval ranges.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">None</span></code> → bins will be shown like <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">40]</span></code>, <code class="docutils literal notranslate"><span class="pre">(40,</span> <span class="pre">60]</span></code>, etc.</p></li>
+<li><p>If a list → must have same length as <code class="docutils literal notranslate"><span class="pre">len(bins)</span> <span class="pre">-</span> <span class="pre">1</span></code>.</p></li>
+<li><p>Here → <code class="docutils literal notranslate"><span class="pre">[&quot;F&quot;,</span> <span class="pre">&quot;C&quot;,</span> <span class="pre">&quot;B&quot;,</span> <span class="pre">&quot;A&quot;]</span></code> → directly map bins to grades.</p></li>
+</ul>
+</section>
+<section id="right">
+<h4>4. <strong><code class="docutils literal notranslate"><span class="pre">right</span></code></strong><a class="headerlink" href="#right" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Controls <strong>interval closure</strong>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">right=True</span></code> (default): intervals are <strong>right-inclusive</strong> → <code class="docutils literal notranslate"><span class="pre">(a,</span> <span class="pre">b]</span></code></p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">right=False</span></code>: intervals are <strong>left-inclusive</strong> → <code class="docutils literal notranslate"><span class="pre">[a,</span> <span class="pre">b)</span></code></p></li>
+</ul>
+<p>Here → <code class="docutils literal notranslate"><span class="pre">right=False</span></code>, so bins are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[0,40)</span> <span class="pre">→</span> <span class="pre">F</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[40,60)</span> <span class="pre">→</span> <span class="pre">C</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[60,90)</span> <span class="pre">→</span> <span class="pre">B</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[90,100)</span> <span class="pre">→</span> <span class="pre">A</span></code></p></li>
+</ul>
+</section>
+<section id="include-lowest">
+<h4>5. <strong><code class="docutils literal notranslate"><span class="pre">include_lowest</span></code></strong><a class="headerlink" href="#include-lowest" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Whether to include the <strong>lowest value</strong> in the first bin.</p></li>
+<li><p>Useful if min value equals left boundary.</p></li>
+</ul>
+<p>E.g., if <code class="docutils literal notranslate"><span class="pre">Score=0</span></code>, setting <code class="docutils literal notranslate"><span class="pre">include_lowest=True</span></code> makes sure it goes into the first bin <code class="docutils literal notranslate"><span class="pre">[0,40)</span></code>.</p>
+</section>
+<section id="ordered">
+<h4>6. <strong><code class="docutils literal notranslate"><span class="pre">ordered</span></code></strong><a class="headerlink" href="#ordered" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">labels</span></code> are categorical, this decides if they are treated as <strong>ordered categories</strong>.</p></li>
+<li><p>Example: Grades <code class="docutils literal notranslate"><span class="pre">[&quot;F&quot;,</span> <span class="pre">&quot;C&quot;,</span> <span class="pre">&quot;B&quot;,</span> <span class="pre">&quot;A&quot;]</span></code> are naturally ordered, so keeping <code class="docutils literal notranslate"><span class="pre">ordered=True</span></code> (default) is helpful for sorting.</p></li>
+</ul>
+</section>
+<section id="duplicates">
+<h4>7. <strong><code class="docutils literal notranslate"><span class="pre">duplicates</span></code></strong><a class="headerlink" href="#duplicates" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>If bin edges are repeated, it throws an error by default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">duplicates=&quot;drop&quot;</span></code> → drops duplicate bin edges silently.</p></li>
+</ul>
+</section>
+</section>
+<section id="summary-for-example">
+<h3>🔹 Summary for Example<a class="headerlink" href="#summary-for-example" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Grade_cut&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Score&quot;</span><span class="p">],</span>                  <span class="c1"># data column</span>
+    <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>    <span class="c1"># custom bin edges</span>
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">],</span>  <span class="c1"># grade labels</span>
+    <span class="n">right</span><span class="o">=</span><span class="kc">False</span>                   <span class="c1"># intervals are left-inclusive</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This means:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[0,40)</span> <span class="pre">→</span> <span class="pre">F</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[40,60)</span> <span class="pre">→</span> <span class="pre">C</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[60,90)</span> <span class="pre">→</span> <span class="pre">B</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[90,100)</span> <span class="pre">→</span> <span class="pre">A</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="pandas-apply-returning-series-demo">
+<h2>Pandas <code class="docutils literal notranslate"><span class="pre">.apply()</span></code> Returning Series Demo<a class="headerlink" href="#pandas-apply-returning-series-demo" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;row1&quot;</span><span class="p">,</span> <span class="s2">&quot;row2&quot;</span><span class="p">,</span> <span class="s2">&quot;row3&quot;</span><span class="p">,</span> <span class="s2">&quot;row4&quot;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ---- Normal apply examples ----</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Column-wise mean (axis=0):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Row-wise sum (axis=1):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># ---- Special Case: Apply returning a Series ----</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Apply with lambda returning Series (expands to new columns):</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">row_stats</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return multiple values for each row as a Series.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span>
+        <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+        <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+        <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="p">})</span>
+
+<span class="n">expanded</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">row_stats</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">expanded</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+       A   B    C
+row1  1  10  100
+row2  2  20  200
+row3  3  30  300
+row4  4  40  400 
+
+Column-wise mean (axis=0):
+ A      2.5
+B     25.0
+C    250.0
+dtype: float64 
+
+Row-wise sum (axis=1):
+ row1    111
+row2    222
+row3    333
+row4    444
+dtype: int64 
+
+Apply with lambda returning Series (expands to new columns):
+
+        sum   mean    max
+row1  111.0   37.0  100.0
+row2  222.0   74.0  200.0
+row3  333.0  111.0  300.0
+row4  444.0  148.0  400.0 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="custom-function-to-agg-in-pandas">
+<h2>Custom function to <code class="docutils literal notranslate"><span class="pre">.agg()</span></code> in Pandas<a class="headerlink" href="#custom-function-to-agg-in-pandas" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custome functions to a series </span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># Custom function: range = max - min</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_range</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">my_range</span><span class="p">))</span>   <span class="c1"># → 4</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custome functions to a df</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">400</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="c1"># Apply custom range function to each column</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">my_range</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A      3
+B     30
+C    300
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multiple functions all at once</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">,</span> <span class="n">my_range</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                 A          B           C
+mean      2.500000  25.000000  250.000000
+std       1.290994  12.909944  129.099445
+my_range  3.000000  30.000000  300.000000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Column-specific functions with a dict</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">my_range</span><span class="p">,</span>
+    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="p">}))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             A     B         C
+sum       10.0   NaN       NaN
+mean       2.5   NaN       NaN
+my_range   NaN  30.0       NaN
+&lt;lambda&gt;   NaN   NaN  300000.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="c-looping">
+<h1>C. Looping<a class="headerlink" href="#c-looping" title="Link to this heading">#</a></h1>
+<p>We have already looked at the methods that help in looping in a dataframe. In this section we’ll have a more detailed look at Looping.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dataframe </span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>10</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>20</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>30</td>
+      <td>300</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>40</td>
+      <td>400</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="df-items-was-iteritems-in-older-versions">
+<h2>1. <strong><code class="docutils literal notranslate"><span class="pre">df.items()</span></code></strong> (was <code class="docutils literal notranslate"><span class="pre">iteritems()</span></code> in older versions)<a class="headerlink" href="#df-items-was-iteritems-in-older-versions" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>What it does:</strong> Iterates over <strong>columns</strong>.</p></li>
+<li><p><strong>Returns:</strong> <code class="docutils literal notranslate"><span class="pre">(column_name,</span> <span class="pre">column_series)</span></code> for each column.</p></li>
+<li><p><strong>Use when:</strong> You need to process columns one at a time.</p></li>
+</ul>
+</section>
+<section id="df-iterrows">
+<h2>2. <strong><code class="docutils literal notranslate"><span class="pre">df.iterrows()</span></code></strong><a class="headerlink" href="#df-iterrows" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>What it does:</strong> Iterates over <strong>rows</strong>.</p></li>
+<li><p><strong>Returns:</strong> <code class="docutils literal notranslate"><span class="pre">(index,</span> <span class="pre">row_series)</span></code> for each row.</p></li>
+<li><p><strong>Use when:</strong> You need labels and row-wise access (though slower).</p></li>
+<li><p><strong>Drawback:</strong> Each row is a <strong>Series</strong> — not efficient for large DataFrames.</p></li>
+</ul>
+</section>
+<section id="df-itertuples">
+<h2>3. <strong><code class="docutils literal notranslate"><span class="pre">df.itertuples()</span></code></strong><a class="headerlink" href="#df-itertuples" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>What it does:</strong> Iterates over <strong>rows as namedtuples</strong>.</p></li>
+<li><p><strong>Returns:</strong> One <strong>namedtuple</strong> per row.</p></li>
+<li><p><strong>Use when:</strong> You want row-wise access <strong>faster</strong> than <code class="docutils literal notranslate"><span class="pre">iterrows()</span></code>.</p></li>
+</ul>
+</section>
+<section id="performance-comparison">
+<h2>⚡ Performance Comparison<a class="headerlink" href="#performance-comparison" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Iterates Over</p></th>
+<th class="head"><p>Returns</p></th>
+<th class="head"><p>Speed</p></th>
+<th class="head"><p>Best Use Case</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">items()</span></code></p></td>
+<td><p>Columns</p></td>
+<td><p>col name + Series</p></td>
+<td><p>Fastest</p></td>
+<td><p>Processing or transforming columns</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">iterrows()</span></code></p></td>
+<td><p>Rows</p></td>
+<td><p>index + Series</p></td>
+<td><p>Slow</p></td>
+<td><p>Easy-to-read but inefficient row access</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">itertuples()</span></code></p></td>
+<td><p>Rows</p></td>
+<td><p>namedtuple</p></td>
+<td><p>Fast</p></td>
+<td><p>Efficient row-wise operations</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="recommendation">
+<h2>✅ Recommendation<a class="headerlink" href="#recommendation" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use <strong><code class="docutils literal notranslate"><span class="pre">items()</span></code></strong> for column-wise logic.</p></li>
+<li><p>Use <strong><code class="docutils literal notranslate"><span class="pre">itertuples()</span></code></strong> if you must iterate over rows.</p></li>
+<li><p>Avoid <code class="docutils literal notranslate"><span class="pre">iterrows()</span></code> in performance-critical code.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">col_data</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">col_data</span><span class="o">.</span><span class="n">values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A : [1 2 3 4]
+B : [10 20 30 40]
+C : [100 200 300 400]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">Index</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0: (1, 10, 100)
+1: (2, 20, 200)
+2: (3, 30, 300)
+3: (4, 40, 400)
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./pandas"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Aggregate Methods</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#a-aggregations-in-series-object">A. Aggregations in Series Object</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agg"><code class="docutils literal notranslate"><span class="pre">agg()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#strings-accepted-by-agg-in-pandas-and-their-functionality">📌 Strings accepted by <code class="docutils literal notranslate"><span class="pre">.agg()</span></code> in Pandas (and their functionality)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-series-aggregation-methods-and-properties">Other Series aggregation methods and properties</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-series-aggregation-methods-properties">📌 Pandas Series Aggregation Methods &amp; Properties</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#b-looping-aggregations-on-dataframe-object">B. Looping &amp; Aggregations on DataFrame Object</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-methods-with-axis-importance">📘 DataFrame Methods with Axis Importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#axis-summary">🔑 Axis Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#np-select"><code class="docutils literal notranslate"><span class="pre">np.select()</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-np-select">🔹 What is <code class="docutils literal notranslate"><span class="pre">np.select</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax">🔹 Syntax</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">🔹 How it works</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">🔑 Key Takeaways</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-np-select-vs-np-where-vs-pd-cut-for-the-same-grading-problem">Compare <code class="docutils literal notranslate"><span class="pre">np.select</span></code> vs <code class="docutils literal notranslate"><span class="pre">np.where</span></code> vs <code class="docutils literal notranslate"><span class="pre">pd.cut</span></code> for the same grading problem.</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-syntax">🔹 General Syntax</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-by-parameter-explanation">🔹 Parameter-by-Parameter Explanation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#x">1. <strong><code class="docutils literal notranslate"><span class="pre">x</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bins">2. <strong><code class="docutils literal notranslate"><span class="pre">bins</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#labels">3. <strong><code class="docutils literal notranslate"><span class="pre">labels</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#right">4. <strong><code class="docutils literal notranslate"><span class="pre">right</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#include-lowest">5. <strong><code class="docutils literal notranslate"><span class="pre">include_lowest</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ordered">6. <strong><code class="docutils literal notranslate"><span class="pre">ordered</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#duplicates">7. <strong><code class="docutils literal notranslate"><span class="pre">duplicates</span></code></strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-for-example">🔹 Summary for Example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-apply-returning-series-demo">Pandas <code class="docutils literal notranslate"><span class="pre">.apply()</span></code> Returning Series Demo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-function-to-agg-in-pandas">Custom function to <code class="docutils literal notranslate"><span class="pre">.agg()</span></code> in Pandas</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-looping">C. Looping</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#df-items-was-iteritems-in-older-versions">1. <strong><code class="docutils literal notranslate"><span class="pre">df.items()</span></code></strong> (was <code class="docutils literal notranslate"><span class="pre">iteritems()</span></code> in older versions)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#df-iterrows">2. <strong><code class="docutils literal notranslate"><span class="pre">df.iterrows()</span></code></strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#df-itertuples">3. <strong><code class="docutils literal notranslate"><span class="pre">df.itertuples()</span></code></strong></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-comparison">⚡ Performance Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommendation">✅ Recommendation</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Binayak Basu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright © 2025 Binayak Basu. All rights reserved..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

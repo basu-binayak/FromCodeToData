@@ -1,0 +1,1387 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Series and Dataframe Objects in Pandas &#8212; Data Analysis with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pandas/01-series_dataframes';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Indexing in Pandas" href="02-indexing.html" />
+    <link rel="prev" title="🐼 Pandas: The Ultimate Tool for Data Analysis in Python" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Data Analysis with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Data Analysis with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    👋 Welcome to FromCodeToData
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python-basics/intro.html">Python Basics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/setup.html">Understanding Python and Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/01-Variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/02-DataTypes.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/03-Strings.html">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/04-Lists.html"><strong>Introduction to Lists in Python</strong></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/05-Objects.html">Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/06-Tuples.html">Tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/07-Dictionaries.html">Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/08-Control_Flow.html">Control Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/09-Exception_Handling.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/10-File_Handling.html">File Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/11-Functions.html">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/12-Iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/13-Generators.html">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/14-Decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/15-Sets.html">Introduction to Sets in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/16-Comprehensions.html">Introduction to Comprehensions in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/17-Frozensets.html">Frozensets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../numpy/intro.html">NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/01-arrays.html">Arrays and Array Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/02-operations.html">Array Operations and Broadcasting</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/03-indexing.html">Indexing And Slicing an Array</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/04-boolean_masking.html">Boolean Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/05-reshaping.html">Reshaping, Concatenating and Splitting Arrays</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/06-fancyIndexing_sorting.html">Fancy Indexing and Sorting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">Pandas</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Series and Dataframe Objects in Pandas</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="02-indexing.html">Indexing in Pandas</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/basu-binayak/FromCodeToData.git/main?urlpath=lab/tree/pandas/01-series_dataframes.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/basu-binayak/FromCodeToData.git/blob/main/pandas/01-series_dataframes.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/edit/main/pandas/01-series_dataframes.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/issues/new?title=Issue%20on%20page%20%2Fpandas/01-series_dataframes.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/pandas/01-series_dataframes.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Series and Dataframe Objects in Pandas</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Series and Dataframe Objects in Pandas</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pandas-series-object">The Pandas Series Object</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-series-from-a-list">Create a series from a list</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation">Explanation:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">NOTE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-series-object-differrent-from-numpy-one-dimensional-array">How is <code class="docutils literal notranslate"><span class="pre">series</span></code> object differrent from <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> one dimensional array?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2-series-as-a-specialized-dictionary">A.2 Series as a specialized Dictionary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-some-properties-of-series">A.3 Some properties of Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-1-series-is-non-homogenous">A.3.1 Series is Non-Homogenous</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">NOTE</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-2-can-incorporate-null-values-inside-series-object">A.3.2 Can incorporate null values inside series object</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#b-pandas-dataframe-object">B. Pandas DataFrame Object</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-1-creating-a-dataframe-from-a-dictionary-of-lists">B.1 Creating a DataFrame from a Dictionary of Lists</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-1-1-dataframe-as-a-specialized-dictionary">B.1.1 DataFrame as a specialized Dictionary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-2-creating-dataframe-from-series">B.2 Creating DataFrame from Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-3-creating-dataframe-from-a-list-of-dictionary">B.3 Creating DataFrame from a list of dictionary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-4-creating-dataframe-from-a-2d-numpy-array">B.4 Creating DataFrame from a 2D NumPy array</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-5-dataframe-as-a-series-of-aligned-series-objects">B.5 DataFrame as a series of aligned Series objects</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-pandas-index-object">C. Pandas Index Object</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="series-and-dataframe-objects-in-pandas">
+<h1>Series and Dataframe Objects in Pandas<a class="headerlink" href="#series-and-dataframe-objects-in-pandas" title="Link to this heading">#</a></h1>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="the-pandas-series-object">
+<h1>The Pandas Series Object<a class="headerlink" href="#the-pandas-series-object" title="Link to this heading">#</a></h1>
+<p>A Pandas Series Object is a <strong>one-dimensional</strong> <em><strong>labeled array</strong></em> capable of <strong>holding any type of data</strong>. Because the series is a one-dimensional object, it has a <em><strong>single axis - the index</strong></em>. The main property of a single axis object is that <em><strong>data is arranged in a linear fashion</strong></em> like that of lists or arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the libraries </span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># import the libraries </span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pandas&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="create-a-series-from-a-list">
+<h2>Create a series from a list<a class="headerlink" href="#create-a-series-from-a-list" title="Link to this heading">#</a></h2>
+<p>Let us create a Pandas Series object from a list!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">]</span>
+<span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    10
+1    20
+2    30
+3    40
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<section id="explanation">
+<h3>Explanation:<a class="headerlink" href="#explanation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The data list contains the values <code class="docutils literal notranslate"><span class="pre">[10,</span> <span class="pre">20,</span> <span class="pre">30,</span> <span class="pre">40]</span></code>.</p></li>
+<li><p>The index of the Series is automatically generated as <code class="docutils literal notranslate"><span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3</span></code>, corresponding to each value.</p></li>
+</ul>
+</section>
+<section id="note">
+<h3>NOTE<a class="headerlink" href="#note" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The index is not part of the values - the index is called <em>axis</em></p></li>
+<li><p>The values of the index is called the <em>axis labels</em></p></li>
+</ul>
+<p>Thus, a Series has three attributes namely:</p>
+<ul class="simple">
+<li><p>values</p></li>
+<li><p>index</p></li>
+<li><p>name (optional) - we have not asigned a name to our series yet!</p></li>
+</ul>
+<p>Let us now try to see the attributes for the above series!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The values of the series are: </span><span class="si">{</span><span class="n">series</span><span class="o">.</span><span class="n">values</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1"># values attribute provide a list of the values of the series object </span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The index of the series is:</span><span class="si">{</span><span class="n">series</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># the index here is a RangeIndex object which can be iterated over </span>
+
+<span class="c1"># let us now give a name to our series. Currently there is no name assigned to the series object</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The current name of the series is:</span><span class="si">{</span><span class="n">series</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># set the name </span>
+<span class="n">series</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Integer Series of 10x&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The name is set for the series. The current name is: </span><span class="si">{</span><span class="n">series</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The values of the series are: [10. 20. 30. 40.]
+The index of the series is:Index([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;], dtype=&#39;object&#39;)
+The current name of the series is:None
+The name is set for the series. The current name is: Integer Series of 10x
+a    10.0
+b    20.0
+c    30.0
+d    40.0
+Name: Integer Series of 10x, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-is-series-object-differrent-from-numpy-one-dimensional-array">
+<h3>How is <code class="docutils literal notranslate"><span class="pre">series</span></code> object differrent from <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> one dimensional array?<a class="headerlink" href="#how-is-series-object-differrent-from-numpy-one-dimensional-array" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The short answer to this is <strong>Double Abstraction of Index</strong></p></li>
+</ul>
+<p>Let us now elaborate on this!
+<strong>Index</strong> provides two level of abstraction.</p>
+<ul class="simple">
+<li><p>The <strong>first level of abstraction</strong> - index allows you to label data points and hence making them easy to reference!</p></li>
+<li><p>The <strong>second level of abstraction</strong> - index, as a built-in data structure allows you to modify and use a custom index independent of the values. This is not present in a <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> one dimensional data structure!</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating a Series with a custom index</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]</span>
+
+<span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    10
+b    20
+c    30
+d    40
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># I can also provide a data type to the Series object </span>
+
+<span class="c1"># Creating a Series with a custom index</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]</span>
+
+<span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    10.0
+b    20.0
+c    30.0
+d    40.0
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="a-2-series-as-a-specialized-dictionary">
+<h2>A.2 Series as a specialized Dictionary<a class="headerlink" href="#a-2-series-as-a-specialized-dictionary" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creating a dictionary</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">}</span>
+
+<span class="c1"># Converting the dictionary to a Series</span>
+<span class="c1"># keys of the dictionary becomes the index and the values become the data points in the pandas Series object </span>
+<span class="n">series_from_dict</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">series_from_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a    10
+b    20
+c    30
+d    40
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-3-some-properties-of-series">
+<h2>A.3 Some properties of Series<a class="headerlink" href="#a-3-some-properties-of-series" title="Link to this heading">#</a></h2>
+<section id="a-3-1-series-is-non-homogenous">
+<h3>A.3.1 Series is Non-Homogenous<a class="headerlink" href="#a-3-1-series-is-non-homogenous" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The actual data (or values) for a series does not have to be numeric or homogeneous</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;Harry Potter&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="s1">&#39;Lionel Messi&#39;</span><span class="p">}</span>
+
+<span class="c1"># Converting the dictionary to a Series</span>
+<span class="n">series_from_dict</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">series_from_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a              10
+b    Harry Potter
+c           False
+d    Lionel Messi
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h4>NOTE<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<p>The datatype of the Series is now <em>object</em> - i.e. a python object.</p>
+<ul class="simple">
+<li><p>The object data type is also used for a series with string values. In addition, it is also used for values that have heterogeneous or mixed types.</p></li>
+</ul>
+</section>
+</section>
+<section id="a-3-2-can-incorporate-null-values-inside-series-object">
+<h3>A.3.2 Can incorporate null values inside series object<a class="headerlink" href="#a-3-2-can-incorporate-null-values-inside-series-object" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># create a series with null values </span>
+<span class="n">nan_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">])</span>
+
+<span class="n">nan_series</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    12.0
+1    20.0
+2    30.0
+3     NaN
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NOTE</strong></p>
+<ul class="simple">
+<li><p>When we have null values inside a series, the <code class="docutils literal notranslate"><span class="pre">size</span></code> attribute of the series object returns the size of the array including the null values!</p></li>
+<li><p>However, if, instead we use a <code class="docutils literal notranslate"><span class="pre">count()</span></code> method on the object, it returns only the count of the non null values</p></li>
+</ul>
+<p>Let us see them with the above example!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The series will null values is:</span><span class="se">\n</span><span class="si">{</span><span class="n">nan_series</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The size of the series will null values is:</span><span class="si">{</span><span class="n">nan_series</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The count of the non null values inside the series object is:</span><span class="si">{</span><span class="n">nan_series</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The series will null values is:
+0    12.0
+1    20.0
+2    30.0
+3     NaN
+dtype: float64
+The size of the series will null values is:4
+The count of the non null values inside the series object is:3
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="b-pandas-dataframe-object">
+<h1>B. Pandas DataFrame Object<a class="headerlink" href="#b-pandas-dataframe-object" title="Link to this heading">#</a></h1>
+<p>If a <strong>Series</strong> is an <em><strong>analog of a one-dimensional array with explicit indices</strong></em>, a <strong>DataFrame</strong> is an <em><strong>analog of a two-dimensional array with explicit row and column indices</strong></em>. Just as you might think of a two-dimensional array as an ordered sequence of aligned one dimensional columns, you can <em><strong>think of a DataFrame as a sequence of aligned Series objects</strong></em>. Here, by “aligned” we mean that they share the same index.</p>
+<section id="b-1-creating-a-dataframe-from-a-dictionary-of-lists">
+<h2>B.1 Creating a DataFrame from a Dictionary of Lists<a class="headerlink" href="#b-1-creating-a-dataframe-from-a-dictionary-of-lists" title="Link to this heading">#</a></h2>
+<p>Let us create a simple pandas DataFrame object!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">:[</span><span class="mi">20</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">78</span><span class="p">],</span>
+    <span class="s1">&#39;Name&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Ajay&#39;</span><span class="p">,</span> <span class="s1">&#39;Shin&#39;</span><span class="p">,</span> <span class="s1">&#39;Freddy&#39;</span><span class="p">,</span> <span class="s1">&#39;Michael&#39;</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   Age     Name
+0   20     Ajay
+1   34     Shin
+2   56   Freddy
+3   78  Michael
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>A DataFrame has two indices - namely a <code class="docutils literal notranslate"><span class="pre">row</span> <span class="pre">index</span></code> and a <code class="docutils literal notranslate"><span class="pre">column</span> <span class="pre">index</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># row index </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The row indices of the above dataframe is : </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1">#column index </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The coumn indices of the above dataframe is : </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The row indices of the above dataframe is : RangeIndex(start=0, stop=4, step=1)
+The coumn indices of the above dataframe is : Index([&#39;Age&#39;, &#39;Name&#39;], dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<section id="b-1-1-dataframe-as-a-specialized-dictionary">
+<h3>B.1.1 DataFrame as a specialized Dictionary<a class="headerlink" href="#b-1-1-dataframe-as-a-specialized-dictionary" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>A dictionary maps the key to the value, while the DataFrame maps a column name to a <code class="docutils literal notranslate"><span class="pre">Series</span></code> of columnar data</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># df as a specialized dictionary</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    20
+1    34
+2    56
+3    78
+Name: Age, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># type returned </span>
+<span class="nb">type</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Age&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pandas.core.series.Series
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="b-2-creating-dataframe-from-series">
+<h2>B.2 Creating DataFrame from Series<a class="headerlink" href="#b-2-creating-dataframe-from-series" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">population_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;California&#39;</span><span class="p">:</span> <span class="mi">39538223</span><span class="p">,</span> <span class="s1">&#39;Texas&#39;</span><span class="p">:</span> <span class="mi">29145505</span><span class="p">,</span> 
+                   <span class="s1">&#39;Florida&#39;</span><span class="p">:</span> <span class="mi">21538187</span><span class="p">,</span> <span class="s1">&#39;New York&#39;</span><span class="p">:</span> <span class="mi">20201249</span><span class="p">,</span> 
+                   <span class="s1">&#39;Pennsylvania&#39;</span><span class="p">:</span> <span class="mi">13002700</span><span class="p">}</span>
+
+<span class="n">population_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">population_dict</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">population_series</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">population_series</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">population_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">population_series</span><span class="p">,</span> 
+                             <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Population&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">population_df</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">population_df</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>California      39538223
+Texas           29145505
+Florida         21538187
+New York        20201249
+Pennsylvania    13002700
+dtype: int64
+&lt;class &#39;pandas.core.series.Series&#39;&gt;
+
+
+              Population
+California      39538223
+Texas           29145505
+Florida         21538187
+New York        20201249
+Pennsylvania    13002700
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="b-3-creating-dataframe-from-a-list-of-dictionary">
+<h2>B.3 Creating DataFrame from a list of dictionary<a class="headerlink" href="#b-3-creating-dataframe-from-a-list-of-dictionary" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># consider a list of dictionary</span>
+<span class="n">list_dict</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="s1">&#39;India&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">:</span><span class="mi">23</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="s1">&#39;China&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">:</span><span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="s1">&#39;USA&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="s1">&#39;Japan&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="s1">&#39;Taiwan&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">:</span><span class="mi">30</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;country&#39;</span><span class="p">:</span><span class="s1">&#39;Bangladesh&#39;</span><span class="p">,</span> <span class="s1">&#39;rank&#39;</span><span class="p">:</span><span class="mi">50</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="c1"># convert this to df</span>
+<span class="n">df_new</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">list_dict</span><span class="p">)</span>
+<span class="n">df_new</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>country</th>
+      <th>rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>India</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>China</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>USA</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Japan</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>UK</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Taiwan</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Bangladesh</td>
+      <td>50</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="b-4-creating-dataframe-from-a-2d-numpy-array">
+<h2>B.4 Creating DataFrame from a 2D NumPy array<a class="headerlink" href="#b-4-creating-dataframe-from-a-2d-numpy-array" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a 2d numpy array</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span> 
+
+<span class="n">arr_numpy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The NumPy array is:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr_numpy</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># convert this to a df</span>
+<span class="n">df_from_numpy</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span> <span class="n">arr_numpy</span><span class="p">,</span>
+                             <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">],</span>
+                             <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Row 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Row 2&#39;</span><span class="p">,</span> <span class="s1">&#39;Row 3&#39;</span><span class="p">,</span> <span class="s1">&#39;Row 4&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The converted dataframe is:</span><span class="se">\n</span><span class="si">{</span><span class="n">df_from_numpy</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># let us now convert thos df to a numpy object again</span>
+<span class="n">arr_numpy_from_df</span> <span class="o">=</span> <span class="n">df_from_numpy</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The converted numpy array is :</span><span class="se">\n</span><span class="si">{</span><span class="n">arr_numpy_from_df</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The NumPy array is:
+[[ 8 13  1  8]
+ [ 4 11  1  5]
+ [12  6 10  0]
+ [10  4 10  9]]
+The converted dataframe is:
+        A   B   C  D
+Row 1   8  13   1  8
+Row 2   4  11   1  5
+Row 3  12   6  10  0
+Row 4  10   4  10  9
+The converted numpy array is :
+[[ 8 13  1  8]
+ [ 4 11  1  5]
+ [12  6 10  0]
+ [10  4 10  9]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="b-5-dataframe-as-a-series-of-aligned-series-objects">
+<h2>B.5 DataFrame as a series of aligned Series objects<a class="headerlink" href="#b-5-dataframe-as-a-series-of-aligned-series-objects" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">population_dict</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s1">&#39;California&#39;</span><span class="p">:</span> <span class="mi">39538223</span><span class="p">,</span> <span class="s1">&#39;Texas&#39;</span><span class="p">:</span> <span class="mi">29145505</span><span class="p">,</span> 
+                   <span class="s1">&#39;Florida&#39;</span><span class="p">:</span> <span class="mi">21538187</span><span class="p">,</span> <span class="s1">&#39;New York&#39;</span><span class="p">:</span> <span class="mi">20201249</span><span class="p">,</span> 
+                   <span class="s1">&#39;Pennsylvania&#39;</span><span class="p">:</span> <span class="mi">13002700</span><span class="p">})</span>
+
+<span class="n">area_dict</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s1">&#39;California&#39;</span><span class="p">:</span> <span class="mi">423967</span><span class="p">,</span> <span class="s1">&#39;Texas&#39;</span><span class="p">:</span> <span class="mi">695662</span><span class="p">,</span> <span class="s1">&#39;Florida&#39;</span><span class="p">:</span> <span class="mi">170312</span><span class="p">,</span> 
+             <span class="s1">&#39;New York&#39;</span><span class="p">:</span> <span class="mi">141297</span><span class="p">,</span> <span class="s1">&#39;Pennsylvania&#39;</span><span class="p">:</span> <span class="mi">119280</span><span class="p">})</span>
+
+<span class="n">states</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;population&#39;</span><span class="p">:</span> <span class="n">population_dict</span><span class="p">,</span>
+    <span class="s1">&#39;area&#39;</span><span class="p">:</span> <span class="n">area_dict</span>
+<span class="p">})</span> <span class="c1"># think states as a combination of two aligned series objects </span>
+<span class="n">states</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>population</th>
+      <th>area</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>California</th>
+      <td>39538223</td>
+      <td>423967</td>
+    </tr>
+    <tr>
+      <th>Texas</th>
+      <td>29145505</td>
+      <td>695662</td>
+    </tr>
+    <tr>
+      <th>Florida</th>
+      <td>21538187</td>
+      <td>170312</td>
+    </tr>
+    <tr>
+      <th>New York</th>
+      <td>20201249</td>
+      <td>141297</td>
+    </tr>
+    <tr>
+      <th>Pennsylvania</th>
+      <td>13002700</td>
+      <td>119280</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># What are the values </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">states</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="c1"># presented in a numpy array </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[39538223   423967]
+ [29145505   695662]
+ [21538187   170312]
+ [20201249   141297]
+ [13002700   119280]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="c-pandas-index-object">
+<h1>C. Pandas Index Object<a class="headerlink" href="#c-pandas-index-object" title="Link to this heading">#</a></h1>
+<ul class="simple">
+<li><p>Both <code class="docutils literal notranslate"><span class="pre">Series</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> objects have explicit indices.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Index</span></code> object is a very interesting structure and can be thought of as an <em><strong>immutable array or a ordered set(although the <code class="docutils literal notranslate"><span class="pre">Index</span></code> objects may have repeated values)</strong></em></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let us create a index object </span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">11</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+<span class="c1"># index as a immutable array</span>
+
+<span class="c1"># like arrays they can be accessed using python indexing or slicing </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># 5</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># [1,3]</span>
+
+<span class="c1"># it also has many attributes common to NumPy array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+<span class="c1"># however the index is not mutable </span>
+<span class="n">index</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># error!</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([1, 3, 5, 7, 9, 11], dtype=&#39;int64&#39;)
+5
+Index([1, 3], dtype=&#39;int64&#39;)
+6 (6,) 1 int64
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span> <span class="n">line</span> <span class="mi">15</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">index</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="c1"># however the index is not mutable </span>
+<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">index</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># error!</span>
+
+<span class="nn">File d:\EDA_Book\env\Lib\site-packages\pandas\core\indexes\base.py:5383,</span> in <span class="ni">Index.__setitem__</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">   </span><span class="mi">5381</span> <span class="nd">@final</span>
+<span class="g g-Whitespace">   </span><span class="mi">5382</span> <span class="k">def</span><span class="w"> </span><span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">5383</span>     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Index does not support mutable operations&quot;</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: Index does not support mutable operations
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># index as ordered sets </span>
+
+<span class="n">index_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">11</span><span class="p">])</span>
+<span class="n">index_2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">index_1</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">index_2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">index_1</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">index_2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">index_1</span><span class="o">.</span><span class="n">symmetric_difference</span><span class="p">(</span><span class="n">index_2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([1, 3, 5], dtype=&#39;int64&#39;)
+Index([1, 2, 3, 5, 7, 8, 9, 10, 11], dtype=&#39;int64&#39;)
+Index([2, 7, 8, 9, 10, 11], dtype=&#39;int64&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./pandas"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">🐼 Pandas: The Ultimate Tool for Data Analysis in Python</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-indexing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Indexing in Pandas</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Series and Dataframe Objects in Pandas</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pandas-series-object">The Pandas Series Object</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-series-from-a-list">Create a series from a list</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation">Explanation:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">NOTE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-series-object-differrent-from-numpy-one-dimensional-array">How is <code class="docutils literal notranslate"><span class="pre">series</span></code> object differrent from <code class="docutils literal notranslate"><span class="pre">NumPy</span></code> one dimensional array?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2-series-as-a-specialized-dictionary">A.2 Series as a specialized Dictionary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-some-properties-of-series">A.3 Some properties of Series</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-1-series-is-non-homogenous">A.3.1 Series is Non-Homogenous</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">NOTE</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-2-can-incorporate-null-values-inside-series-object">A.3.2 Can incorporate null values inside series object</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#b-pandas-dataframe-object">B. Pandas DataFrame Object</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-1-creating-a-dataframe-from-a-dictionary-of-lists">B.1 Creating a DataFrame from a Dictionary of Lists</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-1-1-dataframe-as-a-specialized-dictionary">B.1.1 DataFrame as a specialized Dictionary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-2-creating-dataframe-from-series">B.2 Creating DataFrame from Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-3-creating-dataframe-from-a-list-of-dictionary">B.3 Creating DataFrame from a list of dictionary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-4-creating-dataframe-from-a-2d-numpy-array">B.4 Creating DataFrame from a 2D NumPy array</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-5-dataframe-as-a-series-of-aligned-series-objects">B.5 DataFrame as a series of aligned Series objects</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-pandas-index-object">C. Pandas Index Object</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Binayak Basu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright © 2025 Binayak Basu. All rights reserved..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

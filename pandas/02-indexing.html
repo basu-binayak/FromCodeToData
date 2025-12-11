@@ -1,0 +1,1693 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Indexing in Pandas &#8212; Data Analysis with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pandas/02-indexing';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Series and Dataframe Objects in Pandas" href="01-series_dataframes.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Data Analysis with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Data Analysis with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    👋 Welcome to FromCodeToData
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python-basics/intro.html">Python Basics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/setup.html">Understanding Python and Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/01-Variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/02-DataTypes.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/03-Strings.html">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/04-Lists.html"><strong>Introduction to Lists in Python</strong></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/05-Objects.html">Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/06-Tuples.html">Tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/07-Dictionaries.html">Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/08-Control_Flow.html">Control Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/09-Exception_Handling.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/10-File_Handling.html">File Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/11-Functions.html">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/12-Iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/13-Generators.html">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/14-Decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/15-Sets.html">Introduction to Sets in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/16-Comprehensions.html">Introduction to Comprehensions in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/17-Frozensets.html">Frozensets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../numpy/intro.html">NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/01-arrays.html">Arrays and Array Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/02-operations.html">Array Operations and Broadcasting</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/03-indexing.html">Indexing And Slicing an Array</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/04-boolean_masking.html">Boolean Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/05-reshaping.html">Reshaping, Concatenating and Splitting Arrays</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/06-fancyIndexing_sorting.html">Fancy Indexing and Sorting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">Pandas</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-series_dataframes.html">Series and Dataframe Objects in Pandas</a></li>
+
+
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Indexing in Pandas</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/basu-binayak/FromCodeToData.git/main?urlpath=lab/tree/pandas/02-indexing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/basu-binayak/FromCodeToData.git/blob/main/pandas/02-indexing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/edit/main/pandas/02-indexing.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/issues/new?title=Issue%20on%20page%20%2Fpandas/02-indexing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/pandas/02-indexing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Indexing in Pandas</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Indexing in Pandas</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-indexing-and-selection-in-series">A. Data Indexing and Selection in Series</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-series-as-a-dictionary">A.1 Series as a Dictionary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2-series-as-a-one-dimensional-array">A.2 Series as a One-Dimensional Array</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">Key Differences:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-to-clarify">Example to Clarify:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-loc-includes-the-end-label">Why <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> Includes the End Label:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boolean-masking-in-series-like-numpy-arrays">Boolean Masking in Series ( like NumPy arrays )</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#b-data-indexing-and-selection-in-datadrame">B. Data Indexing and Selection in DataDrame</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-1-dataframe-as-a-2d-numpy-array">B.1 DataFrame as a 2D NumPy array</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-dataframe-filter">C. <code class="docutils literal notranslate"><span class="pre">DataFrame.filter()</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax">📌 Syntax</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-columns-by-exact-names-items">1. Filtering columns by exact names (items)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-columns-by-substring-like">2. Filtering columns by substring (like)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-columns-using-regex">3. Filtering columns using regex</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-rows-by-index-axis-0">4. Filtering rows by index (axis=0)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-filter">🚀 When to use <code class="docutils literal notranslate"><span class="pre">filter()</span></code>?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-table-filter-vs-loc-vs-iloc">📊 Comparison Table: <code class="docutils literal notranslate"><span class="pre">.filter()</span></code> vs <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> vs <code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="indexing-in-pandas">
+<h1>Indexing in Pandas<a class="headerlink" href="#indexing-in-pandas" title="Link to this heading">#</a></h1>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="a-data-indexing-and-selection-in-series">
+<h1>A. Data Indexing and Selection in Series<a class="headerlink" href="#a-data-indexing-and-selection-in-series" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import necessary libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># import necessary libraries</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pandas&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="a-1-series-as-a-dictionary">
+<h2>A.1 Series as a Dictionary<a class="headerlink" href="#a-1-series-as-a-dictionary" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let us create a series object </span>
+<span class="n">series_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> 
+                     <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The series is:</span><span class="se">\n</span><span class="si">{</span><span class="n">series_1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># just like a dict we can access the keys and the values of the series</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The keys of the series are: </span><span class="si">{</span><span class="n">series_1</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The values of the series are:</span><span class="si">{</span><span class="n">series_1</span><span class="o">.</span><span class="n">values</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The series is:
+1     0.119761
+2     0.059803
+3     0.899937
+4     0.102466
+5     0.060674
+6     0.289320
+7     0.683394
+8     0.990552
+9     0.762207
+10    0.055721
+dtype: float64
+The keys of the series are: Index([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=&#39;int64&#39;)
+The values of the series are:[0.11976098 0.05980322 0.89993722 0.10246627 0.06067385 0.28931954
+ 0.68339441 0.9905525  0.76220744 0.0557205 ]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let us zip the key and the values together </span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">series_1</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">series_1</span><span class="o">.</span><span class="n">values</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(1, 0.43166568261732396), (2, 0.24983271613878089), (3, 0.2065006860182862), (4, 0.6424725840012879), (5, 0.3196313979480794), (6, 0.5198276122721387), (7, 0.8683615716318782), (8, 0.5276659294341741), (9, 0.13090406696542), (10, 0.4780327433023466)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># items of the series - same as the items() method used in dict</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The items of the series (list of (key,value) tuples): </span><span class="si">{</span><span class="n">series_1</span><span class="o">.</span><span class="n">items</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">The output you&#39;re seeing indicates that series_1.items() returns a zip object. This object is an iterator that lazily produces (index, value) pairs from the series. However, it does not directly produce a list unless explicitly converted.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># let us explicitly mention this </span>
+<span class="c1"># Get the items and convert to a list</span>
+<span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">series_1</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The items of the series (list of (key, value) tuples): </span><span class="si">{</span><span class="n">items</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The items of the series (list of (key,value) tuples): &lt;zip object at 0x000001DB7C9AEC00&gt;
+The items of the series (list of (key, value) tuples): [(1, 0.43166568261732396), (2, 0.24983271613878089), (3, 0.2065006860182862), (4, 0.6424725840012879), (5, 0.3196313979480794), (6, 0.5198276122721387), (7, 0.8683615716318782), (8, 0.5276659294341741), (9, 0.13090406696542), (10, 0.4780327433023466)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># like dict, you can use key to access the elements of the series </span>
+<span class="n">series_1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2065006860182862
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># you can add elements to the series by defining a new key/index</span>
+<span class="n">series_1</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.9876</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">series_1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1     0.431666
+2     0.249833
+3     0.206501
+4     0.642473
+5     0.319631
+6     0.519828
+7     0.868362
+8     0.527666
+9     0.130904
+10    0.478033
+11    0.987600
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="a-2-series-as-a-one-dimensional-array">
+<h2>A.2 Series as a One-Dimensional Array<a class="headerlink" href="#a-2-series-as-a-one-dimensional-array" title="Link to this heading">#</a></h2>
+<p>If you have a Series with an <strong>explicit index starting from 1</strong>, slicing like <code class="docutils literal notranslate"><span class="pre">series[1:3]</span></code> will use the <strong>implicit integer positions, not the explicit index</strong>.</p>
+<p><strong>Solution:</strong></p>
+<ul class="simple">
+<li><p>You can use <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> or <code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code>to make your intent explicit:</p>
+<ul>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> to <strong>slice using the explicit (labeled) index</strong>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code> to slice using the <strong>implicit (integer) index</strong>.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># slicing with explicit index </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The first three items using explicit indexing : </span><span class="se">\n</span><span class="si">{</span><span class="n">series_1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># slicing with implicit index</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The first three items with implicit indexing : </span><span class="se">\n</span><span class="si">{</span><span class="n">series_1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The first three items using explicit indexing : 
+1    0.431666
+2    0.249833
+3    0.206501
+dtype: float64
+The first three items with implicit indexing : 
+1    0.431666
+2    0.249833
+3    0.206501
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The behavior you observe is because the <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> indexer in pandas <strong>includes the end label</strong> in the slicing range, following a <strong>closed interval</strong> logic <code class="docutils literal notranslate"><span class="pre">[start:end]</span></code>. This is in contrast to Python’s default slicing behavior (like with lists or <code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code>), which uses a <strong>half-open interval</strong> <code class="docutils literal notranslate"><span class="pre">[start:end)</span></code>.</p>
+<p>Here’s a breakdown:</p>
+<section id="key-differences">
+<h3>Key Differences:<a class="headerlink" href="#key-differences" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> (label-based slicing)</strong>:</p>
+<ul class="simple">
+<li><p>Includes the end label in the slice (<code class="docutils literal notranslate"><span class="pre">[start:end]</span></code>).</p></li>
+<li><p>This is consistent with the behavior of operations on labels in pandas.</p></li>
+<li><p>Example: <code class="docutils literal notranslate"><span class="pre">series.loc[1:3]</span></code> includes both 1, 2, and 3 as it uses the labels.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code> (position-based slicing)</strong>:</p>
+<ul class="simple">
+<li><p>Excludes the end position in the slice (<code class="docutils literal notranslate"><span class="pre">[start:end)</span></code>).</p></li>
+<li><p>Example: <code class="docutils literal notranslate"><span class="pre">series.iloc[:3]</span></code> includes positions 0, 1, and 2, stopping before position 3.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="example-to-clarify">
+<h3>Example to Clarify:<a class="headerlink" href="#example-to-clarify" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create a Series with an explicit index starting from 1</span>
+<span class="n">series_1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Series:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">series_1</span><span class="p">)</span>
+
+<span class="c1"># Explicit index slicing with .loc[]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Slicing with .loc[] (explicit indexing, closed interval):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">series_1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># Includes the end label (index 3)</span>
+
+<span class="c1"># Implicit index slicing with .iloc[]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Slicing with .iloc[] (implicit indexing, half-open interval):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">series_1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># Excludes the end position (position 3)</span>
+</pre></div>
+</div>
+</section>
+<section id="output">
+<h3>Output:<a class="headerlink" href="#output" title="Link to this heading">#</a></h3>
+<div class="highlight-plaintext notranslate"><div class="highlight"><pre><span></span>Original Series:
+1    10
+2    20
+3    30
+4    40
+dtype: int64
+
+Slicing with .loc[] (explicit indexing, closed interval):
+1    10
+2    20
+3    30
+dtype: int64
+
+Slicing with .iloc[] (implicit indexing, half-open interval):
+1    10
+2    20
+3    30
+dtype: int64
+</pre></div>
+</div>
+</section>
+<section id="why-loc-includes-the-end-label">
+<h3>Why <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> Includes the End Label:<a class="headerlink" href="#why-loc-includes-the-end-label" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> behavior aligns with pandas’ philosophy of working with labeled data:</p>
+<ul class="simple">
+<li><p>When working with labels, it’s often more intuitive for users to think in terms of “from label X to label Y” and expect both labels to be included.</p></li>
+</ul>
+<p>This behavior ensures clarity and reduces off-by-one errors when working with labeled indices.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fancy indexing - pass as a list of index in the loc </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The first, third and seventh element are:</span><span class="se">\n</span><span class="si">{</span><span class="n">series_1</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">]]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The first, third and seventh element are:
+1    0.119761
+3    0.899937
+7    0.683394
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fancy indexing - pass as a list of index in the iloc </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The first, third and seventh element are:</span><span class="se">\n</span><span class="si">{</span><span class="n">series_1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">]]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The first, third and seventh element are:
+2    0.059803
+4    0.102466
+8    0.990552
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="boolean-masking-in-series-like-numpy-arrays">
+<h3>Boolean Masking in Series ( like NumPy arrays )<a class="headerlink" href="#boolean-masking-in-series-like-numpy-arrays" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>ALWAYS use <code class="docutils literal notranslate"><span class="pre">.loc</span></code> for BOOLEAN MASKING</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># boolean logic and masking in the Series object - just like the NumPy arrays </span>
+
+<span class="c1"># consider the following series</span>
+<span class="n">series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">67</span><span class="p">,</span><span class="mi">88</span><span class="p">,</span><span class="mi">34</span><span class="p">,</span><span class="mi">54</span><span class="p">,</span><span class="mi">76</span><span class="p">,</span><span class="mi">99</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+
+<span class="c1"># find the mean of the series </span>
+<span class="n">mean_series</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The mean of the series is </span><span class="si">{</span><span class="n">mean_series</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># create the boolean array </span>
+<span class="n">bool_series</span> <span class="o">=</span> <span class="n">series</span> <span class="o">&gt;</span> <span class="n">mean_series</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean Series (True when value greater than mean): &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bool_series</span><span class="p">)</span>
+
+<span class="c1"># use this boolean series to filer the original series </span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using the boolean series to filter the original :&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">series</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bool_series</span><span class="p">])</span> <span class="c1"># use loc[] indexer for masking</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean of the series is 45.45454545454545
+Boolean Series (True when value greater than mean): 
+0     False
+1     False
+2      True
+3      True
+4     False
+5      True
+6      True
+7      True
+8     False
+9     False
+10    False
+dtype: bool
+Using the boolean series to filter the original :
+2    67
+3    88
+5    54
+6    76
+7    99
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="b-data-indexing-and-selection-in-datadrame">
+<h1>B. Data Indexing and Selection in DataDrame<a class="headerlink" href="#b-data-indexing-and-selection-in-datadrame" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">area</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s1">&#39;California&#39;</span><span class="p">:</span> <span class="mi">423967</span><span class="p">,</span> <span class="s1">&#39;Texas&#39;</span><span class="p">:</span> <span class="mi">695662</span><span class="p">,</span> 
+                  <span class="s1">&#39;Florida&#39;</span><span class="p">:</span> <span class="mi">170312</span><span class="p">,</span> <span class="s1">&#39;New York&#39;</span><span class="p">:</span> <span class="mi">141297</span><span class="p">,</span> 
+                  <span class="s1">&#39;Pennsylvania&#39;</span><span class="p">:</span> <span class="mi">119280</span><span class="p">})</span>
+<span class="n">pop</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">({</span><span class="s1">&#39;California&#39;</span><span class="p">:</span> <span class="mi">39538223</span><span class="p">,</span> <span class="s1">&#39;Texas&#39;</span><span class="p">:</span> <span class="mi">29145505</span><span class="p">,</span> 
+                 <span class="s1">&#39;Florida&#39;</span><span class="p">:</span> <span class="mi">21538187</span><span class="p">,</span> <span class="s1">&#39;New York&#39;</span><span class="p">:</span> <span class="mi">20201249</span><span class="p">,</span> 
+                 <span class="s1">&#39;Pennsylvania&#39;</span><span class="p">:</span> <span class="mi">13002700</span><span class="p">})</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;area&#39;</span><span class="p">:</span><span class="n">area</span><span class="p">,</span> <span class="s1">&#39;pop&#39;</span><span class="p">:</span><span class="n">pop</span><span class="p">})</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>area</th>
+      <th>pop</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>California</th>
+      <td>423967</td>
+      <td>39538223</td>
+    </tr>
+    <tr>
+      <th>Texas</th>
+      <td>695662</td>
+      <td>29145505</td>
+    </tr>
+    <tr>
+      <th>Florida</th>
+      <td>170312</td>
+      <td>21538187</td>
+    </tr>
+    <tr>
+      <th>New York</th>
+      <td>141297</td>
+      <td>20201249</td>
+    </tr>
+    <tr>
+      <th>Pennsylvania</th>
+      <td>119280</td>
+      <td>13002700</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># accessing each series of the dataframe </span>
+<span class="n">area_series</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">area_series</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>California      423967
+Texas           695662
+Florida         170312
+New York        141297
+Pennsylvania    119280
+Name: area, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add a new fature to the dataframe </span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;density&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>area</th>
+      <th>pop</th>
+      <th>density</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>California</th>
+      <td>423967</td>
+      <td>39538223</td>
+      <td>93.257784</td>
+    </tr>
+    <tr>
+      <th>Texas</th>
+      <td>695662</td>
+      <td>29145505</td>
+      <td>41.896072</td>
+    </tr>
+    <tr>
+      <th>Florida</th>
+      <td>170312</td>
+      <td>21538187</td>
+      <td>126.463121</td>
+    </tr>
+    <tr>
+      <th>New York</th>
+      <td>141297</td>
+      <td>20201249</td>
+      <td>142.970120</td>
+    </tr>
+    <tr>
+      <th>Pennsylvania</th>
+      <td>119280</td>
+      <td>13002700</td>
+      <td>109.009893</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="b-1-dataframe-as-a-2d-numpy-array">
+<h2>B.1 DataFrame as a 2D NumPy array<a class="headerlink" href="#b-1-dataframe-as-a-2d-numpy-array" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_numpy</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The NumPy array of the dataframe is:</span><span class="se">\n</span><span class="si">{</span><span class="n">data_numpy</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">data_numpy_T</span> <span class="o">=</span> <span class="n">data_numpy</span><span class="o">.</span><span class="n">T</span> <span class="c1"># transposes the dataframe </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The transposed array converted to NumPy array is:</span><span class="se">\n</span><span class="si">{</span><span class="n">data_numpy_T</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The NumPy array of the dataframe is:
+[[4.23967000e+05 3.95382230e+07 9.32577842e+01]
+ [6.95662000e+05 2.91455050e+07 4.18960717e+01]
+ [1.70312000e+05 2.15381870e+07 1.26463121e+02]
+ [1.41297000e+05 2.02012490e+07 1.42970120e+02]
+ [1.19280000e+05 1.30027000e+07 1.09009893e+02]]
+The transposed array converted to NumPy array is:
+[[4.23967000e+05 6.95662000e+05 1.70312000e+05 1.41297000e+05
+  1.19280000e+05]
+ [3.95382230e+07 2.91455050e+07 2.15381870e+07 2.02012490e+07
+  1.30027000e+07]
+ [9.32577842e+01 4.18960717e+01 1.26463121e+02 1.42970120e+02
+  1.09009893e+02]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Alternate way to create the NumPy array from the dataframe</span>
+<span class="n">data</span><span class="o">.</span><span class="n">values</span> <span class="c1"># also gives a NumPy array from the dataframe </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[4.23967000e+05, 3.95382230e+07, 9.32577842e+01],
+       [6.95662000e+05, 2.91455050e+07, 4.18960717e+01],
+       [1.70312000e+05, 2.15381870e+07, 1.26463121e+02],
+       [1.41297000e+05, 2.02012490e+07, 1.42970120e+02],
+       [1.19280000e+05, 1.30027000e+07, 1.09009893e+02]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">iloc</span></code> indexer, we can index a dataframe as if it is a simple 2D NumPy array!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># say I want the 1st and third row of area and pop</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span> <span class="c1"># note use the implicit index only!</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">2</span><span class="p">,:</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># gives the same result as above </span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># gives a series object </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              area       pop
+California  423967  39538223
+Florida     170312  21538187
+              area       pop
+California  423967  39538223
+Texas       695662  29145505
+California    39538223
+Texas         29145505
+Name: pop, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># when we use the loc indexer, we have to use the explicit indexing </span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:</span><span class="s1">&#39;Florida&#39;</span><span class="p">,[</span><span class="s1">&#39;area&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>area</th>
+      <th>pop</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>California</th>
+      <td>423967</td>
+      <td>39538223</td>
+    </tr>
+    <tr>
+      <th>Texas</th>
+      <td>695662</td>
+      <td>29145505</td>
+    </tr>
+    <tr>
+      <th>Florida</th>
+      <td>170312</td>
+      <td>21538187</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we can use the loc[] indexer to mask</span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;density&#39;</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">120</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">,</span><span class="s1">&#39;density&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pop</th>
+      <th>density</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>California</th>
+      <td>39538223</td>
+      <td>93.257784</td>
+    </tr>
+    <tr>
+      <th>Texas</th>
+      <td>29145505</td>
+      <td>41.896072</td>
+    </tr>
+    <tr>
+      <th>Pennsylvania</th>
+      <td>13002700</td>
+      <td>109.009893</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we can modify any value </span>
+<span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">39600000</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># back to the original </span>
+<span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;California&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">39538223</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                area       pop     density
+California    423967  39600000   93.257784
+Texas         695662  29145505   41.896072
+Florida       170312  21538187  126.463121
+New York      141297  20201249  142.970120
+Pennsylvania  119280  13002700  109.009893
+
+                area       pop     density
+California    423967  39538223   93.257784
+Texas         695662  29145505   41.896072
+Florida       170312  21538187  126.463121
+New York      141297  20201249  142.970120
+Pennsylvania  119280  13002700  109.009893
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="c-dataframe-filter">
+<h1>C. <code class="docutils literal notranslate"><span class="pre">DataFrame.filter()</span></code><a class="headerlink" href="#c-dataframe-filter" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">filter()</span></code> is used to <strong>select rows or columns by their labels</strong> using:</p>
+<ul class="simple">
+<li><p><strong>Exact names (<code class="docutils literal notranslate"><span class="pre">items</span></code>)</strong></p></li>
+<li><p><strong>Substrings (<code class="docutils literal notranslate"><span class="pre">like</span></code>)</strong></p></li>
+<li><p><strong>Regular expressions (<code class="docutils literal notranslate"><span class="pre">regex</span></code>)</strong></p></li>
+</ul>
+<p>By default, it works on <strong>columns</strong> (<code class="docutils literal notranslate"><span class="pre">axis=1</span></code>).
+If you set <code class="docutils literal notranslate"><span class="pre">axis=0</span></code>, it filters rows by their index labels.</p>
+<section id="syntax">
+<h2>📌 Syntax<a class="headerlink" href="#syntax" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DataFrame</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">like</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">items</span></code></strong> → List of exact labels to keep.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">like</span></code></strong> → Substring search (keeps labels containing this text).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">regex</span></code></strong> → Pattern search with regular expressions.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">axis</span></code></strong> → <code class="docutils literal notranslate"><span class="pre">0</span></code> = rows (index), <code class="docutils literal notranslate"><span class="pre">1</span></code> = columns (default).</p></li>
+</ul>
+</section>
+<section id="filtering-columns-by-exact-names-items">
+<h3>1. Filtering columns by exact names (items)<a class="headerlink" href="#filtering-columns-by-exact-names-items" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span>
+    <span class="s2">&quot;C_score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span>
+    <span class="s2">&quot;score_C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">12</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;C_score&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   A  C_score
+0  1        7
+1  2        8
+2  3        9
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="filtering-columns-by-substring-like">
+<h3>2. Filtering columns by substring (like)<a class="headerlink" href="#filtering-columns-by-substring-like" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>C_score</th>
+      <th>score_C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>7</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>8</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9</td>
+      <td>12</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>👉 Kept only columns containing “C”.</p>
+</section>
+<section id="filtering-columns-using-regex">
+<h3>3. Filtering columns using regex<a class="headerlink" href="#filtering-columns-using-regex" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s2">&quot;^C&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># keep columns starting with &quot;C&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>C_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;(^C|C$)&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># start or end with C</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>C_score</th>
+      <th>score_C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>7</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>8</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>9</td>
+      <td>12</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="filtering-rows-by-index-axis-0">
+<h3>4. Filtering rows by index (axis=0)<a class="headerlink" href="#filtering-rows-by-index-axis-0" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;row1&quot;</span><span class="p">,</span> <span class="s2">&quot;row2&quot;</span><span class="p">,</span> <span class="s2">&quot;row3&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;row1&quot;</span><span class="p">,</span> <span class="s2">&quot;row3&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C_score</th>
+      <th>score_C</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>row1</th>
+      <td>1</td>
+      <td>4</td>
+      <td>7</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>row3</th>
+      <td>3</td>
+      <td>6</td>
+      <td>9</td>
+      <td>12</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="when-to-use-filter">
+<h4>🚀 When to use <code class="docutils literal notranslate"><span class="pre">filter()</span></code>?<a class="headerlink" href="#when-to-use-filter" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>When you want label-based selection (not position-based like iloc).</p></li>
+<li><p>Very handy for selecting columns by name patterns (e.g., “score”, “2024”, “temp_”).</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="comparison-table-filter-vs-loc-vs-iloc">
+<h2>📊 Comparison Table: <code class="docutils literal notranslate"><span class="pre">.filter()</span></code> vs <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> vs <code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code><a class="headerlink" href="#comparison-table-filter-vs-loc-vs-iloc" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature / Method</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">.filter()</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">.loc[]</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Selection type</strong></p></td>
+<td><p>Label-based only (names, substrings, regex)</p></td>
+<td><p>Label-based (rows/cols by exact names, slices, conditions)</p></td>
+<td><p>Position-based (row/col numbers)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Axis default</strong></p></td>
+<td><p>Works on columns (<code class="docutils literal notranslate"><span class="pre">axis=1</span></code> by default)</p></td>
+<td><p>Works on both rows and columns</p></td>
+<td><p>Works on both rows and columns</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Supports regex?</strong></p></td>
+<td><p>✅ Yes (via <code class="docutils literal notranslate"><span class="pre">regex</span></code>)</p></td>
+<td><p>❌ No</p></td>
+<td><p>❌ No</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Supports substrings?</strong></p></td>
+<td><p>✅ Yes (via <code class="docutils literal notranslate"><span class="pre">like</span></code>)</p></td>
+<td><p>❌ No</p></td>
+<td><p>❌ No</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Supports conditions?</strong></p></td>
+<td><p>❌ No</p></td>
+<td><p>✅ Yes (e.g., <code class="docutils literal notranslate"><span class="pre">df.loc[df['A']</span> <span class="pre">&gt;</span> <span class="pre">2]</span></code>)</p></td>
+<td><p>❌ No</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Use cases</strong></p></td>
+<td><p>Filtering by column/row <strong>names/patterns</strong></p></td>
+<td><p>Filtering by <strong>labels</strong> and applying <strong>conditions</strong></p></td>
+<td><p>Pure <strong>integer position</strong> based selection</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Example</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.filter(like=&quot;score&quot;)</span></code> → selects cols containing “score”</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.loc[:,</span> <span class="pre">[&quot;A&quot;,</span> <span class="pre">&quot;C_score&quot;]]</span></code> → selects exact cols</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">df.iloc[:,</span> <span class="pre">[0,</span> <span class="pre">2]]</span></code> → selects first and third column</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./pandas"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-series_dataframes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Series and Dataframe Objects in Pandas</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Indexing in Pandas</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-indexing-and-selection-in-series">A. Data Indexing and Selection in Series</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-series-as-a-dictionary">A.1 Series as a Dictionary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2-series-as-a-one-dimensional-array">A.2 Series as a One-Dimensional Array</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">Key Differences:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-to-clarify">Example to Clarify:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">Output:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-loc-includes-the-end-label">Why <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> Includes the End Label:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boolean-masking-in-series-like-numpy-arrays">Boolean Masking in Series ( like NumPy arrays )</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#b-data-indexing-and-selection-in-datadrame">B. Data Indexing and Selection in DataDrame</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-1-dataframe-as-a-2d-numpy-array">B.1 DataFrame as a 2D NumPy array</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-dataframe-filter">C. <code class="docutils literal notranslate"><span class="pre">DataFrame.filter()</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax">📌 Syntax</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-columns-by-exact-names-items">1. Filtering columns by exact names (items)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-columns-by-substring-like">2. Filtering columns by substring (like)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-columns-using-regex">3. Filtering columns using regex</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#filtering-rows-by-index-axis-0">4. Filtering rows by index (axis=0)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-filter">🚀 When to use <code class="docutils literal notranslate"><span class="pre">filter()</span></code>?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-table-filter-vs-loc-vs-iloc">📊 Comparison Table: <code class="docutils literal notranslate"><span class="pre">.filter()</span></code> vs <code class="docutils literal notranslate"><span class="pre">.loc[]</span></code> vs <code class="docutils literal notranslate"><span class="pre">.iloc[]</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Binayak Basu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright © 2025 Binayak Basu. All rights reserved..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

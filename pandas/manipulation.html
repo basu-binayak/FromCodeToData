@@ -1,0 +1,2297 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Manipulation Methods &#8212; Data Analysis with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pandas/manipulation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Data Analysis with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Data Analysis with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    👋 Welcome to FromCodeToData
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python-basics/intro.html">Python Basics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/setup.html">Understanding Python and Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/01-Variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/02-DataTypes.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/03-Strings.html">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/04-Lists.html"><strong>Introduction to Lists in Python</strong></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/05-Objects.html">Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/06-Tuples.html">Tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/07-Dictionaries.html">Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/08-Control_Flow.html">Control Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/09-Exception_Handling.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/10-File_Handling.html">File Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/11-Functions.html">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/12-Iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/13-Generators.html">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/14-Decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/15-Sets.html">Introduction to Sets in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/16-Comprehensions.html">Introduction to Comprehensions in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/17-Frozensets.html">Frozensets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../numpy/intro.html">NumPy</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/01-arrays.html">Arrays and Array Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/02-operations.html">Array Operations and Broadcasting</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/03-indexing.html">Indexing And Slicing an Array</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/04-boolean_masking.html">Boolean Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../numpy/05-reshaping.html">Reshaping, Concatenating and Splitting Arrays</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../numpy/06-fancyIndexing_sorting.html">Fancy Indexing and Sorting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="intro.html">Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-series_dataframes.html">Series and Dataframe Objects in Pandas</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="02-indexing.html">Indexing in Pandas</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/basu-binayak/FromCodeToData.git/main?urlpath=lab/tree/pandas/manipulation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/basu-binayak/FromCodeToData.git/blob/main/pandas/manipulation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/edit/main/pandas/manipulation.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/issues/new?title=Issue%20on%20page%20%2Fpandas/manipulation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/pandas/manipulation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Manipulation Methods</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Manipulation Methods</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-series-manipulation-methods">🔹 Pandas Series Manipulation Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-apply-function-across-columns-or-rows">1.  <code class="docutils literal notranslate"><span class="pre">.apply()</span></code> → Apply function across columns or rows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-conditional-replacement">2. <code class="docutils literal notranslate"><span class="pre">.where()</span></code> → Conditional replacement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fillna-fill-missing-values">3. <code class="docutils literal notranslate"><span class="pre">.fillna()</span></code> → Fill missing values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolate-fill-missing-values-smoothly">4. <code class="docutils literal notranslate"><span class="pre">.interpolate()</span></code> → Fill missing values smoothly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clip-restrict-values-to-a-range">5. <code class="docutils literal notranslate"><span class="pre">.clip()</span></code> → Restrict values to a range</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sort-values-sort-by-column-values">6. <code class="docutils literal notranslate"><span class="pre">.sort_values()</span></code> → Sort by column values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sort-index-sort-by-index">7. <code class="docutils literal notranslate"><span class="pre">.sort_index()</span></code> → Sort by index</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-duplicates-remove-duplicate-rows">8. <code class="docutils literal notranslate"><span class="pre">.drop_duplicates()</span></code> → Remove duplicate rows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-rank-values">9. <code class="docutils literal notranslate"><span class="pre">.rank()</span></code> → Rank values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lets-build-a-side-by-side-comparison-table-of-all-ranking-methods-in-pandas">👍 Let’s build a <strong>side-by-side comparison table</strong> of all ranking methods in Pandas.</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ranking-comparison">🔢 Ranking Comparison</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation">✅ Explanation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replace-replace-values">10. <code class="docutils literal notranslate"><span class="pre">.replace()</span></code> → Replace values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-cut-bin-continuous-values">11. <code class="docutils literal notranslate"><span class="pre">pd.cut()</span></code> → Bin continuous values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-qcut-quantile-based-binning">12. <code class="docutils literal notranslate"><span class="pre">pd.qcut()</span></code> → Quantile-based binning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Explanation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#np-select-multi-condition-classification">13. <code class="docutils literal notranslate"><span class="pre">np.select()</span></code> → Multi-condition classification</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-manipulated-dataframe">Final Manipulated DataFrame</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="manipulation-methods">
+<h1>Manipulation Methods<a class="headerlink" href="#manipulation-methods" title="Link to this heading">#</a></h1>
+<section id="pandas-series-manipulation-methods">
+<h2>🔹 Pandas Series Manipulation Methods<a class="headerlink" href="#pandas-series-manipulation-methods" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Syntax</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>apply</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.apply(func,</span> <span class="pre">convert_dtype=True,</span> <span class="pre">args=(),</span> <span class="pre">**kwds)</span></code></p></td>
+<td><p>Apply a Python or NumPy function to each element of the Series. Returns a Series (or DataFrame if func returns Series).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>where</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.where(cond,</span> <span class="pre">other=np.nan,</span> <span class="pre">inplace=False,</span> <span class="pre">axis=None,</span> <span class="pre">level=None,</span> <span class="pre">errors='raise',</span> <span class="pre">try_cast=False)</span></code></p></td>
+<td><p>Keep values where <code class="docutils literal notranslate"><span class="pre">cond</span></code> is True; replace others with <code class="docutils literal notranslate"><span class="pre">other</span></code>. Works like an element-wise if-else.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>fillna</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.fillna(value=None,</span> <span class="pre">method=None,</span> <span class="pre">axis=None,</span> <span class="pre">inplace=False,</span> <span class="pre">limit=None,</span> <span class="pre">downcast=None)</span></code></p></td>
+<td><p>Fill missing values (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>) with scalar, dict, Series, or method (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;ffill&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;bfill&quot;</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>interpolate</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.interpolate(method='linear',</span> <span class="pre">axis=0,</span> <span class="pre">limit=None,</span> <span class="pre">inplace=False,</span> <span class="pre">limit_direction=None,</span> <span class="pre">limit_area=None,</span> <span class="pre">**kwargs)</span></code></p></td>
+<td><p>Fill missing values using interpolation (linear, time, spline, etc.).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>clip</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.clip(lower=None,</span> <span class="pre">upper=None,</span> <span class="pre">axis=None,</span> <span class="pre">inplace=False,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code></p></td>
+<td><p>Restrict values to a given range <code class="docutils literal notranslate"><span class="pre">[lower,</span> <span class="pre">upper]</span></code>. Values outside are clipped.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>sort_values</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.sort_values(axis=0,</span> <span class="pre">ascending=True,</span> <span class="pre">inplace=False,</span> <span class="pre">kind='quicksort',</span> <span class="pre">na_position='last',</span> <span class="pre">ignore_index=False,</span> <span class="pre">key=None)</span></code></p></td>
+<td><p>Sort values in the Series. Choose algorithm via <code class="docutils literal notranslate"><span class="pre">kind</span></code>. NaNs go last by default.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>sort_index</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.sort_index(axis=0,</span> <span class="pre">level=None,</span> <span class="pre">ascending=True,</span> <span class="pre">inplace=False,</span> <span class="pre">kind='quicksort',</span> <span class="pre">na_position='last',</span> <span class="pre">sort_remaining=True,</span> <span class="pre">ignore_index=False,</span> <span class="pre">key=None)</span></code></p></td>
+<td><p>Sort Series by index instead of values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>drop_duplicates</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.drop_duplicates(keep='first',</span> <span class="pre">inplace=False)</span></code></p></td>
+<td><p>Remove duplicate values. Keep <code class="docutils literal notranslate"><span class="pre">&quot;first&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>, or remove all duplicates with <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>rank</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.rank(axis=0,</span> <span class="pre">method='average',</span> <span class="pre">numeric_only=None,</span> <span class="pre">na_option='keep',</span> <span class="pre">ascending=True,</span> <span class="pre">pct=False)</span></code></p></td>
+<td><p>Return ranks of values in the Series. Handles ties with <code class="docutils literal notranslate"><span class="pre">&quot;average&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;min&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;max&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;first&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;dense&quot;</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>replace</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">s.replace(to_replace=None,</span> <span class="pre">value=None,</span> <span class="pre">inplace=False,</span> <span class="pre">limit=None,</span> <span class="pre">regex=False,</span> <span class="pre">method='pad')</span></code></p></td>
+<td><p>Replace values in Series using string, number, list, regex, or dictionary mapping.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>cut</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.cut(x,</span> <span class="pre">bins,</span> <span class="pre">right=True,</span> <span class="pre">labels=None,</span> <span class="pre">retbins=False,</span> <span class="pre">precision=3,</span> <span class="pre">include_lowest=False,</span> <span class="pre">duplicates='raise',</span> <span class="pre">ordered=True)</span></code></p></td>
+<td><p>Bin continuous values into discrete intervals defined by <code class="docutils literal notranslate"><span class="pre">bins</span></code>. Useful for grading, grouping.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>qcut</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pd.qcut(x,</span> <span class="pre">q,</span> <span class="pre">labels=None,</span> <span class="pre">retbins=False,</span> <span class="pre">precision=3,</span> <span class="pre">duplicates='raise')</span></code></p></td>
+<td><p>Bin values into quantile-based bins (e.g. quartiles, deciles). Useful for splitting into equal-sized groups.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>np.select</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.select(condlist,</span> <span class="pre">choicelist,</span> <span class="pre">default=0)</span></code></p></td>
+<td><p>Vectorized conditional logic. For each condition in <code class="docutils literal notranslate"><span class="pre">condlist</span></code>, apply the matching choice from <code class="docutils literal notranslate"><span class="pre">choicelist</span></code>. Returns a NumPy array.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Let us now consider a DataFrame</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">65</span><span class="p">],</span>
+    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      A     B  C
+0  10.0   5.0  x
+1  20.0  15.0  y
+2  30.0   NaN  z
+3  40.0  25.0  x
+4   NaN  35.0  y
+5  60.0  45.0  z
+6  70.0   NaN  x
+7  70.0  65.0  y
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="apply-apply-function-across-columns-or-rows">
+<h2>1.  <code class="docutils literal notranslate"><span class="pre">.apply()</span></code> → Apply function across columns or rows<a class="headerlink" href="#apply-apply-function-across-columns-or-rows" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;A_Squared&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A_Squared</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>x</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>15.0</td>
+      <td>y</td>
+      <td>400.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>NaN</td>
+      <td>z</td>
+      <td>900.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>25.0</td>
+      <td>x</td>
+      <td>1600.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>y</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>45.0</td>
+      <td>z</td>
+      <td>3600.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>NaN</td>
+      <td>x</td>
+      <td>4900.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>70.0</td>
+      <td>65.0</td>
+      <td>y</td>
+      <td>4900.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="where-conditional-replacement">
+<h2>2. <code class="docutils literal notranslate"><span class="pre">.where()</span></code> → Conditional replacement<a class="headerlink" href="#where-conditional-replacement" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;B_where&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">20</span><span class="p">,</span> <span class="n">other</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A_Squared</th>
+      <th>B_where</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>x</td>
+      <td>100.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>15.0</td>
+      <td>y</td>
+      <td>400.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>NaN</td>
+      <td>z</td>
+      <td>900.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>25.0</td>
+      <td>x</td>
+      <td>1600.0</td>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>y</td>
+      <td>NaN</td>
+      <td>35.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>45.0</td>
+      <td>z</td>
+      <td>3600.0</td>
+      <td>45.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>NaN</td>
+      <td>x</td>
+      <td>4900.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>70.0</td>
+      <td>65.0</td>
+      <td>y</td>
+      <td>4900.0</td>
+      <td>65.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>I can get similar results using <code class="docutils literal notranslate"><span class="pre">np.wehere</span></code> too! Let’s do that!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;B_np.where&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span>
+    <span class="mi">0</span>
+<span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A_Squared</th>
+      <th>B_where</th>
+      <th>B_np.where</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>x</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>15.0</td>
+      <td>y</td>
+      <td>400.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>NaN</td>
+      <td>z</td>
+      <td>900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>25.0</td>
+      <td>x</td>
+      <td>1600.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>y</td>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>35.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>45.0</td>
+      <td>z</td>
+      <td>3600.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>NaN</td>
+      <td>x</td>
+      <td>4900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>70.0</td>
+      <td>65.0</td>
+      <td>y</td>
+      <td>4900.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="fillna-fill-missing-values">
+<h2>3. <code class="docutils literal notranslate"><span class="pre">.fillna()</span></code> → Fill missing values<a class="headerlink" href="#fillna-fill-missing-values" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;B_filled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">99</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;B_filled&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>B</th>
+      <th>B_filled</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>15.0</td>
+      <td>15.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>NaN</td>
+      <td>99.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>25.0</td>
+      <td>25.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>35.0</td>
+      <td>35.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>45.0</td>
+      <td>45.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>NaN</td>
+      <td>99.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>65.0</td>
+      <td>65.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="interpolate-fill-missing-values-smoothly">
+<h2>4. <code class="docutils literal notranslate"><span class="pre">.interpolate()</span></code> → Fill missing values smoothly<a class="headerlink" href="#interpolate-fill-missing-values-smoothly" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;B_interp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;B_interp&quot;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      B  B_interp
+0   5.0       5.0
+1  15.0      15.0
+2   NaN      20.0
+3  25.0      25.0
+4  35.0      35.0
+5  45.0      45.0
+6   NaN      55.0
+7  65.0      65.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="clip-restrict-values-to-a-range">
+<h2>5. <code class="docutils literal notranslate"><span class="pre">.clip()</span></code> → Restrict values to a range<a class="headerlink" href="#clip-restrict-values-to-a-range" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;A_clipped&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A_clipped&quot;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      A  A_clipped
+0  10.0       15.0
+1  20.0       20.0
+2  30.0       30.0
+3  40.0       40.0
+4   NaN        NaN
+5  60.0       60.0
+6  70.0       60.0
+7  70.0       60.0
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p>✅ Values in A less than 15 become 15; greater than 60 become 60.</p></li>
+</ul>
+</section>
+<section id="sort-values-sort-by-column-values">
+<h2>6. <code class="docutils literal notranslate"><span class="pre">.sort_values()</span></code> → Sort by column values<a class="headerlink" href="#sort-values-sort-by-column-values" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A_Squared</th>
+      <th>B_where</th>
+      <th>B_np.where</th>
+      <th>B_filled</th>
+      <th>B_interp</th>
+      <th>A_clipped</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>x</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>15.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>15.0</td>
+      <td>y</td>
+      <td>400.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>15.0</td>
+      <td>15.0</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>25.0</td>
+      <td>x</td>
+      <td>1600.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>y</td>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>45.0</td>
+      <td>z</td>
+      <td>3600.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>70.0</td>
+      <td>65.0</td>
+      <td>y</td>
+      <td>4900.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>NaN</td>
+      <td>z</td>
+      <td>900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99.0</td>
+      <td>20.0</td>
+      <td>30.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>NaN</td>
+      <td>x</td>
+      <td>4900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99.0</td>
+      <td>55.0</td>
+      <td>60.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ul class="simple">
+<li><p>Note - The <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values go to the last!</p></li>
+</ul>
+</section>
+<section id="sort-index-sort-by-index">
+<h2>7. <code class="docutils literal notranslate"><span class="pre">.sort_index()</span></code> → Sort by index<a class="headerlink" href="#sort-index-sort-by-index" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A_Squared</th>
+      <th>B_where</th>
+      <th>B_np.where</th>
+      <th>B_filled</th>
+      <th>B_interp</th>
+      <th>A_clipped</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7</th>
+      <td>70.0</td>
+      <td>65.0</td>
+      <td>y</td>
+      <td>4900.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>NaN</td>
+      <td>x</td>
+      <td>4900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99.0</td>
+      <td>55.0</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>45.0</td>
+      <td>z</td>
+      <td>3600.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>y</td>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>25.0</td>
+      <td>x</td>
+      <td>1600.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>NaN</td>
+      <td>z</td>
+      <td>900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99.0</td>
+      <td>20.0</td>
+      <td>30.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>15.0</td>
+      <td>y</td>
+      <td>400.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>15.0</td>
+      <td>15.0</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>x</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>15.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="drop-duplicates-remove-duplicate-rows">
+<h2>8. <code class="docutils literal notranslate"><span class="pre">.drop_duplicates()</span></code> → Remove duplicate rows<a class="headerlink" href="#drop-duplicates-remove-duplicate-rows" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])</span> <span class="c1"># The subset allows to drop duplicates of that specified subset of rows</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A_Squared</th>
+      <th>B_where</th>
+      <th>B_np.where</th>
+      <th>B_filled</th>
+      <th>B_interp</th>
+      <th>A_clipped</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>x</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>15.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>15.0</td>
+      <td>y</td>
+      <td>400.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>15.0</td>
+      <td>15.0</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>NaN</td>
+      <td>z</td>
+      <td>900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99.0</td>
+      <td>20.0</td>
+      <td>30.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>25.0</td>
+      <td>x</td>
+      <td>1600.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>y</td>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>45.0</td>
+      <td>z</td>
+      <td>3600.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>NaN</td>
+      <td>x</td>
+      <td>4900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99.0</td>
+      <td>55.0</td>
+      <td>60.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ul class="simple">
+<li><p>✅ Keeps first occurrence of duplicate A=70, drops the rest.</p></li>
+</ul>
+</section>
+<section id="rank-rank-values">
+<h2>9. <code class="docutils literal notranslate"><span class="pre">.rank()</span></code> → Rank values<a class="headerlink" href="#rank-rank-values" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A_rank&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A_rank&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>A_rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>70.0</td>
+      <td>6.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="lets-build-a-side-by-side-comparison-table-of-all-ranking-methods-in-pandas">
+<h3>👍 Let’s build a <strong>side-by-side comparison table</strong> of all ranking methods in Pandas.<a class="headerlink" href="#lets-build-a-side-by-side-comparison-table-of-all-ranking-methods-in-pandas" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">]})</span>
+</pre></div>
+</div>
+<section id="ranking-comparison">
+<h4>🔢 Ranking Comparison<a class="headerlink" href="#ranking-comparison" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Value (A)</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">average</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">min</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">max</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">first</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">dense</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>100</strong></p></td>
+<td><p>1.0</p></td>
+<td><p>1.0</p></td>
+<td><p>1.0</p></td>
+<td><p>1.0</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>200</strong></p></td>
+<td><p>2.5</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>2.0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>200</strong></p></td>
+<td><p>2.5</p></td>
+<td><p>2.0</p></td>
+<td><p>3.0</p></td>
+<td><p>3.0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>300</strong></p></td>
+<td><p>4.0</p></td>
+<td><p>4.0</p></td>
+<td><p>4.0</p></td>
+<td><p>4.0</p></td>
+<td><p>3.0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="explanation">
+<h4>✅ Explanation<a class="headerlink" href="#explanation" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">average</span></code></strong> → ties get the mean of ranks (200 gets (2+3)/2 = 2.5).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">min</span></code></strong> → ties take the lowest rank available (200 → 2).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">max</span></code></strong> → ties take the highest rank available (200 → 3).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">first</span></code></strong> → ties broken by order of appearance (1st 200 → 2, 2nd 200 → 3).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">dense</span></code></strong> → ties like <code class="docutils literal notranslate"><span class="pre">min</span></code>, but next rank is consecutive (300 → 3, not 4).</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="replace-replace-values">
+<h2>10. <code class="docutils literal notranslate"><span class="pre">.replace()</span></code> → Replace values<a class="headerlink" href="#replace-replace-values" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;C_replaced&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;X-ray&quot;</span><span class="p">,</span> 
+                                    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;Yellow&quot;</span><span class="p">})</span>
+<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;C_replaced&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>C</th>
+      <th>C_replaced</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>x</td>
+      <td>X-ray</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>y</td>
+      <td>Yellow</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>z</td>
+      <td>z</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>x</td>
+      <td>X-ray</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>y</td>
+      <td>Yellow</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>z</td>
+      <td>z</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>x</td>
+      <td>X-ray</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>y</td>
+      <td>Yellow</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="pd-cut-bin-continuous-values">
+<h2>11. <code class="docutils literal notranslate"><span class="pre">pd.cut()</span></code> → Bin continuous values<a class="headerlink" href="#pd-cut-bin-continuous-values" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A_bin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Low&quot;</span><span class="p">,</span> <span class="s2">&quot;Mid&quot;</span><span class="p">,</span> <span class="s2">&quot;High&quot;</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A_bin&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>A_bin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>Mid</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>Mid</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>70.0</td>
+      <td>High</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ul class="simple">
+<li><p>✅ Groups A values into categories (Low, Mid, High).</p></li>
+</ul>
+</section>
+<section id="pd-qcut-quantile-based-binning">
+<h2>12. <code class="docutils literal notranslate"><span class="pre">pd.qcut()</span></code> → Quantile-based binning<a class="headerlink" href="#pd-qcut-quantile-based-binning" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;B_qbin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span> <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Low&quot;</span><span class="p">,</span> <span class="s2">&quot;Medium&quot;</span><span class="p">,</span> <span class="s2">&quot;High&quot;</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;B_qbin&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>B</th>
+      <th>B_qbin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.0</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>15.0</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>25.0</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>35.0</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>45.0</td>
+      <td>High</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>65.0</td>
+      <td>High</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<ul class="simple">
+<li><p>✅ Splits B into 3 equal-sized groups by rank.</p></li>
+</ul>
+<p>In <strong><code class="docutils literal notranslate"><span class="pre">pd.qcut</span></code></strong>, the parameter <strong><code class="docutils literal notranslate"><span class="pre">q</span></code></strong> stands for <strong>quantiles</strong>.</p>
+<ul class="simple">
+<li><p>It divides the data into <strong>q equal-sized groups</strong> based on rank (percentiles), not on fixed value ranges.</p></li>
+<li><p>Each bin has (approximately) the same number of observations.</p></li>
+</ul>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">]})</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;B_qbin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">],</span> <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Low&quot;</span><span class="p">,</span> <span class="s2">&quot;Medium&quot;</span><span class="p">,</span> <span class="s2">&quot;High&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>B</p></th>
+<th class="head"><p>B_qbin</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>Low</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>Low</p></td>
+</tr>
+<tr class="row-even"><td><p>30</p></td>
+<td><p>Low</p></td>
+</tr>
+<tr class="row-odd"><td><p>40</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-even"><td><p>50</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-odd"><td><p>60</p></td>
+<td><p>Medium</p></td>
+</tr>
+<tr class="row-even"><td><p>70</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-odd"><td><p>80</p></td>
+<td><p>High</p></td>
+</tr>
+<tr class="row-even"><td><p>90</p></td>
+<td><p>High</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id1">
+<h3>Explanation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">q=3</span></code> → split into <strong>3 equal groups</strong>.</p></li>
+<li><p>Each group gets ~⅓ of the data:</p>
+<ul>
+<li><p><strong>Low</strong> → bottom 33%</p></li>
+<li><p><strong>Medium</strong> → middle 33%</p></li>
+<li><p><strong>High</strong> → top 33%</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="np-select-multi-condition-classification">
+<h2>13. <code class="docutils literal notranslate"><span class="pre">np.select()</span></code> → Multi-condition classification<a class="headerlink" href="#np-select-multi-condition-classification" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">condlist</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">30</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">60</span><span class="p">),</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">60</span>
+<span class="p">]</span>
+<span class="n">choicelist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Small&quot;</span><span class="p">,</span> <span class="s2">&quot;Medium&quot;</span><span class="p">,</span> <span class="s2">&quot;Large&quot;</span><span class="p">]</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;A_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">condlist</span><span class="p">,</span> <span class="n">choicelist</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A_size&quot;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      A   A_size
+0  10.0    Small
+1  20.0    Small
+2  30.0   Medium
+3  40.0   Medium
+4   NaN  Unknown
+5  60.0   Medium
+6  70.0    Large
+7  70.0    Large
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="final-manipulated-dataframe">
+<h1>Final Manipulated DataFrame<a class="headerlink" href="#final-manipulated-dataframe" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+      <th>C</th>
+      <th>A_Squared</th>
+      <th>B_where</th>
+      <th>B_np.where</th>
+      <th>B_filled</th>
+      <th>B_interp</th>
+      <th>A_clipped</th>
+      <th>A_rank</th>
+      <th>C_replaced</th>
+      <th>A_bin</th>
+      <th>B_qbin</th>
+      <th>A_size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>x</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>15.0</td>
+      <td>1.0</td>
+      <td>X-ray</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Small</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20.0</td>
+      <td>15.0</td>
+      <td>y</td>
+      <td>400.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>15.0</td>
+      <td>15.0</td>
+      <td>20.0</td>
+      <td>2.0</td>
+      <td>Yellow</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Small</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>30.0</td>
+      <td>NaN</td>
+      <td>z</td>
+      <td>900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99.0</td>
+      <td>20.0</td>
+      <td>30.0</td>
+      <td>3.0</td>
+      <td>z</td>
+      <td>Low</td>
+      <td>NaN</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>40.0</td>
+      <td>25.0</td>
+      <td>x</td>
+      <td>1600.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>25.0</td>
+      <td>40.0</td>
+      <td>4.0</td>
+      <td>X-ray</td>
+      <td>Mid</td>
+      <td>Medium</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>y</td>
+      <td>NaN</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>35.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Yellow</td>
+      <td>NaN</td>
+      <td>Medium</td>
+      <td>Unknown</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>60.0</td>
+      <td>45.0</td>
+      <td>z</td>
+      <td>3600.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>45.0</td>
+      <td>60.0</td>
+      <td>5.0</td>
+      <td>z</td>
+      <td>Mid</td>
+      <td>High</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>70.0</td>
+      <td>NaN</td>
+      <td>x</td>
+      <td>4900.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>99.0</td>
+      <td>55.0</td>
+      <td>60.0</td>
+      <td>6.0</td>
+      <td>X-ray</td>
+      <td>High</td>
+      <td>NaN</td>
+      <td>Large</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>70.0</td>
+      <td>65.0</td>
+      <td>y</td>
+      <td>4900.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>65.0</td>
+      <td>60.0</td>
+      <td>6.0</td>
+      <td>Yellow</td>
+      <td>High</td>
+      <td>High</td>
+      <td>Large</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<hr class="docutils" />
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./pandas"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Manipulation Methods</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-series-manipulation-methods">🔹 Pandas Series Manipulation Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-apply-function-across-columns-or-rows">1.  <code class="docutils literal notranslate"><span class="pre">.apply()</span></code> → Apply function across columns or rows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-conditional-replacement">2. <code class="docutils literal notranslate"><span class="pre">.where()</span></code> → Conditional replacement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fillna-fill-missing-values">3. <code class="docutils literal notranslate"><span class="pre">.fillna()</span></code> → Fill missing values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolate-fill-missing-values-smoothly">4. <code class="docutils literal notranslate"><span class="pre">.interpolate()</span></code> → Fill missing values smoothly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clip-restrict-values-to-a-range">5. <code class="docutils literal notranslate"><span class="pre">.clip()</span></code> → Restrict values to a range</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sort-values-sort-by-column-values">6. <code class="docutils literal notranslate"><span class="pre">.sort_values()</span></code> → Sort by column values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sort-index-sort-by-index">7. <code class="docutils literal notranslate"><span class="pre">.sort_index()</span></code> → Sort by index</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-duplicates-remove-duplicate-rows">8. <code class="docutils literal notranslate"><span class="pre">.drop_duplicates()</span></code> → Remove duplicate rows</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rank-rank-values">9. <code class="docutils literal notranslate"><span class="pre">.rank()</span></code> → Rank values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lets-build-a-side-by-side-comparison-table-of-all-ranking-methods-in-pandas">👍 Let’s build a <strong>side-by-side comparison table</strong> of all ranking methods in Pandas.</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ranking-comparison">🔢 Ranking Comparison</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation">✅ Explanation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replace-replace-values">10. <code class="docutils literal notranslate"><span class="pre">.replace()</span></code> → Replace values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-cut-bin-continuous-values">11. <code class="docutils literal notranslate"><span class="pre">pd.cut()</span></code> → Bin continuous values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pd-qcut-quantile-based-binning">12. <code class="docutils literal notranslate"><span class="pre">pd.qcut()</span></code> → Quantile-based binning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Explanation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#np-select-multi-condition-classification">13. <code class="docutils literal notranslate"><span class="pre">np.select()</span></code> → Multi-condition classification</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#final-manipulated-dataframe">Final Manipulated DataFrame</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Binayak Basu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright © 2025 Binayak Basu. All rights reserved..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

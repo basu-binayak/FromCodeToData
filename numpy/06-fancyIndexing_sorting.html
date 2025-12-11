@@ -1,0 +1,1684 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Fancy Indexing in NumPy &#8212; Data Analysis with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'numpy/06-fancyIndexing_sorting';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="🐼 Pandas: The Ultimate Tool for Data Analysis in Python" href="../pandas/intro.html" />
+    <link rel="prev" title="Reshaping, Concatenating and Splitting Arrays" href="05-reshaping.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Data Analysis with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Data Analysis with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    👋 Welcome to FromCodeToData
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python-basics/intro.html">Python Basics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/setup.html">Understanding Python and Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/01-Variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/02-DataTypes.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/03-Strings.html">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/04-Lists.html"><strong>Introduction to Lists in Python</strong></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/05-Objects.html">Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/06-Tuples.html">Tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/07-Dictionaries.html">Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/08-Control_Flow.html">Control Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/09-Exception_Handling.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/10-File_Handling.html">File Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/11-Functions.html">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/12-Iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/13-Generators.html">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/14-Decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/15-Sets.html">Introduction to Sets in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/16-Comprehensions.html">Introduction to Comprehensions in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/17-Frozensets.html">Frozensets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">NumPy</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-arrays.html">Arrays and Array Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-operations.html">Array Operations and Broadcasting</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="03-indexing.html">Indexing And Slicing an Array</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="04-boolean_masking.html">Boolean Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-reshaping.html">Reshaping, Concatenating and Splitting Arrays</a></li>
+
+
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Fancy Indexing and Sorting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pandas/intro.html">Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pandas/01-series_dataframes.html">Series and Dataframe Objects in Pandas</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../pandas/02-indexing.html">Indexing in Pandas</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/basu-binayak/FromCodeToData.git/main?urlpath=lab/tree/numpy/06-fancyIndexing_sorting.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/basu-binayak/FromCodeToData.git/blob/main/numpy/06-fancyIndexing_sorting.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/edit/main/numpy/06-fancyIndexing_sorting.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/issues/new?title=Issue%20on%20page%20%2Fnumpy/06-fancyIndexing_sorting.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/numpy/06-fancyIndexing_sorting.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Fancy Indexing in NumPy</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-numpy">Import NumPy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fancy-indexing-for-a-one-dimensional-array">Fancy Indexing for a One Dimensional Array</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-breakdown">The Code Breakdown</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#broadcasting-in-detail">Broadcasting in Detail</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#final-output">Final Output</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-broadcasting">Summary of Broadcasting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-indexing">Combined Indexing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modifying-values-with-fancy-indexing">Modifying Values with Fancy Indexing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-binning-data-histogram-by-hand">Example of Binning Data - Histogram by hand!</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note-on-np-searchsorted">Note on <code class="docutils literal notranslate"><span class="pre">np.searchsorted()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax"><strong>Syntax</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works"><strong>How It Works</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples"><strong>Examples</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-example-side-left"><strong>1. Basic Example (side=’left’)</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-side-right"><strong>2. Using <code class="docutils literal notranslate"><span class="pre">side='right'</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#search-in-a-custom-sorted-array-with-sorter"><strong>3. Search in a Custom-Sorted Array (with <code class="docutils literal notranslate"><span class="pre">sorter</span></code>)</strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inserting-values-into-the-array"><strong>4. Inserting Values into the Array</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases"><strong>Use Cases</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-np-lexsort">🧠 What is <code class="docutils literal notranslate"><span class="pre">np.lexsort()</span></code>?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#real-life-example-sort-students-by-class-then-by-marks">📊 Real-Life Example: Sort Students by Class, then by Marks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">🧾 Output:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">✅ Output:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax-recap">🧩 Syntax Recap:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-lexsort">🧙 Why Use <code class="docutils literal notranslate"><span class="pre">lexsort()</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tip">⚠️ Tip:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">NOTE</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="fancy-indexing-in-numpy">
+<h1>Fancy Indexing in NumPy<a class="headerlink" href="#fancy-indexing-in-numpy" title="Link to this heading">#</a></h1>
+<section id="import-numpy">
+<h2>Import NumPy<a class="headerlink" href="#import-numpy" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;numpy&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fancy-indexing-for-a-one-dimensional-array">
+<h2>Fancy Indexing for a One Dimensional Array<a class="headerlink" href="#fancy-indexing-for-a-one-dimensional-array" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># consider a one dimensional array </span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original arr:</span><span class="si">{</span><span class="n">arr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># let us create a 2D array using fancy indexing </span>
+<span class="n">fancy_ind</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span>
+             <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]]</span>
+<span class="n">arr_2d</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">fancy_ind</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The 2D array formed from afncy indexing is:</span><span class="se">\n</span><span class="si">{</span><span class="n">arr_2d</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original arr:[49 37 13  0 28 16 32 13 31]
+The 2D array formed from afncy indexing is:
+[[ 0 16]
+ [28 13]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># consider now a multidimensional array </span>
+<span class="n">arr_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]])</span>
+<span class="c1"># [(0,1), (1,2), (2,3)] are the coordinates of the point </span>
+
+<span class="c1"># But - Note if one is a slice then the other also works as a slice </span>
+<span class="c1"># Say, I want the elements in row 1,2 and the col 1,3</span>
+<span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="n">col</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]] 
+
+[ 1  6 11]
+[[ 5  7]
+ [ 9 11]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Similarly </span>
+<span class="n">arr_2</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1,  2,  3],
+       [ 5,  6,  7],
+       [ 9, 10, 11]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># But, what if we want a slice but the indices are random </span>
+<span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original array: </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">arr_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Indexed array: </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Indexed array as a row vector:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:]]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Indexed array as a row vector:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:],</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Indexed array as a row vector:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">arr_2</span><span class="p">[[</span><span class="n">row</span><span class="p">],[</span><span class="n">col</span><span class="p">]]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sliced array:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sliced array:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span><span class="n">col</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original array: 
+ [[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+Indexed array: 
+ [ 1 11]
+Indexed array as a row vector:
+ [[ 1 11]]
+Indexed array as a row vector:
+ [[ 1 11]]
+Indexed array as a row vector:
+ [[ 1 11]]
+Sliced array:
+ [[ 1  9]
+ [ 3 11]]
+Sliced array:
+ [[ 1  3]
+ [ 9 11]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># consider now a multidimensional array </span>
+<span class="n">arr_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># let us now do some fancy indexing </span>
+<span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">,</span><span class="n">col</span><span class="p">])</span>
+
+<span class="c1"># Instead in fancy indexing, if we consider a row vector or a column vector , we get a 2D array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">col</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]] 
+
+[ 1  6 11]
+[[ 1  2  3]
+ [ 5  6  7]
+ [ 9 10 11]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the given code, <strong>broadcasting</strong> plays a key role in allowing the <strong>row vector</strong> and <strong>column vector</strong> to interact correctly when performing <strong>fancy indexing</strong>. Let’s break this down step-by-step to clarify what’s happening.</p>
+<hr class="docutils" />
+<section id="the-code-breakdown">
+<h3>The Code Breakdown<a class="headerlink" href="#the-code-breakdown" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Array <code class="docutils literal notranslate"><span class="pre">arr_2</span></code></strong><br />
+A 2D array of shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">4)</span></code> is created using <code class="docutils literal notranslate"><span class="pre">np.arange(12).reshape((3,</span> <span class="pre">4))</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">arr_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span> <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mi">4</span>  <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mi">8</span>  <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Fancy Indexing Without Broadcasting</strong><br />
+We create two 1D arrays for <strong>row</strong> and <strong>col</strong> indices:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>  <span class="c1"># shape (3,)</span>
+<span class="n">col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  <span class="c1"># shape (3,)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Here, the shapes of <code class="docutils literal notranslate"><span class="pre">row</span></code> and <code class="docutils literal notranslate"><span class="pre">col</span></code> are both <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>, and they are used directly for indexing.<br />
+NumPy pairs each row index with the corresponding column index (element-wise):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">(row[0],</span> <span class="pre">col[0])</span> <span class="pre">-&gt;</span> <span class="pre">(0,</span> <span class="pre">1)</span></code> → <code class="docutils literal notranslate"><span class="pre">arr_2[0,</span> <span class="pre">1]</span> <span class="pre">=</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(row[1],</span> <span class="pre">col[1])</span> <span class="pre">-&gt;</span> <span class="pre">(1,</span> <span class="pre">2)</span></code> → <code class="docutils literal notranslate"><span class="pre">arr_2[1,</span> <span class="pre">2]</span> <span class="pre">=</span> <span class="pre">6</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(row[2],</span> <span class="pre">col[2])</span> <span class="pre">-&gt;</span> <span class="pre">(2,</span> <span class="pre">3)</span></code> → <code class="docutils literal notranslate"><span class="pre">arr_2[2,</span> <span class="pre">3]</span> <span class="pre">=</span> <span class="pre">11</span></code></p></li>
+</ul>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mi">1</span>  <span class="mi">6</span> <span class="mi">11</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Fancy Indexing With Broadcasting</strong><br />
+When we introduce a row vector (<code class="docutils literal notranslate"><span class="pre">row[:,</span> <span class="pre">np.newaxis]</span></code>) and keep <code class="docutils literal notranslate"><span class="pre">col</span></code> as is, <strong>broadcasting</strong> occurs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">col</span><span class="p">])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">row[:,</span> <span class="pre">np.newaxis]</span></code> reshapes <code class="docutils literal notranslate"><span class="pre">row</span></code> from shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> into shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code> (a column vector).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">col</span></code> has a shape of <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> (a row vector).</p></li>
+</ul>
+<p>Here is the result of their shapes before broadcasting:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">row[:,</span> <span class="pre">np.newaxis]</span></code> → shape <strong>(3, 1)</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">col</span></code> → shape <strong>(3,)</strong></p></li>
+</ul>
+<p><strong>Broadcasting Rules</strong> apply to make their shapes compatible:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code> shape expands horizontally to match <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> → resulting shape is <strong>(3, 3)</strong>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="broadcasting-in-detail">
+<h3>Broadcasting in Detail<a class="headerlink" href="#broadcasting-in-detail" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Column Vector (<code class="docutils literal notranslate"><span class="pre">row[:,</span> <span class="pre">np.newaxis]</span></code>)</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">row</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">0</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>Shape: <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code> — This represents the row indices as a column vector.</p>
+</li>
+<li><p><strong>Row Vector (<code class="docutils literal notranslate"><span class="pre">col</span></code>)</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">col</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Shape: <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> — This represents the column indices as a row vector.</p>
+</li>
+<li><p><strong>Broadcasting the Indices</strong><br />
+NumPy <strong>broadcasts</strong> these two shapes <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code> and <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> to produce a 2D grid of indices with shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code>.</p>
+<ul>
+<li><p>Row indices:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">0</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>Broadcasted horizontally to match <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+<li><p>Column indices:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Broadcasted vertically to match <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+ <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Resulting Pairing of Indices</strong><br />
+After broadcasting, the row and column indices combine element-wise:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">row_indices</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+
+<span class="n">col_indices</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>These indices are then applied to <code class="docutils literal notranslate"><span class="pre">arr_2</span></code>:</p>
+<ul class="simple">
+<li><p>For the first row (<code class="docutils literal notranslate"><span class="pre">row=0</span></code>):<br />
+Indices → <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">1),</span> <span class="pre">(0,</span> <span class="pre">2),</span> <span class="pre">(0,</span> <span class="pre">3)</span></code> → Values → <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code></p></li>
+<li><p>For the second row (<code class="docutils literal notranslate"><span class="pre">row=1</span></code>):<br />
+Indices → <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">1),</span> <span class="pre">(1,</span> <span class="pre">2),</span> <span class="pre">(1,</span> <span class="pre">3)</span></code> → Values → <code class="docutils literal notranslate"><span class="pre">[5,</span> <span class="pre">6,</span> <span class="pre">7]</span></code></p></li>
+<li><p>For the third row (<code class="docutils literal notranslate"><span class="pre">row=2</span></code>):<br />
+Indices → <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">1),</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">(2,</span> <span class="pre">3)</span></code> → Values → <code class="docutils literal notranslate"><span class="pre">[9,</span> <span class="pre">10,</span> <span class="pre">11]</span></code></p></li>
+</ul>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="final-output">
+<h3>Final Output<a class="headerlink" href="#final-output" title="Link to this heading">#</a></h3>
+<p>The result is a 2D array of shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span> <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">3</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mi">5</span>  <span class="mi">6</span>  <span class="mi">7</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mi">9</span> <span class="mi">10</span> <span class="mi">11</span><span class="p">]]</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="summary-of-broadcasting">
+<h3>Summary of Broadcasting<a class="headerlink" href="#summary-of-broadcasting" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">row[:,</span> <span class="pre">np.newaxis]</span></code> reshapes the row indices into a column vector of shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">col</span></code> remains a row vector of shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>.</p></li>
+<li><p>Broadcasting combines these two shapes into a grid of shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code>:</p>
+<ul>
+<li><p>Rows expand horizontally.</p></li>
+<li><p>Columns expand vertically.</p></li>
+</ul>
+</li>
+<li><p>The resulting grid of indices is used for fancy indexing, producing a 2D array.</p></li>
+</ul>
+<p>This demonstrates how broadcasting simplifies the process of combining row and column vectors for multidimensional indexing.</p>
+</section>
+</section>
+<section id="combined-indexing">
+<h2>Combined Indexing<a class="headerlink" href="#combined-indexing" title="Link to this heading">#</a></h2>
+<p>Fancy Indexing can be combined with other forms of indexing too!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># combine with simple indices </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="n">col</span><span class="p">],</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># combine with slicing </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="n">col</span><span class="p">],</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># combine with boolean masking</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_2</span><span class="p">[</span><span class="n">row</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">]])</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 9 10 11] 
+
+[[ 5  6  7]
+ [ 9 10 11]] 
+
+[[ 1  2  3]
+ [ 5  6  7]
+ [ 9 10 11]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="modifying-values-with-fancy-indexing">
+<h2>Modifying Values with Fancy Indexing<a class="headerlink" href="#modifying-values-with-fancy-indexing" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let us take an array </span>
+<span class="n">arr_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[99 76 57 46 90 89 21  9 36 45]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let us now use fancy indexing to change the numbers </span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span>
+<span class="n">arr_1</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 99  76 100  46 100  89 100   9 100  45]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arr_1</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">+=</span><span class="mi">100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 99  76 200  46 200  89 200   9 200  45]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Howver, sometimes it may lead to unexpected results! Let us see them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arr_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1">#say I want to add 1 to certain indices i.e. at index 2 add 1 , index 3 add 1 two times and at index 4 add1 three times </span>
+<span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">arr_0</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0. 0. 1. 2. 3. 0. 0. 0. 0. 0.]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note here if i had done the following operation instead </span>
+<span class="n">arr_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">arr_0</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0. 0. 1. 1. 1. 0. 0. 0. 0. 0.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The reason for this result is, we are not doing here multiple increments but multiple assignments!</p>
+<section id="example-of-binning-data-histogram-by-hand">
+<h3>Example of Binning Data - Histogram by hand!<a class="headerlink" href="#example-of-binning-data-histogram-by-hand" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">arr_1</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># let us create a histogram </span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span> <span class="c1"># crate the bins - here we have 50 bins from -5 to 5 </span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="c1"># now make all the bins have 0 values at start </span>
+
+<span class="c1"># find the appropriate bin for each element of the array</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">arr_1</span><span class="p">)</span> 
+
+<span class="c1"># add 1 to each one of these bins </span>
+<span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counts</span> <span class="c1"># see th bin counts </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  1.,  2.,  0.,  4.,  2.,
+        3.,  8.,  9., 15., 28., 32., 40., 48., 65., 65., 81., 88., 70.,
+       90., 61., 73., 58., 45., 30., 33., 16., 14.,  8.,  3.,  4.,  3.,
+        1.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># using the hist</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">arr_1</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 0.,  0.,  0.,  0.,  0.,  0.,  0.,  1.,  2.,  0.,  4.,  2.,  3.,
+         8.,  9., 15., 28., 32., 40., 48., 65., 65., 81., 88., 70., 90.,
+        61., 73., 58., 45., 30., 33., 16., 14.,  8.,  3.,  4.,  3.,  1.,
+         0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.,  0.]),
+ array([-5.        , -4.79591837, -4.59183673, -4.3877551 , -4.18367347,
+        -3.97959184, -3.7755102 , -3.57142857, -3.36734694, -3.16326531,
+        -2.95918367, -2.75510204, -2.55102041, -2.34693878, -2.14285714,
+        -1.93877551, -1.73469388, -1.53061224, -1.32653061, -1.12244898,
+        -0.91836735, -0.71428571, -0.51020408, -0.30612245, -0.10204082,
+         0.10204082,  0.30612245,  0.51020408,  0.71428571,  0.91836735,
+         1.12244898,  1.32653061,  1.53061224,  1.73469388,  1.93877551,
+         2.14285714,  2.34693878,  2.55102041,  2.75510204,  2.95918367,
+         3.16326531,  3.36734694,  3.57142857,  3.7755102 ,  3.97959184,
+         4.18367347,  4.3877551 ,  4.59183673,  4.79591837,  5.        ]),
+ [&lt;matplotlib.patches.Polygon at 0x23df69623c0&gt;])
+</pre></div>
+</div>
+<img alt="../_images/19eb0d14d320b218dc3f6515f50c6339692051609cf6f03b285e307a933c1703.png" src="../_images/19eb0d14d320b218dc3f6515f50c6339692051609cf6f03b285e307a933c1703.png" />
+</div>
+</div>
+<p>This function will create a nearly identical plot to the one just shown. To compute the
+binning, Matplotlib uses the np.histogram function, which does a very similar computation
+to what we did before. Let’s compare the two here:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy histogram (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">arr_1</span><span class="p">)</span><span class="si">}</span><span class="s2"> points):&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> counts, edges = np.histogram(arr_1, bins)
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Custom histogram (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">arr_1</span><span class="p">)</span><span class="si">}</span><span class="s2"> points):&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> np.add.at(counts, np.searchsorted(bins, arr_1), 1)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NumPy histogram (1000 points):
+19.1 μs ± 204 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+Custom histogram (1000 points):
+67.5 μs ± 1.09 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1000000</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NumPy histogram (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2"> points):&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> counts, edges = np.histogram(x, bins)
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Custom histogram (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="si">}</span><span class="s2"> points):&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> np.add.at(counts, np.searchsorted(bins, x), 1)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NumPy histogram (1000000 points):
+6.22 ms ± 216 μs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+Custom histogram (1000000 points):
+87 ms ± 1.24 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="note-on-np-searchsorted">
+<h3>Note on <code class="docutils literal notranslate"><span class="pre">np.searchsorted()</span></code><a class="headerlink" href="#note-on-np-searchsorted" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">np.searchsorted</span></code> is a function in NumPy that is used to <strong>find indices</strong> where elements should be inserted into a sorted array in order to maintain its sorted order.</p>
+</section>
+<hr class="docutils" />
+<section id="syntax">
+<h3><strong>Syntax</strong><a class="headerlink" href="#syntax" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">numpy</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">a</span></code></strong>: Input <strong>sorted</strong> 1D array.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">v</span></code></strong>: Values to insert into <code class="docutils literal notranslate"><span class="pre">a</span></code> to find the appropriate index.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">side</span></code></strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'left'</span></code> (default): Returns the first suitable index where <code class="docutils literal notranslate"><span class="pre">v</span></code> can be inserted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'right'</span></code>: Returns the last suitable index where <code class="docutils literal notranslate"><span class="pre">v</span></code> can be inserted.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">sorter</span></code></strong>: An optional argument that specifies the indices of the array <code class="docutils literal notranslate"><span class="pre">a</span></code> that would sort it.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="how-it-works">
+<h3><strong>How It Works</strong><a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.searchsorted</span></code> searches for the indices where elements in <code class="docutils literal notranslate"><span class="pre">v</span></code> should go to maintain the order of the sorted array <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">side='left'</span></code>, it returns the index of the first position where the element can be inserted.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">side='right'</span></code>, it returns the index of the last position where the element can be inserted.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h3><strong>Examples</strong><a class="headerlink" href="#examples" title="Link to this heading">#</a></h3>
+<section id="basic-example-side-left">
+<h4><strong>1. Basic Example (side=’left’)</strong><a class="headerlink" href="#basic-example-side-left" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">4</span></code> should be inserted at index <code class="docutils literal notranslate"><span class="pre">2</span></code> to keep <code class="docutils literal notranslate"><span class="pre">a</span></code> sorted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">6</span></code> should be inserted at index <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">8</span></code> should be inserted at index <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="using-side-right">
+<h4><strong>2. Using <code class="docutils literal notranslate"><span class="pre">side='right'</span></code></strong><a class="headerlink" href="#using-side-right" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">side='right'</span></code> ensures the elements are inserted <strong>after</strong> any existing occurrences.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">5</span></code> is inserted at index <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">7</span></code> is inserted at index <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">9</span></code> is inserted at index <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="search-in-a-custom-sorted-array-with-sorter">
+<h4><strong>3. Search in a Custom-Sorted Array (with <code class="docutils literal notranslate"><span class="pre">sorter</span></code>)</strong><a class="headerlink" href="#search-in-a-custom-sorted-array-with-sorter" title="Link to this heading">#</a></h4>
+<p>If <code class="docutils literal notranslate"><span class="pre">a</span></code> is not sorted but you have the sorting order:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">sorter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># Sorting indices</span>
+<span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sorter</span><span class="o">=</span><span class="n">sorter</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">3</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sorter</span> <span class="pre">=</span> <span class="pre">[0,</span> <span class="pre">2,</span> <span class="pre">1,</span> <span class="pre">3]</span></code> is the sorting order of <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">25</span></code> would go at index <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">5</span></code> would go at index <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="inserting-values-into-the-array">
+<h3><strong>4. Inserting Values into the Array</strong><a class="headerlink" href="#inserting-values-into-the-array" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">np.searchsorted</span></code> is often combined with <code class="docutils literal notranslate"><span class="pre">np.insert</span></code> to insert elements in sorted order:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">7</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="use-cases">
+<h3><strong>Use Cases</strong><a class="headerlink" href="#use-cases" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Finding where to insert values to keep an array sorted.</p></li>
+<li><p>Efficient binary search on sorted arrays.</p></li>
+<li><p>Combining with <code class="docutils literal notranslate"><span class="pre">np.insert</span></code> for maintaining sorted lists.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sorting a 2D array</span>
+
+<span class="c1"># consider this 2D array</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">int_2D</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">int_2D</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[77, 95, 26, 20, 79],
+       [82, 51, 14, 83, 51],
+       [15, 13, 41, 68, 40],
+       [84,  0, 42, 52, 95],
+       [23, 82,  7, 33, 74],
+       [57, 93, 75, 91, 82]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># I want to sort along the rows </span>
+<span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">int_2D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;heapsort&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[20, 26, 77, 79, 95],
+       [14, 51, 51, 82, 83],
+       [13, 15, 40, 41, 68],
+       [ 0, 42, 52, 84, 95],
+       [ 7, 23, 33, 74, 82],
+       [57, 75, 82, 91, 93]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the indices for each row sorted accordingly </span>
+<span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">int_2D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;heapsort&#39;</span><span class="p">,</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[3, 2, 0, 4, 1],
+       [2, 4, 1, 0, 3],
+       [1, 0, 4, 2, 3],
+       [1, 2, 3, 0, 4],
+       [2, 0, 3, 4, 1],
+       [0, 2, 4, 3, 1]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># if we want it the be sorted in a descending order </span>
+<span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">int_2D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;heapsort&#39;</span><span class="p">,</span> <span class="p">)[:,::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1, 4, 0, 2, 3],
+       [3, 0, 1, 4, 2],
+       [3, 2, 4, 0, 1],
+       [4, 0, 3, 2, 1],
+       [1, 4, 3, 0, 2],
+       [1, 3, 4, 2, 0]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># I want to sort along the columns </span>
+<span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">int_2D</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[15,  0,  7, 20, 40],
+       [23, 13, 14, 33, 51],
+       [57, 51, 26, 52, 74],
+       [77, 82, 41, 68, 79],
+       [82, 93, 42, 83, 82],
+       [84, 95, 75, 91, 95]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># now , say, we want a partial sort - i.e. first 2 slots of each row must have the smallest element from that row </span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">int_2D</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="n">int_2D</span><span class="p">,</span> <span class="n">kth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[20, 26, 77, 79, 95],
+       [14, 51, 51, 82, 83],
+       [13, 15, 40, 41, 68],
+       [ 0, 42, 52, 84, 95],
+       [ 7, 23, 33, 74, 82],
+       [57, 75, 82, 91, 93]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="what-is-np-lexsort">
+<h2>🧠 What is <code class="docutils literal notranslate"><span class="pre">np.lexsort()</span></code>?<a class="headerlink" href="#what-is-np-lexsort" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p><strong><code class="docutils literal notranslate"><span class="pre">np.lexsort()</span></code> performs an indirect sort using multiple sorting keys.</strong></p>
+</div></blockquote>
+<p>It returns the <strong>indices</strong> that would sort an array (or arrays), using the <strong>last key as the primary sort</strong>, the second-last as the secondary, and so on — like <strong>lexicographic order</strong> (hence the name).</p>
+<hr class="docutils" />
+<section id="real-life-example-sort-students-by-class-then-by-marks">
+<h3>📊 Real-Life Example: Sort Students by Class, then by Marks<a class="headerlink" href="#real-life-example-sort-students-by-class-then-by-marks" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Let&#39;s say we have:</span>
+<span class="c1"># class_numbers = [10, 10, 9, 10, 9]</span>
+<span class="c1"># marks         = [88, 92, 85, 95, 90]</span>
+
+<span class="n">class_numbers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+<span class="n">marks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">88</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">90</span><span class="p">])</span>
+
+<span class="c1"># Sort by class, then by marks within each class</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">marks</span><span class="p">,</span> <span class="n">class_numbers</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>  <span class="c1"># Sorted indices</span>
+</pre></div>
+</div>
+</section>
+<section id="output">
+<h3>🧾 Output:<a class="headerlink" href="#output" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">2</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>So the sorted records would be:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Class: </span><span class="si">{</span><span class="n">class_numbers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">, Marks: </span><span class="si">{</span><span class="n">marks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>✅ Output:<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Class</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="n">Marks</span><span class="p">:</span> <span class="mi">85</span>
+<span class="n">Class</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="n">Marks</span><span class="p">:</span> <span class="mi">90</span>
+<span class="n">Class</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">Marks</span><span class="p">:</span> <span class="mi">88</span>
+<span class="n">Class</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">Marks</span><span class="p">:</span> <span class="mi">92</span>
+<span class="n">Class</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">Marks</span><span class="p">:</span> <span class="mi">95</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="syntax-recap">
+<h3>🧩 Syntax Recap:<a class="headerlink" href="#syntax-recap" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">key1</span><span class="p">,</span> <span class="n">key2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">keyN</span><span class="p">))</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Sorts by <strong>keyN</strong> first (primary key), then keyN−1 (secondary), and so on.</p></li>
+<li><p>All keys must be the same shape.</p></li>
+<li><p>Returns an array of sorted <strong>indices</strong> — which you can use to index the original arrays.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="why-use-lexsort">
+<h3>🧙 Why Use <code class="docutils literal notranslate"><span class="pre">lexsort()</span></code>?<a class="headerlink" href="#why-use-lexsort" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>To sort using <strong>multiple keys</strong> (like sorting a DataFrame by two columns)</p></li>
+<li><p>Much faster and cleaner than writing nested loops or using <code class="docutils literal notranslate"><span class="pre">argsort()</span></code> repeatedly</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="tip">
+<h3>⚠️ Tip:<a class="headerlink" href="#tip" title="Link to this heading">#</a></h3>
+<p>If you’re coming from <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, this is like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;class_number&#39;</span><span class="p">,</span> <span class="s1">&#39;marks&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>But in pure NumPy form ✨.</p>
+<hr class="docutils" />
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">])</span>
+<span class="n">ages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">20</span><span class="p">])</span>
+
+<span class="c1"># Pass keys in order: secondary key first, primary key last</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="n">ages</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>         <span class="c1"># [3 2 1 0]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>  <span class="c1"># [&#39;Alice&#39; &#39;Bob&#39; &#39;Alice&#39; &#39;John&#39;]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ages</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>   <span class="c1"># [20 23 25 25]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[3 2 1 0]
+[&#39;Alice&#39; &#39;Bob&#39; &#39;Alice&#39; &#39;John&#39;]
+[20 23 25 25]
+</pre></div>
+</div>
+</div>
+</div>
+<p>✔ Here, sorting happens:</p>
+<ul class="simple">
+<li><p>Primary key → ages (smallest first)</p></li>
+<li><p>Secondary key → names (alphabetical for ties)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sorting like a table </span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="mi">23</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;U10&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;i4&#39;</span><span class="p">)])</span>
+
+<span class="c1"># Extract keys</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+<span class="n">ages</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
+
+<span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">names</span><span class="p">,</span> <span class="n">ages</span><span class="p">))</span>
+<span class="n">sorted_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sorted_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Alice&#39;, 20) (&#39;Bob&#39;, 23) (&#39;Alice&#39;, 25) (&#39;John&#39;, 25)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multiple Keys (like SQL ORDER BY col3, col2, col1)Example 3: Multiple Keys (like SQL ORDER BY col3, col2, col1)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>  <span class="c1"># Primary key = a, then b, then c</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0 1 3 2 4]
+</pre></div>
+</div>
+</div>
+</div>
+<p>✅ Key Points to Remember</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.lexsort()</span></code> returns indices → you must use them to reorder arrays.</p></li>
+<li><p>The <strong>last key</strong> is the <strong>primary sort key</strong>.</p></li>
+<li><p>Faster than Python’s <code class="docutils literal notranslate"><span class="pre">sorted()</span></code> for large arrays.</p></li>
+<li><p>Works well for structured arrays or when sorting by multiple fields.</p></li>
+</ul>
+</section>
+<section id="note">
+<h3>NOTE<a class="headerlink" href="#note" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let us now consider a dataset </span>
+<span class="c1"># Generate 50 records</span>
+<span class="c1"># Sample name list</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Eva&#39;</span><span class="p">,</span> <span class="s1">&#39;Frank&#39;</span><span class="p">,</span> <span class="s1">&#39;Grace&#39;</span><span class="p">,</span> <span class="s1">&#39;Hannah&#39;</span><span class="p">,</span> <span class="s1">&#39;Ian&#39;</span><span class="p">,</span> <span class="s1">&#39;Julia&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">165</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Avg 165cm, std dev 10</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># Avg 65kg, std dev 12</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+
+<span class="c1"># Define dtype</span>
+<span class="n">dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;i4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;U10&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Height&#39;</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Weight&#39;</span><span class="p">,</span> <span class="s1">&#39;f4&#39;</span><span class="p">)]</span>
+
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(1, &#39;Bob&#39;, 154.6, 79.2),
+ (2, &#39;Frank&#39;, 163.8, 72.9),
+ (3, &#39;Alice&#39;, 175.0, 77.5),
+ (4, &#39;Hannah&#39;, 150.9, 57.2),
+ (5, &#39;Alice&#39;, 175.2, 74.4),
+ (6, &#39;Charlie&#39;, 166.8, 55.3),
+ (7, &#39;Alice&#39;, 162.4, 64.1),
+ (8, &#39;David&#39;, 191.2, 56.5),
+ (9, &#39;Ian&#39;, 127.5, 72.8),
+ (10, &#39;Julia&#39;, 154.4, 59.2)]
+</pre></div>
+</div>
+</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'U10'</span></code> translates to <code class="docutils literal notranslate"><span class="pre">“Unicode</span> <span class="pre">string</span> <span class="pre">of</span> <span class="pre">maximum</span> <span class="pre">length</span> <span class="pre">10,”</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'f4'</span></code> translates to “4-byte (i.e., 32-bit) float.”</p></li>
+</ul>
+<hr class="docutils" />
+<p>END</p>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./numpy"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05-reshaping.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Reshaping, Concatenating and Splitting Arrays</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../pandas/intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">🐼 Pandas: The Ultimate Tool for Data Analysis in Python</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-numpy">Import NumPy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fancy-indexing-for-a-one-dimensional-array">Fancy Indexing for a One Dimensional Array</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-code-breakdown">The Code Breakdown</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#broadcasting-in-detail">Broadcasting in Detail</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#final-output">Final Output</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-broadcasting">Summary of Broadcasting</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-indexing">Combined Indexing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modifying-values-with-fancy-indexing">Modifying Values with Fancy Indexing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-of-binning-data-histogram-by-hand">Example of Binning Data - Histogram by hand!</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note-on-np-searchsorted">Note on <code class="docutils literal notranslate"><span class="pre">np.searchsorted()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax"><strong>Syntax</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works"><strong>How It Works</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples"><strong>Examples</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-example-side-left"><strong>1. Basic Example (side=’left’)</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#using-side-right"><strong>2. Using <code class="docutils literal notranslate"><span class="pre">side='right'</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#search-in-a-custom-sorted-array-with-sorter"><strong>3. Search in a Custom-Sorted Array (with <code class="docutils literal notranslate"><span class="pre">sorter</span></code>)</strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inserting-values-into-the-array"><strong>4. Inserting Values into the Array</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-cases"><strong>Use Cases</strong></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-np-lexsort">🧠 What is <code class="docutils literal notranslate"><span class="pre">np.lexsort()</span></code>?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#real-life-example-sort-students-by-class-then-by-marks">📊 Real-Life Example: Sort Students by Class, then by Marks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">🧾 Output:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">✅ Output:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax-recap">🧩 Syntax Recap:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-use-lexsort">🧙 Why Use <code class="docutils literal notranslate"><span class="pre">lexsort()</span></code>?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tip">⚠️ Tip:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">NOTE</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Binayak Basu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright © 2025 Binayak Basu. All rights reserved..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

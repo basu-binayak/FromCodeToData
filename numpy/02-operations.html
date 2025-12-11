@@ -1,0 +1,2246 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Array Operations and Broadcasting &#8212; Data Analysis with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'numpy/02-operations';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Indexing And Slicing an Array" href="03-indexing.html" />
+    <link rel="prev" title="Array and Array Creation in NumPy" href="01-arrays.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Data Analysis with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Data Analysis with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    👋 Welcome to FromCodeToData
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python-basics/intro.html">Python Basics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/setup.html">Understanding Python and Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/01-Variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/02-DataTypes.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/03-Strings.html">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/04-Lists.html"><strong>Introduction to Lists in Python</strong></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/05-Objects.html">Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/06-Tuples.html">Tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/07-Dictionaries.html">Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/08-Control_Flow.html">Control Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/09-Exception_Handling.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/10-File_Handling.html">File Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/11-Functions.html">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/12-Iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/13-Generators.html">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/14-Decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/15-Sets.html">Introduction to Sets in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/16-Comprehensions.html">Introduction to Comprehensions in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/17-Frozensets.html">Frozensets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">NumPy</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-arrays.html">Arrays and Array Creation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Array Operations and Broadcasting</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="03-indexing.html">Indexing And Slicing an Array</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="04-boolean_masking.html">Boolean Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-reshaping.html">Reshaping, Concatenating and Splitting Arrays</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="06-fancyIndexing_sorting.html">Fancy Indexing and Sorting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pandas/intro.html">Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pandas/01-series_dataframes.html">Series and Dataframe Objects in Pandas</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../pandas/02-indexing.html">Indexing in Pandas</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/basu-binayak/FromCodeToData.git/main?urlpath=lab/tree/numpy/02-operations.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/basu-binayak/FromCodeToData.git/blob/main/numpy/02-operations.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/edit/main/numpy/02-operations.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/issues/new?title=Issue%20on%20page%20%2Fnumpy/02-operations.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/numpy/02-operations.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Array Operations and Broadcasting</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Array Operations and Broadcasting</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-vectorized-operations">What are Vectorized Operations ?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-is-written-in-c-and-optimized-for-performance">1. <strong>NumPy is Written in C and Optimized for Performance</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elimination-of-python-loops">2. <strong>Elimination of Python Loops</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-contiguity-and-efficient-access">3. <strong>Memory Contiguity and Efficient Access</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#broadcasting">4. <strong>Broadcasting</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-level-multi-threading">5. <strong>Low-Level Multi-Threading</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fewer-function-calls">6. <strong>Fewer Function Calls</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimized-math-libraries">7. <strong>Optimized Math Libraries</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Results:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#real-life-analogy">Real-Life Analogy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-key-benefits">Summary of Key Benefits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#a-vectorized-operations">A. Vectorized Operations</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#b-exploring-numpy-ufuncs">B. Exploring NumPy ufuncs</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-functions-ufuncs-in-numpy">Universal Functions (ufuncs) in NumPy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-characteristics-of-ufuncs">Key Characteristics of ufuncs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-ufuncs">Types of Ufuncs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-ufuncs">Advantages of Ufuncs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#real-life-analogy-of-ufuncs">Real-Life Analogy of Ufuncs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-use-case-sigmoid-function">Practical Use Case: Sigmoid Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-ufuncs">Advanced ufuncs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation">Explanation:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-power-2-x-out-y-2"><code class="docutils literal notranslate"><span class="pre">np.power(2,</span> <span class="pre">x,</span> <span class="pre">out=y[::2])</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#y-2-2-x"><code class="docutils literal notranslate"><span class="pre">y[::2]</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">**</span> <span class="pre">x</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-matters">Why it matters:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-aggregations">C. Aggregations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduce-method"><code class="docutils literal notranslate"><span class="pre">reduce()</span></code> method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accumulate-merthod"><code class="docutils literal notranslate"><span class="pre">accumulate()</span></code> merthod</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sum-min-max-argmin-argmax"><code class="docutils literal notranslate"><span class="pre">sum</span></code>,<code class="docutils literal notranslate"><span class="pre">min</span></code>,<code class="docutils literal notranslate"><span class="pre">max</span></code>,<code class="docutils literal notranslate"><span class="pre">argmin</span></code>,<code class="docutils literal notranslate"><span class="pre">argmax</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#original-array">Original Array:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flattened-version-row-major-order">Flattened Version (row-major order):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#row-major-order-explanation">Row-Major Order Explanation:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-aggregations">Other Aggregations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-how-numpy-interprets-truth-values">🔹 Step 1: How NumPy interprets truth values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-np-any-data-axis-1">🔹 Step 2: <code class="docutils literal notranslate"><span class="pre">np.any(data,</span> <span class="pre">axis=1)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-np-all-data-axis-1">🔹 Step 3: <code class="docutils literal notranslate"><span class="pre">np.all(data,</span> <span class="pre">axis=1)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#final-output-explained">✅ Final Output Explained</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#d-flattening-a-numpy-array">D. Flattening a Numpy Array</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-flatten-a-numpy-array">How to <strong>flatten</strong> a NumPy array?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-broadcasting-arrays">E. Broadcasting Arrays</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-1">Rule 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-2">Rule 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-3">Rule 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-shapes-of-a-and-b"><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-applying-rule-1"><strong>Step 2: Applying Rule 1</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#if-the-two-arrays-differ-in-their-number-of-dimensions-the-shape-of-the-one-with-fewer-dimensions-is-padded-with-ones-on-its-leading-side">If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is padded with ones on its leading side.</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-applying-rule-2"><strong>Step 3: Applying Rule 2</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#if-the-shape-of-the-two-arrays-does-not-match-in-any-dimension-the-array-with-shape-equal-to-1-in-that-dimension-is-stretched-to-match-the-other-shape">If the shape of the two arrays does not match in any dimension, the array with shape equal to <code class="docutils literal notranslate"><span class="pre">1</span></code> in that dimension is stretched to match the other shape.</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-element-wise-addition"><strong>Step 4: Element-Wise Addition</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion"><strong>Conclusion</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-shapes-of-c-and-d"><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">C</span></code> and <code class="docutils literal notranslate"><span class="pre">D</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><strong>Step 2: Applying Rule 1</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is padded with ones on its leading side.</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><strong>Step 3: Applying Rule 2</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">If the shape of the two arrays does not match in any dimension, the array with shape equal to <code class="docutils literal notranslate"><span class="pre">1</span></code> in that dimension is stretched to match the other shape.</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><strong>Step 4: Element-Wise Addition</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><strong>Conclusion</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-shapes-of-e-and-f"><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">E</span></code> and <code class="docutils literal notranslate"><span class="pre">F</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-broadcasting-rules"><strong>Step 2: Broadcasting Rules</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-1-padding-dimensions"><strong>Rule 1: Padding dimensions</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-2-dimension-wise-compatibility"><strong>Rule 2: Dimension-wise compatibility</strong></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-why-broadcasting-fails"><strong>Step 3: Why Broadcasting Fails</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><strong>Conclusion</strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applications-of-broadcasting">Applications of Broadcasting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="array-operations-and-broadcasting">
+<h1>Array Operations and Broadcasting<a class="headerlink" href="#array-operations-and-broadcasting" title="Link to this heading">#</a></h1>
+<section id="what-are-vectorized-operations">
+<h2>What are Vectorized Operations ?<a class="headerlink" href="#what-are-vectorized-operations" title="Link to this heading">#</a></h2>
+<p>Vectorized operations in NumPy are faster than traditional Python loops because of the way NumPy is implemented and how it takes advantage of modern computer architecture. Here’s a detailed explanation:</p>
+<section id="numpy-is-written-in-c-and-optimized-for-performance">
+<h3>1. <strong>NumPy is Written in C and Optimized for Performance</strong><a class="headerlink" href="#numpy-is-written-in-c-and-optimized-for-performance" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>NumPy’s core is written in <strong>C</strong> and <strong>Fortran</strong>, which are much faster than Python.</p></li>
+<li><p>When you use vectorized operations in NumPy, the heavy lifting happens in C/Fortran, bypassing the slower Python interpreter. This allows for <strong>compiled, low-level execution</strong> directly on the data.</p></li>
+</ul>
+</section>
+<section id="elimination-of-python-loops">
+<h3>2. <strong>Elimination of Python Loops</strong><a class="headerlink" href="#elimination-of-python-loops" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Traditional Python loops</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">for</span></code> loops) involve significant overhead because each iteration needs to go through the Python interpreter.</p></li>
+<li><p>In contrast, <strong>vectorized operations</strong> perform computations on entire arrays in one step, avoiding the need for explicit looping in Python. The operations are executed in <strong>low-level, highly-optimized loops in C</strong>, which are faster than high-level Python loops.</p></li>
+</ul>
+</section>
+<section id="memory-contiguity-and-efficient-access">
+<h3>3. <strong>Memory Contiguity and Efficient Access</strong><a class="headerlink" href="#memory-contiguity-and-efficient-access" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>NumPy arrays are stored in <strong>contiguous blocks of memory</strong>, unlike Python lists, which are arrays of pointers. This means:</p>
+<ul>
+<li><p>CPU can <strong>cache</strong> and <strong>fetch data more efficiently</strong>.</p></li>
+<li><p>Memory access is faster, as there are fewer indirections.</p></li>
+</ul>
+</li>
+<li><p>This layout enables <strong>SIMD (Single Instruction, Multiple Data)</strong> optimizations, where a single instruction can process multiple data points simultaneously.</p></li>
+</ul>
+</section>
+<section id="broadcasting">
+<h3>4. <strong>Broadcasting</strong><a class="headerlink" href="#broadcasting" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>NumPy supports <strong>broadcasting</strong>, which allows you to apply operations to arrays of different shapes without explicitly writing nested loops.</p></li>
+<li><p>Broadcasting uses <strong>vectorized operations</strong> under the hood to extend smaller arrays to match the shape of larger ones without creating temporary copies, which saves time and memory.</p></li>
+</ul>
+</section>
+<section id="low-level-multi-threading">
+<h3>5. <strong>Low-Level Multi-Threading</strong><a class="headerlink" href="#low-level-multi-threading" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Many NumPy operations (like matrix multiplication) internally use multi-threading, meaning they take advantage of multiple CPU cores to perform tasks simultaneously.</p></li>
+<li><p>Python loops, unless explicitly parallelized (e.g., using <code class="docutils literal notranslate"><span class="pre">concurrent.futures</span></code>), run on a single core.</p></li>
+</ul>
+</section>
+<section id="fewer-function-calls">
+<h3>6. <strong>Fewer Function Calls</strong><a class="headerlink" href="#fewer-function-calls" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Python loops involve multiple function calls for indexing and computations in each iteration. Each function call adds overhead.</p></li>
+<li><p>Vectorized operations compute the result in a single function call, reducing overhead significantly.</p></li>
+</ul>
+</section>
+<section id="optimized-math-libraries">
+<h3>7. <strong>Optimized Math Libraries</strong><a class="headerlink" href="#optimized-math-libraries" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>NumPy links to <strong>high-performance libraries</strong> like BLAS (Basic Linear Algebra Subprograms) and LAPACK (Linear Algebra Package) for numerical computations. These libraries are designed to perform matrix and vector operations extremely efficiently.</p></li>
+</ul>
+</section>
+<section id="results">
+<h3>Results:<a class="headerlink" href="#results" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Python loops take significantly longer because they iterate over elements one by one.</p></li>
+<li><p>NumPy’s vectorized operations compute the result in a fraction of the time because:</p>
+<ol class="arabic simple">
+<li><p>Low-level, optimized C code processes the data.</p></li>
+<li><p>Data is fetched and computed in batches, not one element at a time.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="real-life-analogy">
+<h3>Real-Life Analogy<a class="headerlink" href="#real-life-analogy" title="Link to this heading">#</a></h3>
+<p>Imagine you need to move 1 million bricks:</p>
+<ul class="simple">
+<li><p><strong>Python Loop</strong>: One worker (the Python interpreter) moves the bricks one at a time. Each trip involves picking up a brick, walking to the destination, and placing it.</p></li>
+<li><p><strong>NumPy Vectorized Operation</strong>: A bulldozer (C/Fortran backend) moves the entire batch of bricks in one go, completing the task much faster.</p></li>
+</ul>
+</section>
+<section id="summary-of-key-benefits">
+<h3>Summary of Key Benefits<a class="headerlink" href="#summary-of-key-benefits" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Avoids interpreter overhead</strong> by executing operations in C.</p></li>
+<li><p><strong>Efficient memory access</strong> using contiguous arrays.</p></li>
+<li><p><strong>Utilizes parallelism</strong> and modern CPU optimizations like SIMD.</p></li>
+<li><p><strong>Optimized math libraries</strong> handle operations with minimal overhead.</p></li>
+</ol>
+<p>By leveraging these features, NumPy can perform operations orders of magnitude faster than loops in pure Python.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using Loops:</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Create two arrays</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+<span class="c1"># Traditional Python loop</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time with Python loop:&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+
+<span class="c1">#### Using Vectorized Operations:</span>
+<span class="c1"># Vectorized NumPy addition</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time with NumPy vectorized operation:&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time with Python loop: 0.25753092765808105
+Time with NumPy vectorized operation: 0.016070127487182617
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<p>Let us now start with some vectorized operations!</p>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="a-vectorized-operations">
+<h1>A. Vectorized Operations<a class="headerlink" href="#a-vectorized-operations" title="Link to this heading">#</a></h1>
+<p>However, before we go the vectorized operations, let us create some arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let us convert a 1 D array by reshaping it to a 2 D array </span>
+<span class="n">array_1D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original 1D array: </span><span class="se">\n</span><span class="si">{</span><span class="n">array_1D</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">array_1D_reshape_2D</span> <span class="o">=</span> <span class="n">array_1D</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The 1D array after being reshaped to a 2D array:</span><span class="se">\n</span><span class="si">{</span><span class="n">array_1D_reshape_2D</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original 1D array: 
+[ 2.    4.25  6.5   8.75 11.   13.25 15.5  17.75 20.  ]
+The 1D array after being reshaped to a 2D array:
+[[ 2.    4.25  6.5 ]
+ [ 8.75 11.   13.25]
+ [15.5  17.75 20.  ]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># concatenating three 1 D arrays </span>
+<span class="n">array_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">array_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="n">array_3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">])</span>
+
+<span class="n">array_concat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">array_1</span><span class="p">,</span> <span class="n">array_2</span><span class="p">,</span> <span class="n">array_3</span><span class="p">])</span> <span class="c1"># note pass the three arrays in a list</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array_concat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1 2 3 4 5 6 7 8 9]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># concatenate 2 D arrays </span>
+<span class="n">array_4</span> <span class="o">=</span> <span class="n">array_concat</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array_4</span><span class="p">)</span>
+
+<span class="c1"># say I want to concat the array_4 to itself row-wise i.e. first axis </span>
+<span class="n">array_concat_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">array_4</span><span class="p">,</span> <span class="n">array_4</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array_concat_row</span><span class="p">)</span>
+
+<span class="c1"># say I want to concat the array_4 to itself column-wise i.e. second axis </span>
+<span class="n">array_concat_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">array_4</span><span class="p">,</span> <span class="n">array_4</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array_concat_col</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]
+ [1 2 3]
+ [4 5 6]
+ [7 8 9]]
+[[1 2 3 1 2 3]
+ [4 5 6 4 5 6]
+ [7 8 9 7 8 9]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let us see some more vectorized operations</span>
+<span class="c1"># let us first print the array</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Consider this array:</span><span class="se">\n</span><span class="si">{</span><span class="n">array_1D</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># recirpocal of the array - vectorized operation</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reciprocal Array:</span><span class="se">\n</span><span class="si">{</span><span class="mi">1</span><span class="o">/</span><span class="n">array_1D</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># divide one array by the other array</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The two arrays we are considering are:</span><span class="si">{</span><span class="n">array_1D</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">array_concat</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dividing former with the latter array: </span><span class="si">{</span><span class="n">array_1D</span><span class="o">/</span><span class="n">array_concat</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># we can do this for the multidimensional array too</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;First multidimensional array:</span><span class="se">\n</span><span class="si">{</span><span class="n">array_1D_reshape_2D</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Second multidimensional array:</span><span class="se">\n</span><span class="si">{</span><span class="n">array_4</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># let us add this two arrays</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Addition of the above two arrays:</span><span class="se">\n</span><span class="si">{</span><span class="n">array_4</span><span class="o">+</span><span class="n">array_1D_reshape_2D</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Consider this array:
+[ 2.    4.25  6.5   8.75 11.   13.25 15.5  17.75 20.  ]
+Reciprocal Array:
+[0.5        0.23529412 0.15384615 0.11428571 0.09090909 0.0754717
+ 0.06451613 0.05633803 0.05      ]
+The two arrays we are considering are:[ 2.    4.25  6.5   8.75 11.   13.25 15.5  17.75 20.  ],[1 2 3 4 5 6 7 8 9]
+Dividing former with the latter array: [2.         2.125      2.16666667 2.1875     2.2        2.20833333
+ 2.21428571 2.21875    2.22222222]
+First multidimensional array:
+[[ 2.    4.25  6.5 ]
+ [ 8.75 11.   13.25]
+ [15.5  17.75 20.  ]]
+Second multidimensional array:
+[[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+Addition of the above two arrays:
+[[ 3.    6.25  9.5 ]
+ [12.75 16.   19.25]
+ [22.5  25.75 29.  ]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="b-exploring-numpy-ufuncs">
+<h1>B. Exploring NumPy ufuncs<a class="headerlink" href="#b-exploring-numpy-ufuncs" title="Link to this heading">#</a></h1>
+<section id="universal-functions-ufuncs-in-numpy">
+<h2>Universal Functions (ufuncs) in NumPy<a class="headerlink" href="#universal-functions-ufuncs-in-numpy" title="Link to this heading">#</a></h2>
+<p>A <strong>ufunc</strong> (short for <strong>Universal Function</strong>) in NumPy is a function that operates element-wise on arrays. They are one of the key reasons behind NumPy’s speed and efficiency. Let’s delve into their significance, working mechanism, and advantages.</p>
+<section id="key-characteristics-of-ufuncs">
+<h3>Key Characteristics of ufuncs<a class="headerlink" href="#key-characteristics-of-ufuncs" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Element-wise Operations</strong>:</p>
+<ul>
+<li><p>Ufuncs process each element in an array independently and in a vectorized manner. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>  <span class="c1"># Element-wise square root</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>  <span class="c1"># Output: [1. 1.41421356 1.73205081 2.]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Support for Broadcasting</strong>:</p>
+<ul>
+<li><p>Ufuncs automatically apply operations to arrays of different shapes by extending the smaller array (via broadcasting).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">arr</span> <span class="o">+</span> <span class="mi">5</span>  <span class="c1"># Broadcasting applies the scalar value 5 to all elements</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>  <span class="c1"># Output: [6 7 8]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Vectorized Operations</strong>:</p>
+<ul class="simple">
+<li><p>Unlike loops, which iterate element by element, ufuncs perform operations on the entire array at once using optimized C backend code.</p></li>
+</ul>
+</li>
+<li><p><strong>Type Flexibility</strong>:</p>
+<ul class="simple">
+<li><p>Ufuncs support a variety of input types (e.g., integers, floats, and complex numbers) and can return outputs in specified data types.</p></li>
+</ul>
+</li>
+<li><p><strong>High Performance</strong>:</p>
+<ul class="simple">
+<li><p>They are written in C and Fortran, making them much faster than Python loops. Ufuncs eliminate Python’s overhead and operate directly on the array’s memory.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="types-of-ufuncs">
+<h3>Types of Ufuncs<a class="headerlink" href="#types-of-ufuncs" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Unary Ufuncs</strong>:</p>
+<ul>
+<li><p>Operate on a single input array, producing an output array.
+Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.sqrt</span></code>, <code class="docutils literal notranslate"><span class="pre">np.abs</span></code>, <code class="docutils literal notranslate"><span class="pre">np.log</span></code>, <code class="docutils literal notranslate"><span class="pre">np.exp</span></code>, <code class="docutils literal notranslate"><span class="pre">np.sin</span></code>, <code class="docutils literal notranslate"><span class="pre">np.cos</span></code></p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>  <span class="c1"># Output: [1. 2. 3. 4.]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Binary Ufuncs</strong>:</p>
+<ul>
+<li><p>Operate on two input arrays element-wise, producing an output array.
+Examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.add</span></code>, <code class="docutils literal notranslate"><span class="pre">np.subtract</span></code>, <code class="docutils literal notranslate"><span class="pre">np.multiply</span></code>, <code class="docutils literal notranslate"><span class="pre">np.divide</span></code>, <code class="docutils literal notranslate"><span class="pre">np.maximum</span></code>, <code class="docutils literal notranslate"><span class="pre">np.minimum</span></code></p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">))</span>  <span class="c1"># Output: [5 7 9]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="advantages-of-ufuncs">
+<h3>Advantages of Ufuncs<a class="headerlink" href="#advantages-of-ufuncs" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Fast Execution</strong>:</p>
+<ul class="simple">
+<li><p>Ufuncs use highly-optimized C loops, significantly faster than Python loops.</p></li>
+</ul>
+</li>
+<li><p><strong>Memory Efficiency</strong>:</p>
+<ul>
+<li><p>Operate in place (if specified) to reduce memory usage, avoiding the need to create unnecessary temporary arrays.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">arr</span><span class="p">)</span>  <span class="c1"># In-place addition</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>  <span class="c1"># Output: [11 12 13]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Support for Broadcasting</strong>:</p>
+<ul class="simple">
+<li><p>Seamlessly operate on arrays of different shapes without requiring manual replication of data.</p></li>
+</ul>
+</li>
+<li><p><strong>Multiple Outputs</strong>:</p>
+<ul>
+<li><p>Some ufuncs return multiple outputs, such as <code class="docutils literal notranslate"><span class="pre">np.modf</span></code>, which separates the fractional and integer parts of an array:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">3.7</span><span class="p">])</span>
+<span class="n">fractional</span><span class="p">,</span> <span class="n">integral</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">modf</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fractional: </span><span class="si">{</span><span class="n">fractional</span><span class="si">}</span><span class="s2">, Integral: </span><span class="si">{</span><span class="n">integral</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Output: Fractional: [0.5 0.3 0.7], Integral: [1. 2. 3.]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Customizable</strong>:</p>
+<ul class="simple">
+<li><p>You can define your own ufuncs using <code class="docutils literal notranslate"><span class="pre">numpy.frompyfunc</span></code> or <code class="docutils literal notranslate"><span class="pre">numpy.vectorize</span></code> to handle custom element-wise operations.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="real-life-analogy-of-ufuncs">
+<h3>Real-Life Analogy of Ufuncs<a class="headerlink" href="#real-life-analogy-of-ufuncs" title="Link to this heading">#</a></h3>
+<p>Think of ufuncs as a <strong>conveyor belt</strong> in a factory:</p>
+<ul class="simple">
+<li><p>Each product (element in the array) is processed simultaneously and independently on the conveyor belt.</p></li>
+<li><p>Instead of manually handling each product (using loops), the ufunc (conveyor belt) processes all products in one go, saving time and effort.</p></li>
+</ul>
+</section>
+<section id="practical-use-case-sigmoid-function">
+<h3>Practical Use Case: Sigmoid Function<a class="headerlink" href="#practical-use-case-sigmoid-function" title="Link to this heading">#</a></h3>
+<p>Suppose you need to calculate the sigmoid function <span class="math notranslate nohighlight">\(\sigma(x) = \frac{1}{1 + e^{-x}}\)</span> for a large array:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">sigmoid</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arr</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sigmoid</span><span class="p">)</span>  <span class="c1"># Output: [0.73105858 0.88079708 0.95257413 0.98201379]</span>
+</pre></div>
+</div>
+<p>Here:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">np.exp</span></code> ufunc computes <span class="math notranslate nohighlight">\(e^{-x}\)</span> efficiently for the entire array.</p></li>
+<li><p>The operations <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>, and <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span></code> are applied element-wise using NumPy’s optimized functions.</p></li>
+</ul>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h3>
+<p>Ufuncs are the backbone of NumPy’s speed and efficiency. By eliminating Python loops, leveraging broadcasting, and operating directly on contiguous memory, ufuncs enable fast, memory-efficient, and readable code for numerical computations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ARITHMETIC FUNCTIONS</span>
+<span class="c1"># Define two arrays</span>
+<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># Operator equivalent ufunc examples</span>
+<span class="n">addition</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>        <span class="c1"># Equivalent to arr1 + arr2</span>
+<span class="n">subtraction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>  <span class="c1"># Equivalent to arr1 - arr2</span>
+<span class="n">negation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">negative</span><span class="p">(</span><span class="n">arr1</span><span class="p">)</span>         <span class="c1"># Equivalent to -arr1</span>
+<span class="n">multiplication</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>  <span class="c1"># Equivalent to arr1 * arr2</span>
+<span class="n">division</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>     <span class="c1"># Equivalent to arr1 / arr2</span>
+<span class="n">floor_division</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor_divide</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>  <span class="c1"># Equivalent to arr1 // arr2</span>
+<span class="n">exponentiation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>   <span class="c1"># Equivalent to arr1 ** 2</span>
+<span class="n">modulus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>         <span class="c1"># Equivalent to arr1 % arr2</span>
+
+<span class="c1"># Print results</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Addition: </span><span class="si">{</span><span class="n">addition</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>         <span class="c1"># [13 24 35]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subtraction: </span><span class="si">{</span><span class="n">subtraction</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># [7 16 25]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Negation: </span><span class="si">{</span><span class="n">negation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>         <span class="c1"># [-10 -20 -30]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multiplication: </span><span class="si">{</span><span class="n">multiplication</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [30 80 150]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Division: </span><span class="si">{</span><span class="n">division</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>         <span class="c1"># [3.33333333 5.         6.        ]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Floor Division: </span><span class="si">{</span><span class="n">floor_division</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [3 5 6]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exponentiation: </span><span class="si">{</span><span class="n">exponentiation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [100 400 900]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modulus: </span><span class="si">{</span><span class="n">modulus</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>           <span class="c1"># [1 0 0]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Addition: [13 24 35]
+Subtraction: [ 7 16 25]
+Negation: [-10 -20 -30]
+Multiplication: [ 30  80 150]
+Division: [3.33333333 5.         6.        ]
+Floor Division: [3 5 6]
+Exponentiation: [100 400 900]
+Modulus: [1 0 0]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Absolute Value</span>
+<span class="n">arr_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>
+<span class="n">absolute_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arr_abs</span><span class="p">)</span>  <span class="c1"># Computes the absolute values</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Absolute Values: </span><span class="si">{</span><span class="n">absolute_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [10 20 30]</span>
+
+<span class="c1"># Trigonometric Functions</span>
+<span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">])</span>  <span class="c1"># Angles in radians</span>
+<span class="n">sin_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>             <span class="c1"># Sine of angles</span>
+<span class="n">cos_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>             <span class="c1"># Cosine of angles</span>
+<span class="n">tan_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>             <span class="c1"># Tangent of angles</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sine Values: </span><span class="si">{</span><span class="n">sin_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>     <span class="c1"># [0. 1. 0.]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cosine Values: </span><span class="si">{</span><span class="n">cos_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># [1. 0. -1.]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tangent Values: </span><span class="si">{</span><span class="n">tan_values</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># [0. inf -0.]</span>
+
+<span class="c1"># Exponents and Logarithms</span>
+<span class="n">arr_exp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">exponentials</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">arr_exp</span><span class="p">)</span>           <span class="c1"># Exponentials (e^x)</span>
+<span class="n">natural_logs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">arr_exp</span><span class="p">)</span>           <span class="c1"># Natural logarithms (ln(x))</span>
+<span class="n">base10_logs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">arr_exp</span><span class="p">)</span>          <span class="c1"># Logarithms base 10</span>
+<span class="n">base2_logs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">arr_exp</span><span class="p">)</span>            <span class="c1"># Logarithms base 2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exponentials: </span><span class="si">{</span><span class="n">exponentials</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># [ 2.71828183  7.3890561  20.08553692]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Natural Logs: </span><span class="si">{</span><span class="n">natural_logs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># [0.         0.69314718 1.09861229]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Base-10 Logs: </span><span class="si">{</span><span class="n">base10_logs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>    <span class="c1"># [0.         0.30103    0.47712125]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Base-2 Logs: </span><span class="si">{</span><span class="n">base2_logs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>      <span class="c1"># [0.         1.         1.5849625 ]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Absolute Values: [10 20 30]
+Sine Values: [0.0000000e+00 1.0000000e+00 1.2246468e-16]
+Cosine Values: [ 1.000000e+00  6.123234e-17 -1.000000e+00]
+Tangent Values: [ 0.00000000e+00  1.63312394e+16 -1.22464680e-16]
+Exponentials: [ 2.71828183  7.3890561  20.08553692]
+Natural Logs: [0.         0.69314718 1.09861229]
+Base-10 Logs: [0.         0.30103    0.47712125]
+Base-2 Logs: [0.        1.        1.5849625]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="advanced-ufuncs">
+<h2>Advanced ufuncs<a class="headerlink" href="#advanced-ufuncs" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># specifying the output </span>
+<span class="n">array_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array_1</span><span class="p">)</span>
+
+<span class="n">array_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">array_1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">array_2</span><span class="p">)</span> <span class="c1"># specifying the out parameter </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">array_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0 1 2 3 4 5 6 7 8]
+[ 0.  9. 18. 27. 36. 45. 54. 63. 72.]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arr_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">arr_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+ 
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 1.  0.  2.  0.  4.  0.  8.  0. 16.  0.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note, however, we can do this same operation as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">arr_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">arr_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">arr_y</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="n">arr_x</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">arr_y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 1.  0.  2.  0.  4.  0.  8.  0. 16.  0.]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The difference between <code class="docutils literal notranslate"><span class="pre">np.power(2,</span> <span class="pre">x,</span> <span class="pre">out=y[::2])</span></code> and <code class="docutils literal notranslate"><span class="pre">y[::2]</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">**</span> <span class="pre">x</span></code> lies in how NumPy handles memory and computation efficiency.</p>
+<section id="explanation">
+<h3>Explanation:<a class="headerlink" href="#explanation" title="Link to this heading">#</a></h3>
+<section id="np-power-2-x-out-y-2">
+<h4><code class="docutils literal notranslate"><span class="pre">np.power(2,</span> <span class="pre">x,</span> <span class="pre">out=y[::2])</span></code><a class="headerlink" href="#np-power-2-x-out-y-2" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>What happens</strong>: The <code class="docutils literal notranslate"><span class="pre">out</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">np.power</span></code> directly specifies where the result of the computation should be stored. In this case, the result of <span class="math notranslate nohighlight">\( 2^x \)</span> is directly written into the specified slice <code class="docutils literal notranslate"><span class="pre">y[::2]</span></code> of the array <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p></li>
+<li><p><strong>Efficiency</strong>: No temporary array is created. The computation and assignment happen in a single step, which is memory-efficient and faster for large arrays.</p></li>
+<li><p><strong>Memory savings</strong>: Since no intermediate array is created, less memory is used. This is particularly important when working with large datasets or arrays.</p></li>
+</ul>
+</section>
+<section id="y-2-2-x">
+<h4><code class="docutils literal notranslate"><span class="pre">y[::2]</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">**</span> <span class="pre">x</span></code><a class="headerlink" href="#y-2-2-x" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>What happens</strong>: The expression <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">**</span> <span class="pre">x</span></code> creates a temporary array to store the results of <span class="math notranslate nohighlight">\( 2^x \)</span>. This temporary array is then copied into the slice <code class="docutils literal notranslate"><span class="pre">y[::2]</span></code>.</p></li>
+<li><p><strong>Efficiency</strong>: This involves two steps:</p>
+<ol class="arabic simple">
+<li><p>Computation of <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">**</span> <span class="pre">x</span></code> and creation of a temporary array.</p></li>
+<li><p>Copying the values from the temporary array into <code class="docutils literal notranslate"><span class="pre">y[::2]</span></code>.</p></li>
+</ol>
+</li>
+<li><p><strong>Memory usage</strong>: The temporary array occupies extra memory, which may become significant for large arrays.</p></li>
+</ul>
+</section>
+</section>
+<section id="why-it-matters">
+<h3>Why it matters:<a class="headerlink" href="#why-it-matters" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Small computations</strong>: For small arrays, the difference in performance or memory usage is negligible because modern systems can handle small temporary arrays with ease.</p></li>
+<li><p><strong>Large computations</strong>: For very large arrays (e.g., millions of elements), the creation of temporary arrays can significantly impact memory usage and performance. By directly writing to the target array using the <code class="docutils literal notranslate"><span class="pre">out</span></code> parameter, you avoid this overhead.</p></li>
+</ul>
+</section>
+<section id="key-takeaways">
+<h3>Key Takeaways:<a class="headerlink" href="#key-takeaways" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">out</span></code> parameter in ufuncs (universal functions like <code class="docutils literal notranslate"><span class="pre">np.power</span></code>, <code class="docutils literal notranslate"><span class="pre">np.add</span></code>, etc.) to directly store the results in an existing array when memory efficiency is critical.</p></li>
+<li><p>This technique is particularly valuable in large-scale computations, where reducing temporary memory allocation can improve performance.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="c-aggregations">
+<h1>C. Aggregations<a class="headerlink" href="#c-aggregations" title="Link to this heading">#</a></h1>
+<section id="reduce-method">
+<h2><code class="docutils literal notranslate"><span class="pre">reduce()</span></code> method<a class="headerlink" href="#reduce-method" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">reduce</span></code> method repeatedly applies a binary operation (like addition or multiplication) across all elements of an array, reducing it to a single result.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The reduce method repeatedly applies a binary operation (like addition or multiplication) across all elements of an array, reducing it to a single result.</span>
+<span class="n">arr_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Array to be reduced:</span><span class="si">{</span><span class="n">arr_x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># I want to reduce this array to a single dibit and the reduction should happen by adding the digits </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduction by Addition of the array: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">array</span><span class="o">=</span><span class="n">arr_x</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduction by Multiplication of the array: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">array</span><span class="o">=</span><span class="n">arr_x</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array to be reduced:[1 2 3 4 5 6 7 8 9]
+Reduction by Addition of the array: 45
+Reduction by Multiplication of the array: 362880
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="accumulate-merthod">
+<h2><code class="docutils literal notranslate"><span class="pre">accumulate()</span></code> merthod<a class="headerlink" href="#accumulate-merthod" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">accumulate</span></code> method stores all intermediate results of the binary operation, instead of collapsing them into a single value.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The accumulate method stores all intermediate results of the binary operation, instead of collapsing them into a single value.</span>
+
+<span class="n">arr_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Array to be aggregated:</span><span class="si">{</span><span class="n">arr_x</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accumulation by Addition of the array: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">array</span><span class="o">=</span><span class="n">arr_x</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accumulation by Multiplication of the array: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">array</span><span class="o">=</span><span class="n">arr_x</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array to be aggregated:[1 2 3 4 5 6 7 8 9]
+Accumulation by Addition of the array: [ 1  3  6 10 15 21 28 36 45]
+Accumulation by Multiplication of the array: [     1      2      6     24    120    720   5040  40320 362880]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="sum-min-max-argmin-argmax">
+<h2><code class="docutils literal notranslate"><span class="pre">sum</span></code>,<code class="docutils literal notranslate"><span class="pre">min</span></code>,<code class="docutils literal notranslate"><span class="pre">max</span></code>,<code class="docutils literal notranslate"><span class="pre">argmin</span></code>,<code class="docutils literal notranslate"><span class="pre">argmax</span></code><a class="headerlink" href="#sum-min-max-argmin-argmax" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let us take random 100 numbers </span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sequence of 100 integers are:</span><span class="se">\n</span><span class="si">{</span><span class="n">L</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># let us find the sum of this sequence </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sum is : </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># However, it is better to use the NumPy version since it is fast</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sum using np.sum is:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># finding the min and the max</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The minimum in the series is : </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="si">}</span><span class="s2"> and the maximum is </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sequence of 100 integers are:
+[42 74 55 14 83  8 23 43 72 76 44 34 98  3 79 24 72 21 84 24 37 68  6 84
+ 78 74 68 21 84 52 61  2 34 56 62  5 35 96 25 34 13 15  3 18 61 66 89 74
+ 63 71 93 69 87 72 33 18 10 87 26 22 13 79 34 64 79 10 92 29  5 81 67 29
+ 95  6 55 31 27 12 58 72 65 82 81  3 91 32 70 13 30 92  6 92 38 55 20 67
+ 15 64 57 34]
+The sum is : 4890
+The sum using np.sum is:4890
+The minimum in the series is : 2 and the maximum is 98
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The 2 D array is:</span><span class="se">\n</span><span class="si">{</span><span class="n">L</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># summing the array</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sum of the array is: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># summing along the row axis</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sum across the rows is:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># summing along the column axis </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sum across the column axis is:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># min and max </span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The min of the array is: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="si">}</span><span class="s2"> and the max is: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The min across the row axis is:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2"> and the max along the row is:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The min across the col axis is:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2"> and the max along the col is:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># argmax and argmin</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The index of the min value is : </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The index of max value in each column is : </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The 2 D array is:
+[[8 7 2]
+ [6 8 0]
+ [0 5 6]]
+The sum of the array is: 42
+The sum across the rows is:[14 20  8]
+The sum across the column axis is:[17 14 11]
+The min of the array is: 0 and the max is: 8
+The min across the row axis is:[0 5 0] and the max along the row is:[8 8 6]
+The min across the col axis is:[2 0 0] and the max along the col is:[8 8 6]
+The index of the min value is : 5
+The index of max value in each column is : [0 1 2]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In NumPy, the <code class="docutils literal notranslate"><span class="pre">np.argmin</span></code> function returns the <strong>index of the minimum value</strong> in a flattened (1D) version of the array. This happens because NumPy treats multidimensional arrays as a single, flattened array for this operation.</p>
+<p>Let’s break it down with your array:</p>
+<section id="original-array">
+<h3>Original Array:<a class="headerlink" href="#original-array" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+ <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+ <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]</span>
+</pre></div>
+</div>
+</section>
+<section id="flattened-version-row-major-order">
+<h3>Flattened Version (row-major order):<a class="headerlink" href="#flattened-version-row-major-order" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>In this flattened array, the <strong>minimum value is <code class="docutils literal notranslate"><span class="pre">0</span></code></strong>.</p></li>
+<li><p>The index of <code class="docutils literal notranslate"><span class="pre">0</span></code> in this flattened array is <strong>4</strong> (zero-based indexing).</p></li>
+</ul>
+</section>
+<section id="row-major-order-explanation">
+<h3>Row-Major Order Explanation:<a class="headerlink" href="#row-major-order-explanation" title="Link to this heading">#</a></h3>
+<p>NumPy flattens arrays in row-major order (C-style order), meaning it processes rows sequentially. For the given array:</p>
+<ul class="simple">
+<li><p>First row: <code class="docutils literal notranslate"><span class="pre">[7,</span> <span class="pre">7,</span> <span class="pre">8]</span></code> (indices 0, 1, 2)</p></li>
+<li><p>Second row: <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">0,</span> <span class="pre">1]</span></code> (indices 3, 4, 5)</p></li>
+<li><p>Third row: <code class="docutils literal notranslate"><span class="pre">[3,</span> <span class="pre">7,</span> <span class="pre">8]</span></code> (indices 6, 7, 8)</p></li>
+</ul>
+<p>Since <code class="docutils literal notranslate"><span class="pre">0</span></code> is in the second row, second column, its position in the flattened array is 4. That’s why <code class="docutils literal notranslate"><span class="pre">np.argmin</span></code> returns <strong>4</strong>.</p>
+</section>
+</section>
+<section id="other-aggregations">
+<h2>Other Aggregations<a class="headerlink" href="#other-aggregations" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># other aggregations </span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using standard NumPy functions:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Product:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Standard Deviation:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variance:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Minimum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index of Minimum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index of Maximum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Median:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Percentile (50th):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+
+<span class="c1"># NOTE: These two are often used !</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Any True Values:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All True Values:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 5  7  3 13]
+ [ 6  7  6  2]
+ [ 7  5  4 12]
+ [10  0  8 14]]
+Using standard NumPy functions:
+Sum: 109
+Product: 0
+Mean: 6.8125
+Standard Deviation: 3.77853725004796
+Variance: 14.27734375
+Minimum: 0
+Maximum: 14
+Index of Minimum: 13
+Index of Maximum: 15
+Median: 6.5
+Percentile (50th): 6.5
+Any True Values: True
+All True Values: False
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let us point some attention to the two functions namely <code class="docutils literal notranslate"><span class="pre">np.any</span></code> and <code class="docutils literal notranslate"><span class="pre">np.all</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># I change the data a bit </span>
+<span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">,:]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># I want to see if the rows has any true value </span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Any true values in the rows&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="c1"># I want to see if the rows has all true values</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All true values in the rows&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Any true values in the rows
+[ True  True  True False]
+All true values in the rows
+[ True  True False False]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s break this down step by step 👇</p>
+<p>We ran:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Any true values in the rows&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;All true values in the rows&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>On the array:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span>
+                 <span class="p">[</span> <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
+                 <span class="p">[</span> <span class="mi">7</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>
+                 <span class="p">[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int32</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="step-1-how-numpy-interprets-truth-values">
+<h3>🔹 Step 1: How NumPy interprets truth values<a class="headerlink" href="#step-1-how-numpy-interprets-truth-values" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>In NumPy, <strong>non-zero numbers</strong> are treated as <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>Zero</strong> is treated as <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+<p>So your matrix in terms of <code class="docutils literal notranslate"><span class="pre">True/False</span></code> looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span> <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span> <span class="p">]</span>
+ <span class="p">[</span> <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span> <span class="p">]</span>
+ <span class="p">[</span> <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">False</span><span class="p">]</span>
+ <span class="p">[</span><span class="kc">False</span> <span class="kc">False</span> <span class="kc">False</span> <span class="kc">False</span><span class="p">]]</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-np-any-data-axis-1">
+<h3>🔹 Step 2: <code class="docutils literal notranslate"><span class="pre">np.any(data,</span> <span class="pre">axis=1)</span></code><a class="headerlink" href="#step-2-np-any-data-axis-1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.any(...,</span> <span class="pre">axis=1)</span></code> checks if <strong>at least one element is True</strong> in each row.</p></li>
+</ul>
+<p>Row-wise check:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[5,</span> <span class="pre">7,</span> <span class="pre">3,</span> <span class="pre">13]</span></code> → all non-zero → ✅ at least one True → <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[6,</span> <span class="pre">7,</span> <span class="pre">6,</span> <span class="pre">2]</span></code>  → all non-zero → ✅ at least one True → <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[7,</span> <span class="pre">5,</span> <span class="pre">4,</span> <span class="pre">0]</span></code>  → contains some non-zero → ✅ at least one True → <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>  → all zero → ❌ no True values → <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+</ol>
+<p>So the result is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="step-3-np-all-data-axis-1">
+<h3>🔹 Step 3: <code class="docutils literal notranslate"><span class="pre">np.all(data,</span> <span class="pre">axis=1)</span></code><a class="headerlink" href="#step-3-np-all-data-axis-1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.all(...,</span> <span class="pre">axis=1)</span></code> checks if <strong>all elements are True</strong> in each row.</p></li>
+</ul>
+<p>Row-wise check:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[5,</span> <span class="pre">7,</span> <span class="pre">3,</span> <span class="pre">13]</span></code> → all non-zero → ✅ all True → <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[6,</span> <span class="pre">7,</span> <span class="pre">6,</span> <span class="pre">2]</span></code>  → all non-zero → ✅ all True → <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[7,</span> <span class="pre">5,</span> <span class="pre">4,</span> <span class="pre">0]</span></code>  → has a zero → ❌ not all True → <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>  → all zero → ❌ not all True → <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+</ol>
+<p>So the result is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span> <span class="kc">False</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="final-output-explained">
+<h3>✅ Final Output Explained<a class="headerlink" href="#final-output-explained" title="Link to this heading">#</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Any</span> <span class="n">true</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">rows</span>
+<span class="p">[</span> <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span><span class="p">]</span>
+
+<span class="n">All</span> <span class="n">true</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">rows</span>
+<span class="p">[</span> <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span> <span class="kc">False</span><span class="p">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The <strong>3rd row</strong> fails <code class="docutils literal notranslate"><span class="pre">all()</span></code> because of the <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p>The <strong>4th row</strong> fails both <code class="docutils literal notranslate"><span class="pre">any()</span></code> and <code class="docutils literal notranslate"><span class="pre">all()</span></code> because it’s entirely zeros.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a 2D array with some NaN values</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="c1"># Compute results using standard functions</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using standard NumPy functions:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Product:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Standard Deviation:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variance:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Minimum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index of Minimum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index of Maximum:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Median:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Percentile (50th):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Any True Values:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All True Values:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+<span class="c1"># Compute results using nan-handling functions</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Using NumPy nan-handling functions:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sum (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Product (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanprod</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Standard Deviation (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variance (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanvar</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Minimum (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index of Minimum (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanargmin</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Index of Maximum (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanargmax</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Median (ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Percentile (50th, ignoring NaN):&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using standard NumPy functions:
+Sum: nan
+Product: nan
+Mean: nan
+Standard Deviation: nan
+Variance: nan
+Minimum: nan
+Maximum: nan
+Index of Minimum: 4
+Index of Maximum: 4
+Median: nan
+Percentile (50th): nan
+Any True Values: True
+All True Values: True
+
+Using NumPy nan-handling functions:
+Sum (ignoring NaN): 31.0
+Product (ignoring NaN): 8064.0
+Mean (ignoring NaN): 4.428571428571429
+Standard Deviation (ignoring NaN): 2.4411439272335804
+Variance (ignoring NaN): 5.959183673469389
+Minimum (ignoring NaN): 1.0
+Maximum (ignoring NaN): 8.0
+Index of Minimum (ignoring NaN): 0
+Index of Maximum (ignoring NaN): 7
+Median (ignoring NaN): 4.0
+Percentile (50th, ignoring NaN): 4.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section class="tex2jax_ignore mathjax_ignore" id="d-flattening-a-numpy-array">
+<h1>D. Flattening a Numpy Array<a class="headerlink" href="#d-flattening-a-numpy-array" title="Link to this heading">#</a></h1>
+<section id="how-to-flatten-a-numpy-array">
+<h2>How to <strong>flatten</strong> a NumPy array?<a class="headerlink" href="#how-to-flatten-a-numpy-array" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">.flatten()</span></code> if you need a copy.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">.ravel()</span></code> if you’re okay with a view (faster and uses less memory).</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">.reshape(-1)</span></code> when chaining reshape operations. This also creates a view.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># flatten() - Returns a copy of the array collapsed into 1D.</span>
+<span class="n">arr_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
+<span class="n">arr_1d</span> <span class="o">=</span> <span class="n">arr_2d</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="n">arr_1d</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 2, 3, 4, 5, 6])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># ravel() - Returns a flattened view (if possible). More memory-efficient. </span>
+
+<span class="n">arr_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
+<span class="n">arr_1d</span> <span class="o">=</span> <span class="n">arr_2d</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="n">arr_1d</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 2, 3, 4, 5, 6])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reshapes array into 1D. ( also a view)</span>
+<span class="n">arr_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]])</span>
+<span class="n">arr_1d</span> <span class="o">=</span> <span class="n">arr_2d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">arr_1d</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1, 2, 3, 4, 5, 6])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="e-broadcasting-arrays">
+<h2>E. Broadcasting Arrays<a class="headerlink" href="#e-broadcasting-arrays" title="Link to this heading">#</a></h2>
+<section id="rule-1">
+<h3>Rule 1<a class="headerlink" href="#rule-1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is padded with ones on its leading side.</p></li>
+</ul>
+</section>
+<section id="rule-2">
+<h3>Rule 2<a class="headerlink" href="#rule-2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>If the shape of the two arrays does not match in any dimension, the array with shape equal to 1 in that dimension is stretched to match the other shape.</p></li>
+</ul>
+</section>
+<section id="rule-3">
+<h3>Rule 3<a class="headerlink" href="#rule-3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>If in any dimension the sizes disagree and neither is equal to 1, an error is raised.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A is 1-dimensional</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  <span class="c1"># Shape (3,)</span>
+
+<span class="c1"># B is 2-dimensional</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">]])</span>  <span class="c1"># Shape (3, 1)</span>
+
+<span class="c1"># Broadcasting shapes:</span>
+<span class="c1"># A: (1, 3) (padded with 1 on the left to match dimensions)</span>
+<span class="c1"># B: (3, 1)</span>
+
+<span class="c1"># Resulting operation</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[2 3 4]
+ [3 4 5]
+ [4 5 6]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s break down the explanation in detail for why the shapes change during broadcasting and why the resulting shape becomes <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code>:</p>
+<section id="step-1-shapes-of-a-and-b">
+<h4><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code></strong><a class="headerlink" href="#step-1-shapes-of-a-and-b" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>. It is 1-dimensional.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code>. It is 2-dimensional.</p></li>
+</ul>
+<p>To perform addition, the shapes of <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> must be made compatible using <strong>broadcasting rules</strong>.</p>
+</section>
+<section id="step-2-applying-rule-1">
+<h4><strong>Step 2: Applying Rule 1</strong><a class="headerlink" href="#step-2-applying-rule-1" title="Link to this heading">#</a></h4>
+<section id="if-the-two-arrays-differ-in-their-number-of-dimensions-the-shape-of-the-one-with-fewer-dimensions-is-padded-with-ones-on-its-leading-side">
+<h5>If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is padded with ones on its leading side.<a class="headerlink" href="#if-the-two-arrays-differ-in-their-number-of-dimensions-the-shape-of-the-one-with-fewer-dimensions-is-padded-with-ones-on-its-leading-side" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has fewer dimensions, so its shape is padded:</p>
+<ul>
+<li><p>Original shape: <code class="docutils literal notranslate"><span class="pre">(3,)</span></code></p></li>
+<li><p>Padded shape: <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">3)</span></code> (a leading <code class="docutils literal notranslate"><span class="pre">1</span></code> is added).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code>’s shape remains <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code> since it is already 2-dimensional.</p></li>
+</ul>
+<p>Now we have:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">3)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">1)</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="step-3-applying-rule-2">
+<h4><strong>Step 3: Applying Rule 2</strong><a class="headerlink" href="#step-3-applying-rule-2" title="Link to this heading">#</a></h4>
+<section id="if-the-shape-of-the-two-arrays-does-not-match-in-any-dimension-the-array-with-shape-equal-to-1-in-that-dimension-is-stretched-to-match-the-other-shape">
+<h5>If the shape of the two arrays does not match in any dimension, the array with shape equal to <code class="docutils literal notranslate"><span class="pre">1</span></code> in that dimension is stretched to match the other shape.<a class="headerlink" href="#if-the-shape-of-the-two-arrays-does-not-match-in-any-dimension-the-array-with-shape-equal-to-1-in-that-dimension-is-stretched-to-match-the-other-shape" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p>First dimension (rows):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has <code class="docutils literal notranslate"><span class="pre">1</span></code>, and <code class="docutils literal notranslate"><span class="pre">B</span></code> has <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">1</span></code> in <code class="docutils literal notranslate"><span class="pre">A</span></code> is stretched to match the <code class="docutils literal notranslate"><span class="pre">3</span></code> in <code class="docutils literal notranslate"><span class="pre">B</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Second dimension (columns):</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> has <code class="docutils literal notranslate"><span class="pre">3</span></code>, and <code class="docutils literal notranslate"><span class="pre">B</span></code> has <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">1</span></code> in <code class="docutils literal notranslate"><span class="pre">B</span></code> is stretched to match the <code class="docutils literal notranslate"><span class="pre">3</span></code> in <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<p>After stretching:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code> (rows: stretched from 1 to 3).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code> (columns: stretched from 1 to 3).</p></li>
+</ul>
+</section>
+</section>
+<section id="step-4-element-wise-addition">
+<h4><strong>Step 4: Element-Wise Addition</strong><a class="headerlink" href="#step-4-element-wise-addition" title="Link to this heading">#</a></h4>
+<p>After broadcasting, both arrays have the same shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code>, so element-wise addition proceeds as follows:</p>
+<p><strong>Expanded <code class="docutils literal notranslate"><span class="pre">A</span></code>:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>   <span class="c1"># Row 1 (stretched from original row [1, 2, 3])</span>
+ <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>   <span class="c1"># Row 2</span>
+ <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>   <span class="c1"># Row 3</span>
+</pre></div>
+</div>
+<p><strong>Expanded <code class="docutils literal notranslate"><span class="pre">B</span></code>:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>   
+ <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>   
+ <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>   
+</pre></div>
+</div>
+<p><strong>Result (<code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B</span></code>):</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>   <span class="c1"># (1+1, 2+1, 3+1)</span>
+ <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>   <span class="c1"># (1+2, 2+2, 3+2)</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>   <span class="c1"># (1+3, 2+3, 3+3)</span>
+</pre></div>
+</div>
+</section>
+<section id="conclusion">
+<h4><strong>Conclusion</strong><a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h4>
+<p>The resulting shape is <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code> because:</p>
+<ul class="simple">
+<li><p>The first dimension (<code class="docutils literal notranslate"><span class="pre">1</span></code> in <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">3</span></code> in <code class="docutils literal notranslate"><span class="pre">B</span></code>) stretches to <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p>The second dimension (<code class="docutils literal notranslate"><span class="pre">3</span></code> in <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code> in <code class="docutils literal notranslate"><span class="pre">B</span></code>) stretches to <code class="docutils literal notranslate"><span class="pre">3</span></code>.<br />
+This makes the final shape <code class="docutils literal notranslate"><span class="pre">(3,</span> <span class="pre">3)</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># C is 2-dimensional</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>  <span class="c1"># Shape (2, 3)</span>
+
+<span class="c1"># D is 1-dimensional</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">])</span>  <span class="c1"># Shape (3,)</span>
+
+<span class="c1"># Broadcasting shapes:</span>
+<span class="c1"># C: (2, 3)</span>
+<span class="c1"># D: (1, 3) (stretched to match the first dimension of C)</span>
+
+<span class="c1"># Resulting operation</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">C</span> <span class="o">+</span> <span class="n">D</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[11 22 33]
+ [14 25 36]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s break down why and how the shapes of <code class="docutils literal notranslate"><span class="pre">C</span></code> and <code class="docutils literal notranslate"><span class="pre">D</span></code> are transformed during broadcasting, step by step:</p>
+</section>
+<section id="step-1-shapes-of-c-and-d">
+<h4><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">C</span></code> and <code class="docutils literal notranslate"><span class="pre">D</span></code></strong><a class="headerlink" href="#step-1-shapes-of-c-and-d" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code>. It is a 2-dimensional array (2 rows and 3 columns).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">D</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>. It is a 1-dimensional array (3 elements).</p></li>
+</ul>
+<p>To perform addition, the shapes of <code class="docutils literal notranslate"><span class="pre">C</span></code> and <code class="docutils literal notranslate"><span class="pre">D</span></code> must be made compatible using <strong>broadcasting rules</strong>.</p>
+</section>
+<section id="id1">
+<h4><strong>Step 2: Applying Rule 1</strong><a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<section id="id2">
+<h5>If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is padded with ones on its leading side.<a class="headerlink" href="#id2" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">D</span></code> has fewer dimensions than <code class="docutils literal notranslate"><span class="pre">C</span></code>, so its shape is padded:</p>
+<ul>
+<li><p>Original shape: <code class="docutils literal notranslate"><span class="pre">(3,)</span></code></p></li>
+<li><p>Padded shape: <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">3)</span></code> (a leading <code class="docutils literal notranslate"><span class="pre">1</span></code> is added to make it 2-dimensional).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code>’s shape remains <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code> since it is already 2-dimensional.</p></li>
+</ul>
+<p>Now we have:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">D</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">3)</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h4><strong>Step 3: Applying Rule 2</strong><a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<section id="id4">
+<h5>If the shape of the two arrays does not match in any dimension, the array with shape equal to <code class="docutils literal notranslate"><span class="pre">1</span></code> in that dimension is stretched to match the other shape.<a class="headerlink" href="#id4" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p><strong>First dimension (rows):</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code> has <code class="docutils literal notranslate"><span class="pre">2</span></code> rows, and <code class="docutils literal notranslate"><span class="pre">D</span></code> has <code class="docutils literal notranslate"><span class="pre">1</span></code> row.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">1</span></code> in <code class="docutils literal notranslate"><span class="pre">D</span></code> is stretched to match the <code class="docutils literal notranslate"><span class="pre">2</span></code> in <code class="docutils literal notranslate"><span class="pre">C</span></code>.</p></li>
+<li><p>This means <code class="docutils literal notranslate"><span class="pre">D</span></code> is conceptually duplicated along the first dimension.</p></li>
+</ul>
+</li>
+<li><p><strong>Second dimension (columns):</strong></p>
+<ul>
+<li><p>Both <code class="docutils literal notranslate"><span class="pre">C</span></code> and <code class="docutils literal notranslate"><span class="pre">D</span></code> have <code class="docutils literal notranslate"><span class="pre">3</span></code> columns, so no stretching is needed here.</p></li>
+</ul>
+</li>
+</ul>
+<p>After stretching:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code> (unchanged).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">D</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code> (rows stretched from 1 to 2).</p></li>
+</ul>
+</section>
+</section>
+<section id="id5">
+<h4><strong>Step 4: Element-Wise Addition</strong><a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<p>After broadcasting, both arrays have the same shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code>, so element-wise addition can proceed:</p>
+<p><strong>Array <code class="docutils literal notranslate"><span class="pre">C</span></code>:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>   <span class="c1"># Row 1</span>
+ <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>   <span class="c1"># Row 2</span>
+</pre></div>
+</div>
+<p><strong>Broadcasted <code class="docutils literal notranslate"><span class="pre">D</span></code>:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>   <span class="c1"># Row 1 (original)</span>
+ <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]]</span>   <span class="c1"># Row 2 (stretched copy of the first row)</span>
+</pre></div>
+</div>
+<p><strong>Result (<code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">+</span> <span class="pre">D</span></code>):</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">33</span><span class="p">],</span>   <span class="c1"># (1+10, 2+20, 3+30)</span>
+ <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">36</span><span class="p">]]</span>   <span class="c1"># (4+10, 5+20, 6+30)</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h4><strong>Conclusion</strong><a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Broadcasting Transformation:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">D</span></code>’s shape becomes <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">3)</span></code> after padding.</p></li>
+<li><p>It is then stretched along the first dimension to match <code class="docutils literal notranslate"><span class="pre">C</span></code>’s shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Final Shape of Result:</strong></p>
+<ul>
+<li><p>The resulting shape is <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code>, and addition is performed element-wise.<br />
+This is because broadcasting stretches arrays only where needed, maintaining computational efficiency and element-wise compatibility.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>  <span class="c1"># Shape (2, 3)</span>
+<span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>  <span class="c1"># Shape (2,)</span>
+
+<span class="c1"># Attempt to add</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">E</span> <span class="o">+</span> <span class="n">F</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error: operands could not be broadcast together with shapes (2,3) (2,) 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s analyze why broadcasting fails in this scenario and why the shapes of <code class="docutils literal notranslate"><span class="pre">E</span></code> and <code class="docutils literal notranslate"><span class="pre">F</span></code> are incompatible:</p>
+</section>
+<section id="step-1-shapes-of-e-and-f">
+<h4><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">E</span></code> and <code class="docutils literal notranslate"><span class="pre">F</span></code></strong><a class="headerlink" href="#step-1-shapes-of-e-and-f" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">E</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code>. It is a 2-dimensional array with 2 rows and 3 columns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>. It is a 1-dimensional array with 2 elements.</p></li>
+</ul>
+</section>
+<section id="step-2-broadcasting-rules">
+<h4><strong>Step 2: Broadcasting Rules</strong><a class="headerlink" href="#step-2-broadcasting-rules" title="Link to this heading">#</a></h4>
+<p>To determine whether broadcasting can occur, we apply the rules of broadcasting:</p>
+<section id="rule-1-padding-dimensions">
+<h5><strong>Rule 1: Padding dimensions</strong><a class="headerlink" href="#rule-1-padding-dimensions" title="Link to this heading">#</a></h5>
+<p>If the arrays differ in their number of dimensions, the shape of the array with fewer dimensions is padded with ones on the <strong>left side</strong> to match the number of dimensions of the other array.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">E</span></code> is already 2-dimensional: <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> is 1-dimensional, so it is padded with a leading <code class="docutils literal notranslate"><span class="pre">1</span></code>:</p>
+<ul>
+<li><p>Original shape: <code class="docutils literal notranslate"><span class="pre">(2,)</span></code></p></li>
+<li><p>Padded shape: <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">2)</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<p>Now we have:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">E</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> → Shape <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">2)</span></code></p></li>
+</ul>
+</section>
+<section id="rule-2-dimension-wise-compatibility">
+<h5><strong>Rule 2: Dimension-wise compatibility</strong><a class="headerlink" href="#rule-2-dimension-wise-compatibility" title="Link to this heading">#</a></h5>
+<p>For broadcasting to succeed, the sizes in each dimension must satisfy one of the following conditions:</p>
+<ol class="arabic simple">
+<li><p>They are equal, or</p></li>
+<li><p>One of the sizes is <code class="docutils literal notranslate"><span class="pre">1</span></code> (so it can stretch to match the other size).</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>First dimension (rows):</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">E</span></code> has <code class="docutils literal notranslate"><span class="pre">2</span></code> rows, and <code class="docutils literal notranslate"><span class="pre">F</span></code> has <code class="docutils literal notranslate"><span class="pre">1</span></code> row after padding.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code> can stretch to <code class="docutils literal notranslate"><span class="pre">2</span></code>. ✅ <strong>Compatible</strong></p></li>
+</ul>
+</li>
+<li><p><strong>Second dimension (columns):</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">E</span></code> has <code class="docutils literal notranslate"><span class="pre">3</span></code> columns, and <code class="docutils literal notranslate"><span class="pre">F</span></code> has <code class="docutils literal notranslate"><span class="pre">2</span></code> columns.</p></li>
+<li><p>These sizes <strong>do not match</strong>, and neither is <code class="docutils literal notranslate"><span class="pre">1</span></code>. ❌ <strong>Incompatible</strong></p></li>
+</ul>
+</li>
+</ul>
+<p>Because of this mismatch in the second dimension, broadcasting cannot occur.</p>
+</section>
+</section>
+<section id="step-3-why-broadcasting-fails">
+<h4><strong>Step 3: Why Broadcasting Fails</strong><a class="headerlink" href="#step-3-why-broadcasting-fails" title="Link to this heading">#</a></h4>
+<p>The shapes <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code> for <code class="docutils literal notranslate"><span class="pre">E</span></code> and <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">2)</span></code> for <code class="docutils literal notranslate"><span class="pre">F</span></code> are incompatible because the second dimension of <code class="docutils literal notranslate"><span class="pre">E</span></code> (3 columns) cannot accommodate the second dimension of <code class="docutils literal notranslate"><span class="pre">F</span></code> (2 columns).</p>
+</section>
+<section id="id7">
+<h4><strong>Conclusion</strong><a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+<ol class="arabic">
+<li><p><strong>Broadcasting fails</strong> because Rule 3 states:</p>
+<blockquote>
+<div><p>If in any dimension the sizes disagree and neither is equal to <code class="docutils literal notranslate"><span class="pre">1</span></code>, an error is raised.</p>
+</div></blockquote>
+</li>
+<li><p><strong>Resolution:</strong></p>
+<ul class="simple">
+<li><p>To make the shapes compatible, you must adjust <code class="docutils literal notranslate"><span class="pre">F</span></code> so that its second dimension becomes <code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">3</span></code>.</p></li>
+<li><p>For example, you could reshape <code class="docutils literal notranslate"><span class="pre">F</span></code> to <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">1)</span></code> or <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">3)</span></code> to allow broadcasting.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="applications-of-broadcasting">
+<h3>Applications of Broadcasting<a class="headerlink" href="#applications-of-broadcasting" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># Generate random integers</span>
+<span class="c1"># Syntax: rng.integers(low, high=None, size=None, dtype=int)</span>
+<span class="n">random_integers</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">random_integers</span><span class="p">)</span>
+
+<span class="c1"># let us center this array</span>
+<span class="c1"># we need to find the mean for each feature i.e. mean along the rows </span>
+<span class="n">X_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">random_integers</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The mean for each feature is:</span><span class="si">{</span><span class="n">X_mean</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Center the matrix </span>
+<span class="n">centered_matrix</span> <span class="o">=</span> <span class="n">random_integers</span> <span class="o">-</span> <span class="n">X_mean</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The centered matrix is: </span><span class="se">\n</span><span class="si">{</span><span class="n">centered_matrix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The mean for each feature now in the centered matrix is:</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">centered_matrix</span><span class="p">,</span><span class="w"> </span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[21 52 84]
+ [60 82 47]
+ [21 21 50]
+ [53 30 19]
+ [50 28 26]]
+The mean for each feature is:[41.  42.6 45.2]
+The centered matrix is: 
+[[-20.    9.4  38.8]
+ [ 19.   39.4   1.8]
+ [-20.  -21.6   4.8]
+ [ 12.  -12.6 -26.2]
+ [  9.  -14.6 -19.2]]
+The mean for each feature now in the centered matrix is:[ 0.00000000e+00 -1.42108547e-15 -2.84217094e-15]
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./numpy"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-arrays.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Array and Array Creation in NumPy</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-indexing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Indexing And Slicing an Array</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Array Operations and Broadcasting</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-vectorized-operations">What are Vectorized Operations ?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-is-written-in-c-and-optimized-for-performance">1. <strong>NumPy is Written in C and Optimized for Performance</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elimination-of-python-loops">2. <strong>Elimination of Python Loops</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-contiguity-and-efficient-access">3. <strong>Memory Contiguity and Efficient Access</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#broadcasting">4. <strong>Broadcasting</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-level-multi-threading">5. <strong>Low-Level Multi-Threading</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fewer-function-calls">6. <strong>Fewer Function Calls</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimized-math-libraries">7. <strong>Optimized Math Libraries</strong></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Results:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#real-life-analogy">Real-Life Analogy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-key-benefits">Summary of Key Benefits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#a-vectorized-operations">A. Vectorized Operations</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#b-exploring-numpy-ufuncs">B. Exploring NumPy ufuncs</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#universal-functions-ufuncs-in-numpy">Universal Functions (ufuncs) in NumPy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-characteristics-of-ufuncs">Key Characteristics of ufuncs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-ufuncs">Types of Ufuncs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-ufuncs">Advantages of Ufuncs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#real-life-analogy-of-ufuncs">Real-Life Analogy of Ufuncs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-use-case-sigmoid-function">Practical Use Case: Sigmoid Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-ufuncs">Advanced ufuncs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#explanation">Explanation:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-power-2-x-out-y-2"><code class="docutils literal notranslate"><span class="pre">np.power(2,</span> <span class="pre">x,</span> <span class="pre">out=y[::2])</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#y-2-2-x"><code class="docutils literal notranslate"><span class="pre">y[::2]</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">**</span> <span class="pre">x</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-it-matters">Why it matters:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-takeaways">Key Takeaways:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#c-aggregations">C. Aggregations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reduce-method"><code class="docutils literal notranslate"><span class="pre">reduce()</span></code> method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accumulate-merthod"><code class="docutils literal notranslate"><span class="pre">accumulate()</span></code> merthod</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sum-min-max-argmin-argmax"><code class="docutils literal notranslate"><span class="pre">sum</span></code>,<code class="docutils literal notranslate"><span class="pre">min</span></code>,<code class="docutils literal notranslate"><span class="pre">max</span></code>,<code class="docutils literal notranslate"><span class="pre">argmin</span></code>,<code class="docutils literal notranslate"><span class="pre">argmax</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#original-array">Original Array:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flattened-version-row-major-order">Flattened Version (row-major order):</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#row-major-order-explanation">Row-Major Order Explanation:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-aggregations">Other Aggregations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-how-numpy-interprets-truth-values">🔹 Step 1: How NumPy interprets truth values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-np-any-data-axis-1">🔹 Step 2: <code class="docutils literal notranslate"><span class="pre">np.any(data,</span> <span class="pre">axis=1)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-np-all-data-axis-1">🔹 Step 3: <code class="docutils literal notranslate"><span class="pre">np.all(data,</span> <span class="pre">axis=1)</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#final-output-explained">✅ Final Output Explained</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#d-flattening-a-numpy-array">D. Flattening a Numpy Array</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-flatten-a-numpy-array">How to <strong>flatten</strong> a NumPy array?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#e-broadcasting-arrays">E. Broadcasting Arrays</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-1">Rule 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-2">Rule 2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-3">Rule 3</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-shapes-of-a-and-b"><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-applying-rule-1"><strong>Step 2: Applying Rule 1</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#if-the-two-arrays-differ-in-their-number-of-dimensions-the-shape-of-the-one-with-fewer-dimensions-is-padded-with-ones-on-its-leading-side">If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is padded with ones on its leading side.</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-applying-rule-2"><strong>Step 3: Applying Rule 2</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#if-the-shape-of-the-two-arrays-does-not-match-in-any-dimension-the-array-with-shape-equal-to-1-in-that-dimension-is-stretched-to-match-the-other-shape">If the shape of the two arrays does not match in any dimension, the array with shape equal to <code class="docutils literal notranslate"><span class="pre">1</span></code> in that dimension is stretched to match the other shape.</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-element-wise-addition"><strong>Step 4: Element-Wise Addition</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion"><strong>Conclusion</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-shapes-of-c-and-d"><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">C</span></code> and <code class="docutils literal notranslate"><span class="pre">D</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><strong>Step 2: Applying Rule 1</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">If the two arrays differ in their number of dimensions, the shape of the one with fewer dimensions is padded with ones on its leading side.</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><strong>Step 3: Applying Rule 2</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">If the shape of the two arrays does not match in any dimension, the array with shape equal to <code class="docutils literal notranslate"><span class="pre">1</span></code> in that dimension is stretched to match the other shape.</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><strong>Step 4: Element-Wise Addition</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><strong>Conclusion</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-shapes-of-e-and-f"><strong>Step 1: Shapes of <code class="docutils literal notranslate"><span class="pre">E</span></code> and <code class="docutils literal notranslate"><span class="pre">F</span></code></strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-broadcasting-rules"><strong>Step 2: Broadcasting Rules</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-1-padding-dimensions"><strong>Rule 1: Padding dimensions</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#rule-2-dimension-wise-compatibility"><strong>Rule 2: Dimension-wise compatibility</strong></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-why-broadcasting-fails"><strong>Step 3: Why Broadcasting Fails</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><strong>Conclusion</strong></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applications-of-broadcasting">Applications of Broadcasting</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Binayak Basu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright © 2025 Binayak Basu. All rights reserved..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1720 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Array and Array Creation in NumPy &#8212; Data Analysis with Python</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'numpy/01-arrays';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Array Operations and Broadcasting" href="02-operations.html" />
+    <link rel="prev" title="🔢 NumPy: The Foundation of Numerical Computing in Python" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Data Analysis with Python - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Data Analysis with Python - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    👋 Welcome to FromCodeToData
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../python-basics/intro.html">Python Basics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/setup.html">Understanding Python and Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/01-Variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/02-DataTypes.html">Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/03-Strings.html">Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/04-Lists.html"><strong>Introduction to Lists in Python</strong></a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/05-Objects.html">Objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/06-Tuples.html">Tuples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/07-Dictionaries.html">Dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/08-Control_Flow.html">Control Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/09-Exception_Handling.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/10-File_Handling.html">File Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/11-Functions.html">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/12-Iterators.html">Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/13-Generators.html">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/14-Decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/15-Sets.html">Introduction to Sets in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/16-Comprehensions.html">Introduction to Comprehensions in Python</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../python-basics/17-Frozensets.html">Frozensets</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">NumPy</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Arrays and Array Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-operations.html">Array Operations and Broadcasting</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="03-indexing.html">Indexing And Slicing an Array</a></li>
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="04-boolean_masking.html">Boolean Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-reshaping.html">Reshaping, Concatenating and Splitting Arrays</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="06-fancyIndexing_sorting.html">Fancy Indexing and Sorting</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pandas/intro.html">Pandas</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pandas/01-series_dataframes.html">Series and Dataframe Objects in Pandas</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../pandas/02-indexing.html">Indexing in Pandas</a></li>
+
+
+
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/basu-binayak/FromCodeToData.git/main?urlpath=lab/tree/numpy/01-arrays.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/basu-binayak/FromCodeToData.git/blob/main/numpy/01-arrays.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/edit/main/numpy/01-arrays.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/basu-binayak/FromCodeToData.git/issues/new?title=Issue%20on%20page%20%2Fnumpy/01-arrays.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/numpy/01-arrays.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Array and Array Creation in NumPy</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-numpy-arrays">Creating NumPy Arrays</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-numpy-arrays-from-list">Creating NumPy Arrays from List</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-numpy-arrays-from-scratch">Creating NumPy Arrays from Scratch</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#difference-between-1d-and-2d-arrays-in-numpy">🔍 Difference Between 1D and 2D Arrays in NumPy</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#d-array-one-dimensional">🟦 <strong>1D Array (One-Dimensional)</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#d-array-two-dimensional">🟨 <strong>2D Array (Two-Dimensional)</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences-summary">🧠 Key Differences Summary</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#table-methods-to-create-numpy-arrays-from-scratch">📊 Table: Methods to Create NumPy Arrays from Scratch</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">✅ Notes</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-zeros"><code class="docutils literal notranslate"><span class="pre">np.zeros()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-ones"><code class="docutils literal notranslate"><span class="pre">np.ones()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-full"><code class="docutils literal notranslate"><span class="pre">np.full()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-arange"><code class="docutils literal notranslate"><span class="pre">np.arange()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-linspace"><code class="docutils literal notranslate"><span class="pre">np.linspace()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-eye"><code class="docutils literal notranslate"><span class="pre">np.eye()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-pseudo-random-numpy-arrays">Creating Pseudo-random NumPy Arrays</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#table-methods-to-create-pseudo-random-arrays-in-numpy">🎲 Table: Methods to Create Pseudo-Random Arrays in NumPy</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-notes">✅ Quick Notes:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-rand"><code class="docutils literal notranslate"><span class="pre">np.random.rand()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-randn"><code class="docutils literal notranslate"><span class="pre">np.random.randn()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-randint"><code class="docutils literal notranslate"><span class="pre">np.random.randint()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-uniform"><code class="docutils literal notranslate"><span class="pre">np.random.uniform()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-normal"><code class="docutils literal notranslate"><span class="pre">np.random.normal()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-choice"><code class="docutils literal notranslate"><span class="pre">np.random.choice()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-old-way-np-random-seed-randomstate">🎲 The Old Way: <code class="docutils literal notranslate"><span class="pre">np.random.seed()</span></code> + <code class="docutils literal notranslate"><span class="pre">RandomState</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-new-way-rng-np-random-default-rng-seed">🧪 The New Way: <code class="docutils literal notranslate"><span class="pre">rng</span> <span class="pre">=</span> <span class="pre">np.random.default_rng(seed)</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#side-by-side-comparison">🔁 Side-by-Side Comparison</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">💡 Key Differences</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#names-change-slightly">1. <strong>Names Change Slightly</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#everything-is-scoped-to-your-rng">2. <strong>Everything Is Scoped to Your RNG</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#better-algorithms-under-the-hood">3. <strong>Better Algorithms Under the Hood</strong></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-matters">🧠 Why This Matters</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#example-two-rngs-generating-different-sequences">🔍 Example: Two RNGs Generating Different Sequences</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#final-word">✅ Final Word</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-equivalent-to-rand"><code class="docutils literal notranslate"><span class="pre">random</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">rand</span></code>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-normal-equivalent-to-randn"><code class="docutils literal notranslate"><span class="pre">standard_normal</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">randn</span></code>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-t"><code class="docutils literal notranslate"><span class="pre">standard_t</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#integers-equivalent-to-randint"><code class="docutils literal notranslate"><span class="pre">integers</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">randint</span></code>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#normal"><code class="docutils literal notranslate"><span class="pre">normal</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#permutation"><code class="docutils literal notranslate"><span class="pre">permutation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#choice"><code class="docutils literal notranslate"><span class="pre">choice</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-default-rng-without-a-seed">✅ <strong>Using <code class="docutils literal notranslate"><span class="pre">default_rng()</span></code> Without a Seed</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#works-perfectly">✔ Works perfectly</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#produces-high-quality-random-numbers">✔ Produces high-quality random numbers</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uses-a-random-seed-generated-internally-from-system-entropy">✔ Uses a random seed generated internally from system entropy</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">🧠 <strong>How It Works</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#when-should-you-avoid-using-it-without-a-seed">🎯 <strong>When Should You Avoid Using It Without a Seed?</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">🎉 <strong>Summary</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="array-and-array-creation-in-numpy">
+<h1>Array and Array Creation in NumPy<a class="headerlink" href="#array-and-array-creation-in-numpy" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># import numpy </span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># import numpy </span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;numpy&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<section id="creating-numpy-arrays">
+<h2>Creating NumPy Arrays<a class="headerlink" href="#creating-numpy-arrays" title="Link to this heading">#</a></h2>
+<section id="creating-numpy-arrays-from-list">
+<h3>Creating NumPy Arrays from List<a class="headerlink" href="#creating-numpy-arrays-from-list" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Integer array </span>
+<span class="n">int_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">int_array</span><span class="p">)</span>
+
+<span class="c1"># float array </span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Note that numpy arrays are HOMOGENOUS</span>
+<span class="sd">- Hence if some types don&#39;t match, numpy will upcast them according to the promotion rules.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="c1"># In the example below, an int in upcast to float</span>
+<span class="n">float_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.3</span><span class="p">,</span><span class="mf">4.5</span><span class="p">,</span><span class="mf">6.7</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">8.9</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">float_array</span><span class="p">)</span>
+
+<span class="c1"># You can also mention the type while crearing the array </span>
+<span class="n">float_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">float_array</span><span class="p">)</span>
+
+<span class="c1"># Python lists are always one dimensional </span>
+<span class="c1"># however NumPy arrays can be multidimensional </span>
+<span class="n">md_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">range</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="o">+</span><span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)])</span> <span class="c1"># this is a 3x5 array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">md_array</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1 5 6 8 9 3]
+[2.3 4.5 6.7 5.  8.9]
+[1. 2. 3. 4. 5.]
+[[1 2 3 4 5]
+ [2 3 4 5 6]
+ [3 4 5 6 7]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="creating-numpy-arrays-from-scratch">
+<h3>Creating NumPy Arrays from Scratch<a class="headerlink" href="#creating-numpy-arrays-from-scratch" title="Link to this heading">#</a></h3>
+<section id="difference-between-1d-and-2d-arrays-in-numpy">
+<h4>🔍 Difference Between 1D and 2D Arrays in NumPy<a class="headerlink" href="#difference-between-1d-and-2d-arrays-in-numpy" title="Link to this heading">#</a></h4>
+<section id="d-array-one-dimensional">
+<h5>🟦 <strong>1D Array (One-Dimensional)</strong><a class="headerlink" href="#d-array-one-dimensional" title="Link to this heading">#</a></h5>
+<p>A 1D array is like a <strong>simple list of values</strong> — all arranged in a single row (or line).</p>
+</section>
+<section id="d-array-two-dimensional">
+<h5>🟨 <strong>2D Array (Two-Dimensional)</strong><a class="headerlink" href="#d-array-two-dimensional" title="Link to this heading">#</a></h5>
+<p>A 2D array is like a <strong>table or matrix</strong> — it has <strong>rows and columns</strong>.</p>
+</section>
+<section id="key-differences-summary">
+<h5>🧠 Key Differences Summary<a class="headerlink" href="#key-differences-summary" title="Link to this heading">#</a></h5>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>1D Array</p></th>
+<th class="head"><p>2D Array</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Structure</p></td>
+<td><p>Single list</p></td>
+<td><p>List of lists (rows &amp; columns)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Shape</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(n,)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(rows,</span> <span class="pre">cols)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Visualization</p></td>
+<td><p>Horizontal line of values</p></td>
+<td><p>Table/grid</p></td>
+</tr>
+<tr class="row-odd"><td><p>Real-world Use</p></td>
+<td><p>Vectors, signals</p></td>
+<td><p>Matrices, images, spreadsheets</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="table-methods-to-create-numpy-arrays-from-scratch">
+<h5>📊 Table: Methods to Create NumPy Arrays from Scratch<a class="headerlink" href="#table-methods-to-create-numpy-arrays-from-scratch" title="Link to this heading">#</a></h5>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>1D Array Syntax</p></th>
+<th class="head"><p>2D Array Syntax</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">np.zeros()</span></code></p></td>
+<td><p>Creates an array filled with <code class="docutils literal notranslate"><span class="pre">0</span></code>s</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.zeros(5)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.zeros((2,</span> <span class="pre">3))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">np.ones()</span></code></p></td>
+<td><p>Creates an array filled with <code class="docutils literal notranslate"><span class="pre">1</span></code>s</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.ones(4)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.ones((3,</span> <span class="pre">2))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">np.full()</span></code></p></td>
+<td><p>Creates an array filled with a value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.full(4,</span> <span class="pre">7)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.full((2,</span> <span class="pre">3),</span> <span class="pre">9)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">np.arange()</span></code></p></td>
+<td><p>Creates an array with a range of values</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.arange(0,</span> <span class="pre">10,</span> <span class="pre">2)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.arange(1,</span> <span class="pre">7).reshape((2,</span> <span class="pre">3))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">np.linspace()</span></code></p></td>
+<td><p>Creates evenly spaced values</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">1,</span> <span class="pre">5)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.linspace(0,</span> <span class="pre">10,</span> <span class="pre">6).reshape((2,</span> <span class="pre">3))</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="notes">
+<h5>✅ Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.full(shape,</span> <span class="pre">fill_value)</span></code> lets you fill arrays with any number.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.arange(start,</span> <span class="pre">stop,</span> <span class="pre">step)</span></code> generates values like <code class="docutils literal notranslate"><span class="pre">range()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.linspace(start,</span> <span class="pre">stop,</span> <span class="pre">num)</span></code> returns <code class="docutils literal notranslate"><span class="pre">num</span></code> evenly spaced points.</p></li>
+<li><p>For 2D arrays using <code class="docutils literal notranslate"><span class="pre">arange</span></code> or <code class="docutils literal notranslate"><span class="pre">linspace</span></code>, use <code class="docutils literal notranslate"><span class="pre">.reshape(rows,</span> <span class="pre">cols)</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="np-zeros">
+<h4><code class="docutils literal notranslate"><span class="pre">np.zeros()</span></code><a class="headerlink" href="#np-zeros" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.zeros()</span>
+
+<span class="c1"># 1D array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span> <span class="c1"># by default, creates a floating array of 0s of length 8</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">))</span> <span class="c1"># create a integer array now </span>
+
+<span class="c1"># multidimensional</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)))</span> <span class="c1"># provide dtype if you want specifically a data type </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0. 0. 0. 0. 0. 0. 0. 0.]
+[0 0 0 0 0 0 0 0]
+[[0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0.]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="np-ones">
+<h4><code class="docutils literal notranslate"><span class="pre">np.ones()</span></code><a class="headerlink" href="#np-ones" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.ones()</span>
+
+<span class="c1"># 1D array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># multidimensional array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1. 1. 1. 1. 1. 1. 1. 1.]
+[[1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1.]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="np-full">
+<h4><code class="docutils literal notranslate"><span class="pre">np.full()</span></code><a class="headerlink" href="#np-full" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.full()</span>
+
+<span class="c1"># 1D array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">2.3</span><span class="p">))</span> <span class="c1"># creates a array of length 5 filled with 2.3</span>
+
+<span class="c1"># multidimensional array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">3.4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2.3 2.3 2.3 2.3 2.3]
+[[3.4 3.4 3.4 3.4 3.4]
+ [3.4 3.4 3.4 3.4 3.4]
+ [3.4 3.4 3.4 3.4 3.4]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="np-arange">
+<h4><code class="docutils literal notranslate"><span class="pre">np.arange()</span></code><a class="headerlink" href="#np-arange" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.arange </span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">2.5</span><span class="p">))</span> 
+<span class="c1"># this creates a array that starts at 0, goes till 20 with a step size of 2.5</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span> 
+<span class="c1"># use reshape() method to reshape the 1D array to a 2D array </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.   2.5  5.   7.5 10.  12.5 15.  17.5]
+[[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]
+ [12 13 14 15]
+ [16 17 18 19]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="np-linspace">
+<h4><code class="docutils literal notranslate"><span class="pre">np.linspace()</span></code><a class="headerlink" href="#np-linspace" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.linspace </span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">30</span><span class="p">))</span> 
+<span class="c1"># gives a array of length 30 starting from 0 and ending at 20 equally spaced</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span> 
+<span class="c1"># convert the 1D to a 2D array</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 0.          0.68965517  1.37931034  2.06896552  2.75862069  3.44827586
+  4.13793103  4.82758621  5.51724138  6.20689655  6.89655172  7.5862069
+  8.27586207  8.96551724  9.65517241 10.34482759 11.03448276 11.72413793
+ 12.4137931  13.10344828 13.79310345 14.48275862 15.17241379 15.86206897
+ 16.55172414 17.24137931 17.93103448 18.62068966 19.31034483 20.        ]
+[[ 0.          0.68965517  1.37931034  2.06896552  2.75862069]
+ [ 3.44827586  4.13793103  4.82758621  5.51724138  6.20689655]
+ [ 6.89655172  7.5862069   8.27586207  8.96551724  9.65517241]
+ [10.34482759 11.03448276 11.72413793 12.4137931  13.10344828]
+ [13.79310345 14.48275862 15.17241379 15.86206897 16.55172414]
+ [17.24137931 17.93103448 18.62068966 19.31034483 20.        ]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="np-eye">
+<h4><code class="docutils literal notranslate"><span class="pre">np.eye()</span></code><a class="headerlink" href="#np-eye" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># creates a identity matrix of 3x3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="creating-pseudo-random-numpy-arrays">
+<h3>Creating Pseudo-random NumPy Arrays<a class="headerlink" href="#creating-pseudo-random-numpy-arrays" title="Link to this heading">#</a></h3>
+<section id="table-methods-to-create-pseudo-random-arrays-in-numpy">
+<h4>🎲 Table: Methods to Create Pseudo-Random Arrays in NumPy<a class="headerlink" href="#table-methods-to-create-pseudo-random-arrays-in-numpy" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>1D Array Syntax</p></th>
+<th class="head"><p>2D Array Syntax</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">np.random.rand()</span></code></p></td>
+<td><p>Random floats in [0.0, 1.0)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.rand(5)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.rand(2,</span> <span class="pre">3)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">np.random.randn()</span></code></p></td>
+<td><p>Random samples from standard normal dist.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.randn(4)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.randn(3,</span> <span class="pre">2)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">np.random.randint()</span></code></p></td>
+<td><p>Random integers in a range</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.randint(0,</span> <span class="pre">10,</span> <span class="pre">size=5)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.randint(0,</span> <span class="pre">100,</span> <span class="pre">size=(2,</span> <span class="pre">3))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">np.random.uniform()</span></code></p></td>
+<td><p>Random floats from a uniform distribution</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.uniform(1,</span> <span class="pre">5,</span> <span class="pre">size=4)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.uniform(10,</span> <span class="pre">20,</span> <span class="pre">size=(3,</span> <span class="pre">2))</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">np.random.normal()</span></code></p></td>
+<td><p>Random samples from a normal distribution</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.normal(0,</span> <span class="pre">1,</span> <span class="pre">size=5)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.normal(10,</span> <span class="pre">2,</span> <span class="pre">size=(2,</span> <span class="pre">3))</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">np.random.choice()</span></code></p></td>
+<td><p>Randomly pick elements from a given list</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.choice([1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4],</span> <span class="pre">size=5)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.choice([10,</span> <span class="pre">20],</span> <span class="pre">size=(2,</span> <span class="pre">3))</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="quick-notes">
+<h4>✅ Quick Notes:<a class="headerlink" href="#quick-notes" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rand</span></code> and <code class="docutils literal notranslate"><span class="pre">randn</span></code> are <strong>quick shorthands</strong> (no keyword <code class="docutils literal notranslate"><span class="pre">size=</span></code>, just shape directly).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">randint(low,</span> <span class="pre">high,</span> <span class="pre">size)</span></code> gives <strong>integers</strong>, unlike <code class="docutils literal notranslate"><span class="pre">uniform</span></code> and <code class="docutils literal notranslate"><span class="pre">normal</span></code> which give <strong>floats</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">choice</span></code> is great for <strong>simulating dice rolls</strong>, <strong>lotteries</strong>, or <strong>categorical picks</strong>.</p></li>
+<li><p>All methods are <strong>pseudo-random</strong> (deterministic if you set a seed with <code class="docutils literal notranslate"><span class="pre">np.random.seed()</span></code>).</p></li>
+</ul>
+</section>
+<section id="np-random-rand">
+<h4><code class="docutils literal notranslate"><span class="pre">np.random.rand()</span></code><a class="headerlink" href="#np-random-rand" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.random.rand()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.96759691 0.84581317 0.26670271]
+ [0.13935404 0.78055311 0.98107482]
+ [0.96001616 0.37649593 0.10953925]]
+[0.124749   0.99416666 0.63906355]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the distribution</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span> 
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;darkgrid&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10000</span><span class="p">),</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c27815e31d17fe0ef9df4d2ec646cdfa7ce8f0fefab3cbe586b48d44d78245a5.png" src="../_images/c27815e31d17fe0ef9df4d2ec646cdfa7ce8f0fefab3cbe586b48d44d78245a5.png" />
+</div>
+</div>
+</section>
+<section id="np-random-randn">
+<h4><code class="docutils literal notranslate"><span class="pre">np.random.randn()</span></code><a class="headerlink" href="#np-random-randn" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># np.random.randn</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[-0.02827673  1.38029818 -1.23570429]
+ [ 1.11020429 -1.28521835  0.1573897 ]
+ [-1.33200998 -0.83964458 -0.89473626]]
+[-0.67735868 -0.07306706 -1.07558795]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the standard normal distribution</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10000</span><span class="p">),</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5ce1a4932c779162d749880ec3827d5e79a4b2b2faa35215dcf9fbfae31a8a41.png" src="../_images/5ce1a4932c779162d749880ec3827d5e79a4b2b2faa35215dcf9fbfae31a8a41.png" />
+</div>
+</div>
+</section>
+<section id="np-random-randint">
+<h4><code class="docutils literal notranslate"><span class="pre">np.random.randint()</span></code><a class="headerlink" href="#np-random-randint" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a 3x3 array of  pseudorandom integer values between 2 and 20</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
+
+<span class="c1"># 1D array</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">9</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 4 17 10]
+ [12  6 12]
+ [19 13 16]]
+[11  2 17  9 13  6  9 11  6]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the distribution</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">10000</span><span class="p">),</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6f7ae6bee8d25607fb78c09ca52b7b7dd47fd8496950bdf73a69c70d6e29e46e.png" src="../_images/6f7ae6bee8d25607fb78c09ca52b7b7dd47fd8496950bdf73a69c70d6e29e46e.png" />
+</div>
+</div>
+</section>
+<section id="np-random-uniform">
+<h4><code class="docutils literal notranslate"><span class="pre">np.random.uniform()</span></code><a class="headerlink" href="#np-random-uniform" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># 1D array</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([25.56460585, 27.82053088, 11.27287247, 22.64359221, 22.00299052,
+       45.35990238, 25.95609231, 22.6343362 , 24.34149394, 39.97617369])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the distribution</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">10000</span><span class="p">),</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6209a6d11742a4db2f2d1465ef3bd3c9f99b394ce031bfbf1a6b5f32af866859.png" src="../_images/6209a6d11742a4db2f2d1465ef3bd3c9f99b394ce031bfbf1a6b5f32af866859.png" />
+</div>
+</div>
+</section>
+<section id="np-random-normal">
+<h4><code class="docutils literal notranslate"><span class="pre">np.random.normal()</span></code><a class="headerlink" href="#np-random-normal" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1D array</span>
+<span class="c1"># loc - mean, scale - std</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 1.07449966,  0.10590949, -1.05404918, -0.59512119, -0.60076701,
+       -0.81226434,  0.70012156,  0.06700291,  0.42408077,  2.0548584 ])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the distribution</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10000</span><span class="p">),</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c2e1a0fbec13f2d79e8760b7b3f9a78c272cd7b88c0daff2e133256ab27300b6.png" src="../_images/c2e1a0fbec13f2d79e8760b7b3f9a78c272cd7b88c0daff2e133256ab27300b6.png" />
+</div>
+</div>
+</section>
+<section id="np-random-choice">
+<h4><code class="docutils literal notranslate"><span class="pre">np.random.choice()</span></code><a class="headerlink" href="#np-random-choice" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">100000</span><span class="p">)</span>
+
+<span class="c1"># select 10 random values from the random_arr</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">random_arr</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.11735134, -0.06992011, -1.06636371,  0.23191697,  1.12878138,
+       -0.43231316, -0.59383926,  0.7480245 ,  0.5314736 ,  0.72752086])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># check the distribution</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">random_arr</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">),</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/66a06d8943d28f0e5aa531f753ce56dff822f6903f37dcc523c952fca4139f15.png" src="../_images/66a06d8943d28f0e5aa531f753ce56dff822f6903f37dcc523c952fca4139f15.png" />
+</div>
+</div>
+</section>
+<section id="the-old-way-np-random-seed-randomstate">
+<h4>🎲 The Old Way: <code class="docutils literal notranslate"><span class="pre">np.random.seed()</span></code> + <code class="docutils literal notranslate"><span class="pre">RandomState</span></code><a class="headerlink" href="#the-old-way-np-random-seed-randomstate" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>       <span class="c1"># Uniform between 0 and 1</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>      <span class="c1"># Standard normal (mean 0, std 1)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># Random integers</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>  <span class="c1"># Shuffles inplace</span>
+</pre></div>
+</div>
+</section>
+<section id="the-new-way-rng-np-random-default-rng-seed">
+<h4>🧪 The New Way: <code class="docutils literal notranslate"><span class="pre">rng</span> <span class="pre">=</span> <span class="pre">np.random.default_rng(seed)</span></code><a class="headerlink" href="#the-new-way-rng-np-random-default-rng-seed" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>           <span class="c1"># Replaces np.random.rand()</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># Replaces np.random.randn()</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># Replaces np.random.randint()</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">rng</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>        <span class="c1"># Same name, but scoped to this RNG</span>
+</pre></div>
+</div>
+</section>
+<section id="side-by-side-comparison">
+<h4>🔁 Side-by-Side Comparison<a class="headerlink" href="#side-by-side-comparison" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
+<th class="head"><p>Old API (<code class="docutils literal notranslate"><span class="pre">RandomState</span></code>)</p></th>
+<th class="head"><p>New API (<code class="docutils literal notranslate"><span class="pre">Generator</span></code>)</p></th>
+<th class="head"><p>Functionality</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Uniform <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1)</span></code></strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.rand(3)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rng.random(3)</span></code></p></td>
+<td><p>Draws samples from a uniform distribution over <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Standard Normal</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.randn(3)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rng.standard_normal(3)</span></code></p></td>
+<td><p>Draws samples from a standard normal distribution (mean = 0, std = 1).</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Integers</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.randint(1,</span> <span class="pre">10)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rng.integers(1,</span> <span class="pre">10)</span></code></p></td>
+<td><p>Returns random integers from <code class="docutils literal notranslate"><span class="pre">low</span></code> (inclusive) to <code class="docutils literal notranslate"><span class="pre">high</span></code> (exclusive).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Random Choice</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.choice(a)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rng.choice(a)</span></code></p></td>
+<td><p>Selects a random element or sample from a given array.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Shuffle</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.shuffle(a)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rng.shuffle(a)</span></code></p></td>
+<td><p>Shuffles a sequence <em>in place</em> (modifies the array directly).</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Permutation</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">np.random.permutation(a)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rng.permutation(a)</span></code></p></td>
+<td><p>Returns a randomly permuted sequence or array (does not modify original).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="key-differences">
+<h4>💡 Key Differences<a class="headerlink" href="#key-differences" title="Link to this heading">#</a></h4>
+<section id="names-change-slightly">
+<h5>1. <strong>Names Change Slightly</strong><a class="headerlink" href="#names-change-slightly" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rand</span></code> → <code class="docutils literal notranslate"><span class="pre">random</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">randn</span></code> → <code class="docutils literal notranslate"><span class="pre">standard_normal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">randint</span></code> → <code class="docutils literal notranslate"><span class="pre">integers</span></code></p></li>
+</ul>
+</section>
+<section id="everything-is-scoped-to-your-rng">
+<h5>2. <strong>Everything Is Scoped to Your RNG</strong><a class="headerlink" href="#everything-is-scoped-to-your-rng" title="Link to this heading">#</a></h5>
+<p>You can create multiple independent RNGs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rng1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">rng2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each produces its <strong>own sequence</strong> of pseudo-random numbers — no interference!</p>
+</section>
+<section id="better-algorithms-under-the-hood">
+<h5>3. <strong>Better Algorithms Under the Hood</strong><a class="headerlink" href="#better-algorithms-under-the-hood" title="Link to this heading">#</a></h5>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Generator</span></code> uses <strong>PCG64</strong> by default — it’s faster and statistically better than the old Mersenne Twister used by <code class="docutils literal notranslate"><span class="pre">RandomState</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="why-this-matters">
+<h4>🧠 Why This Matters<a class="headerlink" href="#why-this-matters" title="Link to this heading">#</a></h4>
+<p>Let’s say you’re simulating two models side-by-side. If you use the old <code class="docutils literal notranslate"><span class="pre">np.random.seed()</span></code>, random numbers for one model can interfere with the other.<br />
+But with <code class="docutils literal notranslate"><span class="pre">default_rng()</span></code>, each model gets <strong>its own private randomness</strong>, like having your own deck of shuffled cards 🎴.</p>
+<section id="example-two-rngs-generating-different-sequences">
+<h5>🔍 Example: Two RNGs Generating Different Sequences<a class="headerlink" href="#example-two-rngs-generating-different-sequences" title="Link to this heading">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rng1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rng2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">rng1</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>  <span class="c1"># [7 4 7 7 3]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rng2</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>  <span class="c1"># [7 4 7 7 3] — same seed, same output</span>
+
+<span class="n">rng3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rng3</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>  <span class="c1"># Different output</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="final-word">
+<h4>✅ Final Word<a class="headerlink" href="#final-word" title="Link to this heading">#</a></h4>
+<p>Using <code class="docutils literal notranslate"><span class="pre">default_rng()</span></code> means:</p>
+<ul class="simple">
+<li><p><strong>Cleaner API</strong></p></li>
+<li><p><strong>Better reproducibility</strong></p></li>
+<li><p><strong>No global state</strong></p></li>
+<li><p><strong>More reliable randomness for scientific computing</strong></p></li>
+</ul>
+</section>
+<section id="random-equivalent-to-rand">
+<h4><code class="docutils literal notranslate"><span class="pre">random</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">rand</span></code>)<a class="headerlink" href="#random-equivalent-to-rand" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># random</span>
+<span class="n">rng1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rng1</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># 10 floats between 0 and 1 </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.63696169, 0.26978671, 0.04097352, 0.01652764, 0.81327024,
+       0.91275558, 0.60663578, 0.72949656, 0.54362499, 0.93507242])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let us now create a 2d numpy array</span>
+<span class="n">rng1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rng1</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.63696169, 0.26978671],
+       [0.04097352, 0.01652764],
+       [0.81327024, 0.91275558]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="standard-normal-equivalent-to-randn">
+<h4><code class="docutils literal notranslate"><span class="pre">standard_normal</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">randn</span></code>)<a class="headerlink" href="#standard-normal-equivalent-to-randn" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rng1</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 0.12573022, -0.13210486,  0.64042265,  0.10490012, -0.53566937,
+        0.36159505,  1.30400005,  0.94708096, -0.70373524, -1.26542147])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s create a 2d array </span>
+<span class="n">rng1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rng1</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.12573022, -0.13210486,  0.64042265],
+       [ 0.10490012, -0.53566937,  0.36159505],
+       [ 1.30400005,  0.94708096, -0.70373524]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="standard-t">
+<h4><code class="docutils literal notranslate"><span class="pre">standard_t</span></code><a class="headerlink" href="#standard-t" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># standard_t distribution</span>
+<span class="n">rng1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rng1</span><span class="o">.</span><span class="n">standard_t</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.1342263 ,  0.12358306],
+       [ 1.10002862, -1.52436542],
+       [-2.5338622 , -0.86455883],
+       [ 0.3406572 ,  1.66391394],
+       [ 0.91519416, -1.06487644]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also get <code class="docutils literal notranslate"><span class="pre">standard_exponential</span></code>, <code class="docutils literal notranslate"><span class="pre">standard_cauchy</span></code> and many more !</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">rng1</span><span class="o">.</span><span class="n">standard_exponential</span><span class="p">(</span><span class="mi">10000</span><span class="p">),</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/95b4b3ce54f52cd64782a56a34754e7cb16f59228289c232c52c7962bd2747d9.png" src="../_images/95b4b3ce54f52cd64782a56a34754e7cb16f59228289c232c52c7962bd2747d9.png" />
+</div>
+</div>
+</section>
+<section id="integers-equivalent-to-randint">
+<h4><code class="docutils literal notranslate"><span class="pre">integers</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">randint</span></code>)<a class="headerlink" href="#integers-equivalent-to-randint" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">rng2</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([77, 95, 26, 20, 79, 82, 51, 14, 83, 51])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create 2D array</span>
+<span class="n">rng2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">rng2</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[77, 95],
+       [26, 20],
+       [79, 82],
+       [51, 14]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="normal">
+<h4><code class="docutils literal notranslate"><span class="pre">normal</span></code><a class="headerlink" href="#normal" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># normal</span>
+<span class="n">rng2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">rng2</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.10333845, -0.72502464, -0.78180526,  0.26697586, -0.24858073,
+        0.12648305,  0.84304257,  0.85793655,  0.47518364, -0.4507686 ])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="permutation">
+<h4><code class="docutils literal notranslate"><span class="pre">permutation</span></code><a class="headerlink" href="#permutation" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng2</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="c1"># since axis=1 , it shuffles column-wise </span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="choice">
+<h4><code class="docutils literal notranslate"><span class="pre">choice</span></code><a class="headerlink" href="#choice" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng2</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">rng2</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-1.13448753,  0.42582567],
+       [-1.85168503, -0.97227368],
+       [-0.34385486, -0.98535561]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="using-default-rng-without-a-seed">
+<h3>✅ <strong>Using <code class="docutils literal notranslate"><span class="pre">default_rng()</span></code> Without a Seed</strong><a class="headerlink" href="#using-default-rng-without-a-seed" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>   <span class="c1"># No seed given</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="works-perfectly">
+<h4>✔ Works perfectly<a class="headerlink" href="#works-perfectly" title="Link to this heading">#</a></h4>
+</section>
+<section id="produces-high-quality-random-numbers">
+<h4>✔ Produces high-quality random numbers<a class="headerlink" href="#produces-high-quality-random-numbers" title="Link to this heading">#</a></h4>
+</section>
+<section id="uses-a-random-seed-generated-internally-from-system-entropy">
+<h4>✔ Uses a random seed generated internally from system entropy<a class="headerlink" href="#uses-a-random-seed-generated-internally-from-system-entropy" title="Link to this heading">#</a></h4>
+<p>Every time you run the code, you’ll get <strong>different results</strong> (non-deterministic).</p>
+</section>
+<section id="how-it-works">
+<h4>🧠 <strong>How It Works</strong><a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h4>
+<p>When you call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>NumPy internally uses:</p>
+<ul class="simple">
+<li><p><strong>system entropy</strong> (like OS-level randomness)</p></li>
+<li><p>to generate a <strong>fresh, unpredictable seed</strong></p></li>
+<li><p>for the <strong>PCG64</strong> random number generator (modern, fast, statistically strong)</p></li>
+</ul>
+<p>So the RNG is automatically seeded <em>for you</em>.</p>
+</section>
+<section id="when-should-you-avoid-using-it-without-a-seed">
+<h4>🎯 <strong>When Should You Avoid Using It Without a Seed?</strong><a class="headerlink" href="#when-should-you-avoid-using-it-without-a-seed" title="Link to this heading">#</a></h4>
+<p>If you need:</p>
+<ul class="simple">
+<li><p><strong>Reproducible experiments</strong></p></li>
+<li><p><strong>Same results each time</strong></p></li>
+<li><p><strong>Debugging consistent behavior</strong></p></li>
+</ul>
+<p>Then you <em>should</em> provide a seed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># reproducible</span>
+</pre></div>
+</div>
+</section>
+<section id="summary">
+<h4>🎉 <strong>Summary</strong><a class="headerlink" href="#summary" title="Link to this heading">#</a></h4>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Scenario</p></th>
+<th class="head"><p>Should you give a seed?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Scientific experiment</p></td>
+<td><p>✔ Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Machine learning training logs</p></td>
+<td><p>✔ Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>Debugging code</p></td>
+<td><p>✔ Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Simulation requiring repeatability</p></td>
+<td><p>✔ Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>General usage (EDA, prototyping)</p></td>
+<td><p>❌ No</p></td>
+</tr>
+<tr class="row-odd"><td><p>Generating random UI elements</p></td>
+<td><p>❌ No</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./numpy"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>🔢 NumPy: The Foundation of Numerical Computing in Python</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-operations.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Array Operations and Broadcasting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-numpy-arrays">Creating NumPy Arrays</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-numpy-arrays-from-list">Creating NumPy Arrays from List</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-numpy-arrays-from-scratch">Creating NumPy Arrays from Scratch</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#difference-between-1d-and-2d-arrays-in-numpy">🔍 Difference Between 1D and 2D Arrays in NumPy</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#d-array-one-dimensional">🟦 <strong>1D Array (One-Dimensional)</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#d-array-two-dimensional">🟨 <strong>2D Array (Two-Dimensional)</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences-summary">🧠 Key Differences Summary</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#table-methods-to-create-numpy-arrays-from-scratch">📊 Table: Methods to Create NumPy Arrays from Scratch</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">✅ Notes</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-zeros"><code class="docutils literal notranslate"><span class="pre">np.zeros()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-ones"><code class="docutils literal notranslate"><span class="pre">np.ones()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-full"><code class="docutils literal notranslate"><span class="pre">np.full()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-arange"><code class="docutils literal notranslate"><span class="pre">np.arange()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-linspace"><code class="docutils literal notranslate"><span class="pre">np.linspace()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-eye"><code class="docutils literal notranslate"><span class="pre">np.eye()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-pseudo-random-numpy-arrays">Creating Pseudo-random NumPy Arrays</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#table-methods-to-create-pseudo-random-arrays-in-numpy">🎲 Table: Methods to Create Pseudo-Random Arrays in NumPy</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-notes">✅ Quick Notes:</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-rand"><code class="docutils literal notranslate"><span class="pre">np.random.rand()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-randn"><code class="docutils literal notranslate"><span class="pre">np.random.randn()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-randint"><code class="docutils literal notranslate"><span class="pre">np.random.randint()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-uniform"><code class="docutils literal notranslate"><span class="pre">np.random.uniform()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-normal"><code class="docutils literal notranslate"><span class="pre">np.random.normal()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#np-random-choice"><code class="docutils literal notranslate"><span class="pre">np.random.choice()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-old-way-np-random-seed-randomstate">🎲 The Old Way: <code class="docutils literal notranslate"><span class="pre">np.random.seed()</span></code> + <code class="docutils literal notranslate"><span class="pre">RandomState</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-new-way-rng-np-random-default-rng-seed">🧪 The New Way: <code class="docutils literal notranslate"><span class="pre">rng</span> <span class="pre">=</span> <span class="pre">np.random.default_rng(seed)</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#side-by-side-comparison">🔁 Side-by-Side Comparison</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#key-differences">💡 Key Differences</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#names-change-slightly">1. <strong>Names Change Slightly</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#everything-is-scoped-to-your-rng">2. <strong>Everything Is Scoped to Your RNG</strong></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#better-algorithms-under-the-hood">3. <strong>Better Algorithms Under the Hood</strong></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-matters">🧠 Why This Matters</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#example-two-rngs-generating-different-sequences">🔍 Example: Two RNGs Generating Different Sequences</a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#final-word">✅ Final Word</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#random-equivalent-to-rand"><code class="docutils literal notranslate"><span class="pre">random</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">rand</span></code>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-normal-equivalent-to-randn"><code class="docutils literal notranslate"><span class="pre">standard_normal</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">randn</span></code>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-t"><code class="docutils literal notranslate"><span class="pre">standard_t</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#integers-equivalent-to-randint"><code class="docutils literal notranslate"><span class="pre">integers</span></code> ( equivalent to <code class="docutils literal notranslate"><span class="pre">randint</span></code>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#normal"><code class="docutils literal notranslate"><span class="pre">normal</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#permutation"><code class="docutils literal notranslate"><span class="pre">permutation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#choice"><code class="docutils literal notranslate"><span class="pre">choice</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-default-rng-without-a-seed">✅ <strong>Using <code class="docutils literal notranslate"><span class="pre">default_rng()</span></code> Without a Seed</strong></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#works-perfectly">✔ Works perfectly</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#produces-high-quality-random-numbers">✔ Produces high-quality random numbers</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uses-a-random-seed-generated-internally-from-system-entropy">✔ Uses a random seed generated internally from system entropy</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">🧠 <strong>How It Works</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#when-should-you-avoid-using-it-without-a-seed">🎯 <strong>When Should You Avoid Using It Without a Seed?</strong></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">🎉 <strong>Summary</strong></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Binayak Basu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright © 2025 Binayak Basu. All rights reserved..
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

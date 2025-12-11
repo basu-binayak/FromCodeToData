@@ -1,32 +1,34 @@
-name: deploy
+name: Deploy Jupyter Book
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Install Python
-        uses: actions/setup-python@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.10"
 
-      - name: Install jupyter-book
+      - name: Install Jupyter Book + ghp-import
         run: |
-          pip install -U jupyter-book ghp-import
+          python -m pip install --upgrade pip
+          python -m pip install jupyter-book ghp-import
 
-      - name: Build the book
-        run: jupyter-book build mybook/
-
-      - name: Debug path
+      - name: Build the book (force correct executable)
         run: |
-          ls -R mybook/
+          python -m jupyter_book build mybook/
+
+      - name: Verify build folder
+        run: |
+          echo "Listing mybook/_build/html..."
+          ls -R mybook/_build/html || true
 
       - name: Deploy to GitHub Pages
         run: |

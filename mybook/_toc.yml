@@ -44,6 +44,10 @@ chapters:
         title: Comprehensions
       - file: python-basics/17-Frozensets
         title: Frozensets
+      - file: python-basics/18-Nested_Functions
+        title: Nested Fuctions
+      - file: python-basics/19-Important_Modules 
+        title: Important Modules
 
   - file: numpy/intro
     title: NumPy

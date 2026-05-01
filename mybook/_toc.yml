@@ -68,3 +68,7 @@ chapters:
         title: DataFrames and Series
       - file: pandas/02-indexing
         title: Indexing and Selecting Data
+      - file: pandas/03-operating_on_data
+        title: Operating on Data
+      - file: pandas/04-handling_null
+        title: Handling Null

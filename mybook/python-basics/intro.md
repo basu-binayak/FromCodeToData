@@ -29,7 +29,7 @@ Click on any topic to jump directly to its notebook or chapter.
 | 15  | [Decorators](14-Decorators.ipynb)                 | Understand Decorators in Python                                      |
 | 16  | [Sets](15-Sets.ipynb)                             | Understand Sets in Python                                            |
 | 17  | [Comprehensions](16-Comprehemsions.ipynb)         | Understand Comprehensions in Python                                  |
-| 18  | [Frozensets](17-Frozensets.ipynb)                 | Understand Frozensets in Pytho                                       |
+| 18  | [Frozensets](17-Frozensets.ipynb)                 | Understand Frozensets in Python                                      |
 
 ---
 
